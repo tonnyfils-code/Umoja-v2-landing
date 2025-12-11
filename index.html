@@ -32,7 +32,7 @@
       --logo-shadow-strength: 0.9;
       --particle-opacity: 0.25;
 
-      /* light mode vars (used when body has .theme-light) */
+      /* light mode vars */
       --bg-light: #f3f4f6;
       --bg-soft-light: #e5e7eb;
       --bg-card-light: #ffffff;
@@ -64,7 +64,6 @@
       color: var(--text-main-light);
     }
 
-    /* override colors in light theme */
     body.theme-light .card {
       background: var(--bg-card-light);
       border-color: var(--border-subtle-light);
@@ -75,7 +74,7 @@
     body.theme-light .sale-note,
     body.theme-light .form-footnote,
     body.theme-light .admin-badge,
-    body.theme-light .mini-header-sub,
+    body.theme-light .mini-sub,
     body.theme-light .hero-footnote,
     body.theme-light .empty-state {
       color: var(--text-muted-light);
@@ -115,7 +114,7 @@
       z-index: 1;
     }
 
-    /* PARTICLE BACKGROUND (canvas) */
+    /* PARTICLE BACKGROUND */
     #particleCanvas {
       position: fixed;
       inset: 0;
@@ -149,50 +148,6 @@
     @keyframes watermarkFloat {
       0%   { transform: translateY(-50%) rotate(-90deg) translateX(0); }
       100% { transform: translateY(-50%) rotate(-90deg) translateX(40px); }
-    }
-
-    /* SPLASH SCREEN */
-    .splash {
-      position: fixed;
-      inset: 0;
-      background: radial-gradient(circle at top, #061633 0, #00010a 50%, #000 100%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      z-index: 9999;
-      transition: opacity 0.7s ease, visibility 0.7s ease;
-    }
-    .splash-hidden {
-      opacity: 0;
-      visibility: hidden;
-    }
-
-    .splash-logo-wrap {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      background: radial-gradient(circle at 30% 0, #4bf3ff 0, #0072ff 40%, #001435 90%);
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow:
-        0 0 35px rgba(0, 0, 0, 0.9),
-        0 0 90px rgba(15, 23, 42, 0.9);
-      overflow: hidden;
-      animation: splashPop 1.6s ease-out forwards;
-    }
-    .splash-logo-wrap img {
-      width: 130%;
-      height: 130%;
-      border-radius: 50%;
-      object-fit: cover;
-      transform: translateY(-4%);
-    }
-
-    @keyframes splashPop {
-      0%   { opacity: 0; transform: scale(0.4); filter: blur(7px); }
-      55%  { opacity: 1; transform: scale(1.03); filter: blur(0); }
-      100% { opacity: 1; transform: scale(1); }
     }
 
     /* HEADER */
@@ -229,7 +184,6 @@
       transition: transform 0.35s ease, box-shadow 0.35s ease;
     }
 
-    /* breathing aura */
     @keyframes logoBreath {
       0%, 100% {
         box-shadow:
@@ -243,7 +197,6 @@
       }
     }
 
-    /* shimmer on hover */
     .brand-logo::before {
       content: "";
       position: absolute;
@@ -259,6 +212,15 @@
       pointer-events: none;
     }
 
+    .brand-logo::after {
+      content: "";
+      position: absolute;
+      inset: 56% -32%;
+      background: radial-gradient(ellipse at center, rgba(0,0,0,0.9), transparent 70%);
+      pointer-events: none;
+      opacity: 0.9;
+    }
+
     .brand-logo:hover {
       transform: translateY(-4px) rotateX(8deg) rotateY(-7deg);
     }
@@ -271,15 +233,6 @@
       0%   { transform: translateX(-140%); opacity: 0; }
       25%  { opacity: 1; }
       100% { transform: translateX(140%); opacity: 0; }
-    }
-
-    .brand-logo::after {
-      content: "";
-      position: absolute;
-      inset: 56% -32%;
-      background: radial-gradient(ellipse at center, rgba(0,0,0,0.9), transparent 70%);
-      pointer-events: none;
-      opacity: 0.9;
     }
 
     .brand-logo img {
@@ -326,7 +279,6 @@
       box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
     }
 
-    /* theme toggle */
     .theme-toggle {
       display: inline-flex;
       align-items: center;
@@ -343,14 +295,12 @@
       height: 18px;
       border-radius: 999px;
       background: linear-gradient(135deg, #facc15, #f97316);
-      position: relative;
-      overflow: hidden;
     }
     body.theme-light .theme-toggle-thumb {
       background: linear-gradient(135deg, #0f172a, #1e293b);
     }
 
-    /* MINI STICKY HEADER */
+    /* MINI HEADER */
     .mini-header {
       position: fixed;
       inset-inline: 0;
@@ -375,9 +325,6 @@
       background: rgba(3, 7, 18, 0.92);
       border-bottom: 1px solid rgba(15, 23, 42, 0.95);
       backdrop-filter: blur(20px);
-    }
-    body.theme-light .mini-header-inner {
-      background: rgba(249, 250, 251, 0.92);
     }
 
     .mini-left {
@@ -416,9 +363,6 @@
     .mini-sub {
       color: var(--text-muted);
     }
-    body.theme-light .mini-sub {
-      color: var(--text-muted-light);
-    }
 
     .mini-cta {
       border-radius: var(--radius-pill);
@@ -435,11 +379,8 @@
       border-color: var(--accent1);
       background: rgba(15, 23, 42, 0.9);
     }
-    body.theme-light .mini-cta:hover {
-      background: rgba(241, 245, 249, 0.92);
-    }
 
-    /* GRID LAYOUT */
+    /* GRID */
     .grid-2 {
       display: grid;
       grid-template-columns: minmax(0, 1.3fr) minmax(0, 1fr);
@@ -447,7 +388,6 @@
       align-items: stretch;
     }
 
-    /* Cards */
     .card {
       background: radial-gradient(circle at top left, #111827 0, var(--bg-card) 55%);
       border-radius: var(--radius-lg);
@@ -587,7 +527,6 @@
       margin-top: 6px;
     }
 
-    /* Right card details */
     .contract-box {
       border-radius: var(--radius-md);
       padding: 12px 14px;
@@ -668,7 +607,6 @@
       margin-bottom: 10px;
     }
 
-    /* Steps */
     .steps {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -718,7 +656,6 @@
       margin-top: 4px;
     }
 
-    /* Inputs */
     .form-grid {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
@@ -776,17 +713,12 @@
     .status-success { color: var(--success); }
     .status-error   { color: var(--danger); }
 
-    /* Admin */
     .admin-card {
       margin-top: 16px;
       border-radius: var(--radius-lg);
       border: 1px dashed rgba(148, 163, 184, 0.65);
       background: rgba(15, 23, 42, 0.9);
       padding: 14px 16px;
-    }
-    body.theme-light .admin-card {
-      background: rgba(249, 250, 251, 0.98);
-      border-color: var(--border-subtle-light);
     }
 
     .admin-header {
@@ -842,9 +774,6 @@
     tbody tr:hover {
       background: rgba(15, 23, 42, 0.9);
     }
-    body.theme-light tbody tr:hover {
-      background: rgba(243, 244, 246, 0.95);
-    }
 
     .empty-state {
       font-size: 0.78rem;
@@ -874,7 +803,6 @@
       text-decoration-style: dotted;
     }
 
-    /* Floating mobile CTA */
     .mobile-cta {
       position: fixed;
       left: 50%;
@@ -940,15 +868,7 @@
 <body>
   <canvas id="particleCanvas"></canvas>
 
-  <!-- Watermark -->
   <div class="watermark">UMOJA V2</div>
-
-  <!-- Splash -->
-  <div id="splash" class="splash">
-    <div class="splash-logo-wrap">
-      <img src="Umoja-logo.png" alt="Umoja Logo" />
-    </div>
-  </div>
 
   <!-- Sticky mini header -->
   <div id="miniHeader" class="mini-header">
@@ -999,7 +919,6 @@
 
     <!-- HERO -->
     <div class="grid-2" id="hero">
-      <!-- Left hero card -->
       <div class="card hero-parallax">
         <div class="card-inner">
           <div class="section-label">Holiday private sale • Umoja V2</div>
@@ -1037,7 +956,6 @@
         </div>
       </div>
 
-      <!-- Right hero card -->
       <div class="card hero-parallax">
         <div class="card-inner">
           <div class="section-label" id="sale-details">Official contract • Sale snapshot</div>
@@ -1204,4 +1122,437 @@
                   minlength="4"
                   required
                 />
-              </
+              </div>
+
+              <div>
+                <label for="inv-contact">Preferred contact (WhatsApp / Telegram)</label>
+                <input id="inv-contact" name="contact" type="text" placeholder="+1..." />
+              </div>
+            </div>
+
+            <label for="inv-notes">Notes (optional)</label>
+            <textarea
+              id="inv-notes"
+              name="notes"
+              placeholder="Any extra notes about this investor, risk profile, or expectations."
+            ></textarea>
+
+            <p class="form-footnote">
+              ⚠️ The investor password is for your own verification only. Do not store seed
+              phrases or highly sensitive information here. For production, move this to a
+              secure backend.
+            </p>
+
+            <div class="hero-actions" style="margin-top: 10px;">
+              <button type="submit" class="btn btn-primary">Save invitation locally</button>
+              <button type="button" id="clearInvitationForm" class="btn btn-ghost">
+                Clear form
+              </button>
+            </div>
+
+            <div id="invitationStatus" class="status"></div>
+          </form>
+        </div>
+      </div>
+    </section>
+
+    <!-- ADMIN -->
+    <section id="admin">
+      <div class="card">
+        <div class="card-inner">
+          <div class="section-label">Admin dashboard</div>
+          <h2>Track all invitation activities (local demo)</h2>
+          <p>
+            Admins can unlock the dashboard with the admin password to review saved invitation
+            records from this device. For production, connect this UI to a secure database and
+            authentication system.
+          </p>
+
+          <div class="admin-card">
+            <div class="admin-header">
+              <div class="admin-title">Admin access</div>
+              <div class="admin-badge">Local only • front-end demo</div>
+            </div>
+
+            <form id="adminLoginForm">
+              <div class="admin-form-grid">
+                <div>
+                  <label for="admin-email">Admin email (optional)</label>
+                  <input id="admin-email" type="email" placeholder="admin@umoja..." />
+                </div>
+                <div>
+                  <label for="admin-password">
+                    Admin password <span class="required">*</span>
+                  </label>
+                  <input
+                    id="admin-password"
+                    type="password"
+                    required
+                    placeholder="Enter admin password"
+                  />
+                </div>
+              </div>
+
+              <div class="admin-actions-row">
+                <button type="submit" class="btn btn-primary">Unlock dashboard</button>
+                <button type="button" id="adminLockBtn" class="btn btn-ghost">Lock</button>
+              </div>
+              <div id="adminStatus" class="status"></div>
+            </form>
+
+            <div id="adminDashboard" style="display: none;">
+              <div class="admin-header" style="margin-top: 6px;">
+                <div class="admin-title">
+                  Saved invitations: <span id="invitationCount">0</span>
+                </div>
+                <div class="admin-actions-row">
+                  <button type="button" id="exportCsvBtn" class="btn btn-ghost">
+                    Export CSV
+                  </button>
+                  <button type="button" id="clearAllInvitationsBtn" class="btn btn-ghost">
+                    Clear all (local)
+                  </button>
+                </div>
+              </div>
+
+              <div style="overflow-x: auto; max-height: 260px;">
+                <table>
+                  <thead>
+                    <tr>
+                      <th>#</th>
+                      <th>Created at</th>
+                      <th>Name</th>
+                      <th>Email</th>
+                      <th>Country</th>
+                      <th>Amount (USD)</th>
+                      <th>Wallet</th>
+                      <th>Referral code</th>
+                      <th>Investor password</th>
+                      <th>Contact</th>
+                    </tr>
+                  </thead>
+                  <tbody id="invitationTableBody"></tbody>
+                </table>
+              </div>
+              <div id="adminEmptyState" class="empty-state">
+                No invitations saved yet. Submit one from the Invitation form.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <footer>
+      <div>
+        Umoja V2 • Holiday Private Sale demo interface.<br />
+        This page is for educational &amp; tracking purposes only and does not represent
+        financial advice. Always verify details through official Umoja channels.
+      </div>
+      <div class="footer-links">
+        <span class="footer-link">Official website</span>
+        <span class="footer-link">Twitter / X</span>
+        <span class="footer-link">Telegram</span>
+        <span class="footer-link">Whitepaper</span>
+      </div>
+    </footer>
+  </div>
+
+  <script>
+    // Smooth scroll
+    document.querySelectorAll("[data-scroll-to]").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const id = btn.getAttribute("data-scroll-to");
+        const el = document.getElementById(id);
+        if (!el) return;
+        const top = el.getBoundingClientRect().top + window.scrollY - 16;
+        window.scrollTo({ top, behavior: "smooth" });
+      });
+    });
+
+    // Theme toggle
+    const themeToggle = document.getElementById("themeToggle");
+    const body = document.body;
+    const THEME_KEY = "umojaTheme";
+
+    function applyTheme(theme) {
+      if (theme === "light") body.classList.add("theme-light");
+      else body.classList.remove("theme-light");
+    }
+
+    const savedTheme = localStorage.getItem(THEME_KEY);
+    if (savedTheme) applyTheme(savedTheme);
+
+    themeToggle.addEventListener("click", () => {
+      const next = body.classList.contains("theme-light") ? "dark" : "light";
+      applyTheme(next);
+      localStorage.setItem(THEME_KEY, next);
+    });
+
+    // Sticky mini header + logo glow
+    const miniHeader = document.getElementById("miniHeader");
+    const root = document.documentElement;
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      const max = 500;
+      const t = Math.min(Math.max(y / max, 0), 1);
+      const strength = 0.8 + t * 0.7;
+      root.style.setProperty("--logo-shadow-strength", strength.toFixed(2));
+      if (y > 180) miniHeader.classList.add("mini-header-visible");
+      else miniHeader.classList.remove("mini-header-visible");
+    });
+
+    // MetaMask connect
+    const connectWalletBtn = document.getElementById("connectWalletBtn");
+    const walletStatus = document.getElementById("walletStatus");
+
+    function setWalletStatus(msg, isError = false) {
+      walletStatus.textContent = msg;
+      walletStatus.style.color = isError ? "#f97373" : "#9ca3af";
+    }
+
+    if (typeof window.ethereum === "undefined") {
+      connectWalletBtn.classList.add("btn-disabled");
+      connectWalletBtn.disabled = true;
+      setWalletStatus("MetaMask not detected. Install MetaMask to connect.", true);
+    } else {
+      setWalletStatus("MetaMask detected. Connect to view your address.");
+      connectWalletBtn.addEventListener("click", async () => {
+        try {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts"
+          });
+          const address = accounts[0];
+          const short = address.slice(0, 6) + "..." + address.slice(-4);
+          setWalletStatus("Connected: " + short);
+        } catch (err) {
+          setWalletStatus("Connection request was rejected.", true);
+        }
+      });
+    }
+
+    // Invitation storage
+    const INV_KEY = "umojaInvitations";
+    const invitationForm = document.getElementById("invitationForm");
+    const invitationStatus = document.getElementById("invitationStatus");
+    const clearInvitationFormBtn = document.getElementById("clearInvitationForm");
+
+    function loadInvitations() {
+      try { return JSON.parse(localStorage.getItem(INV_KEY)) || []; }
+      catch { return []; }
+    }
+    function saveInvitations(list) {
+      localStorage.setItem(INV_KEY, JSON.stringify(list));
+    }
+    function addInvitation(record) {
+      const list = loadInvitations();
+      list.push(record);
+      saveInvitations(list);
+    }
+
+    invitationForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const fd = new FormData(invitationForm);
+      const rec = {
+        name: fd.get("name").trim(),
+        email: fd.get("email").trim(),
+        country: fd.get("country").trim(),
+        amount: fd.get("amount").trim(),
+        wallet: fd.get("wallet").trim(),
+        referralCode: fd.get("referralCode").trim(),
+        investorPassword: fd.get("investorPassword"),
+        contact: fd.get("contact").trim(),
+        notes: fd.get("notes").trim(),
+        createdAt: new Date().toISOString()
+      };
+
+      if (!rec.name || !rec.email || !rec.amount || !rec.referralCode || !rec.investorPassword) {
+        invitationStatus.textContent = "Please fill all required fields.";
+        invitationStatus.className = "status status-error";
+        return;
+      }
+
+      addInvitation(rec);
+      invitationForm.reset();
+      invitationStatus.textContent =
+        "Invitation saved locally. Admins can see it in the dashboard.";
+      invitationStatus.className = "status status-success";
+      if (adminUnlocked) renderInvitationTable();
+    });
+
+    clearInvitationFormBtn.addEventListener("click", () => {
+      invitationForm.reset();
+      invitationStatus.textContent = "";
+      invitationStatus.className = "status";
+    });
+
+    // Admin logic
+    const ADMIN_PASSWORD = "UmojaAdmin2025!";
+    let adminUnlocked = false;
+
+    const adminLoginForm = document.getElementById("adminLoginForm");
+    const adminStatus = document.getElementById("adminStatus");
+    const adminDashboard = document.getElementById("adminDashboard");
+    const invitationCount = document.getElementById("invitationCount");
+    const invitationTableBody = document.getElementById("invitationTableBody");
+    const adminEmptyState = document.getElementById("adminEmptyState");
+    const adminLockBtn = document.getElementById("adminLockBtn");
+    const exportCsvBtn = document.getElementById("exportCsvBtn");
+    const clearAllInvitationsBtn = document.getElementById("clearAllInvitationsBtn");
+
+    function renderInvitationTable() {
+      const list = loadInvitations();
+      invitationTableBody.innerHTML = "";
+      if (!list.length) {
+        invitationCount.textContent = "0";
+        adminEmptyState.style.display = "block";
+        return;
+      }
+      adminEmptyState.style.display = "none";
+      invitationCount.textContent = String(list.length);
+      list.forEach((inv, idx) => {
+        const tr = document.createElement("tr");
+        tr.innerHTML = `
+          <td>${idx + 1}</td>
+          <td>${new Date(inv.createdAt).toLocaleString()}</td>
+          <td>${inv.name || ""}</td>
+          <td>${inv.email || ""}</td>
+          <td>${inv.country || ""}</td>
+          <td>${inv.amount || ""}</td>
+          <td>${inv.wallet || ""}</td>
+          <td>${inv.referralCode || ""}</td>
+          <td>${inv.investorPassword || ""}</td>
+          <td>${inv.contact || ""}</td>
+        `;
+        invitationTableBody.appendChild(tr);
+      });
+    }
+
+    adminLoginForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const pwd = document.getElementById("admin-password").value;
+      if (pwd === ADMIN_PASSWORD) {
+        adminUnlocked = true;
+        adminDashboard.style.display = "block";
+        adminStatus.textContent = "Admin dashboard unlocked.";
+        adminStatus.className = "status status-success";
+        renderInvitationTable();
+      } else {
+        adminUnlocked = false;
+        adminDashboard.style.display = "none";
+        adminStatus.textContent = "Incorrect admin password.";
+        adminStatus.className = "status status-error";
+      }
+    });
+
+    adminLockBtn.addEventListener("click", () => {
+      adminUnlocked = false;
+      adminDashboard.style.display = "none";
+      adminStatus.textContent = "Dashboard locked.";
+      adminStatus.className = "status";
+    });
+
+    exportCsvBtn.addEventListener("click", () => {
+      const list = loadInvitations();
+      if (!list.length) {
+        adminStatus.textContent = "No invitations to export.";
+        adminStatus.className = "status status-error";
+        return;
+      }
+      const header = [
+        "Index","CreatedAt","Name","Email","Country","AmountUSD",
+        "Wallet","ReferralCode","InvestorPassword","Contact","Notes"
+      ];
+      const rows = list.map((inv, idx) => [
+        idx + 1, inv.createdAt, inv.name, inv.email, inv.country,
+        inv.amount, inv.wallet, inv.referralCode, inv.investorPassword,
+        inv.contact, inv.notes
+      ]);
+      const csv = [header, ...rows]
+        .map(row => row.map(v => `"${String(v ?? "").replace(/"/g, '""')}"`).join(","))
+        .join("\n");
+      const blob = new Blob([csv], { type: "text/csv;charset=utf-8;" });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement("a");
+      a.href = url;
+      a.download = "umoja-invitations.csv";
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+      URL.revokeObjectURL(url);
+    });
+
+    clearAllInvitationsBtn.addEventListener("click", () => {
+      if (!confirm("Clear all saved invitations from this browser?")) return;
+      saveInvitations([]);
+      renderInvitationTable();
+      adminStatus.textContent = "All local invitations cleared.";
+      adminStatus.className = "status status-success";
+    });
+
+    // Parallax on hero cards
+    document.querySelectorAll(".hero-parallax").forEach(card => {
+      card.addEventListener("mousemove", (e) => {
+        if (window.innerWidth < 768) return;
+        const rect = card.getBoundingClientRect();
+        const x = e.clientX - rect.left;
+        const y = e.clientY - rect.top;
+        const rotateX = ((y / rect.height) - 0.5) * -8;
+        const rotateY = ((x / rect.width) - 0.5) * 8;
+        card.style.transform =
+          `perspective(900px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-2px)`;
+      });
+      card.addEventListener("mouseleave", () => {
+        card.style.transform = "perspective(900px) rotateX(0deg) rotateY(0deg)";
+      });
+    });
+
+    // Particle background
+    (function initParticles() {
+      const canvas = document.getElementById("particleCanvas");
+      const ctx = canvas.getContext("2d");
+      let particles = [];
+      let w, h;
+
+      function resize() {
+        w = canvas.width = window.innerWidth;
+        h = canvas.height = window.innerHeight;
+        particles = [];
+        const count = Math.floor((w * h) / 22000);
+        for (let i = 0; i < count; i++) {
+          particles.push({
+            x: Math.random() * w,
+            y: Math.random() * h,
+            r: Math.random() * 1.4 + 0.6,
+            vx: (Math.random() - 0.5) * 0.25,
+            vy: (Math.random() - 0.5) * 0.25,
+            alpha: Math.random() * 0.6 + 0.2
+          });
+        }
+      }
+
+      function draw() {
+        ctx.clearRect(0, 0, w, h);
+        ctx.fillStyle = "#38bdf8";
+        particles.forEach(p => {
+          ctx.globalAlpha = p.alpha;
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+          ctx.fill();
+          p.x += p.vx;
+          p.y += p.vy;
+          if (p.x < -10) p.x = w + 10;
+          if (p.x > w + 10) p.x = -10;
+          if (p.y < -10) p.y = h + 10;
+          if (p.y > h + 10) p.y = -10;
+        });
+        requestAnimationFrame(draw);
+      }
+
+      resize();
+      draw();
+      window.addEventListener("resize", resize);
+    })();
+  </script>
+</body>
+</html>
