@@ -27,6 +27,9 @@
       --transition: 0.25s ease;
       --font-main: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
         "Segoe UI", sans-serif;
+
+      /* reactive logo glow strength (updated on scroll) */
+      --logo-shadow-strength: 0.9;
     }
 
     * {
@@ -37,10 +40,36 @@
 
     body {
       font-family: var(--font-main);
-      background: radial-gradient(circle at top, #04102d 0, var(--bg) 45%);
+      background: var(--bg);
       color: var(--text-main);
       min-height: 100vh;
       animation: bodyFadeIn 0.9s ease-out forwards;
+      position: relative;
+      overflow-x: hidden;
+    }
+
+    /* animated page background */
+    body::before {
+      content: "";
+      position: fixed;
+      inset: 0;
+      z-index: -1;
+      background:
+        radial-gradient(circle at 0% 0%, #041428 0, transparent 55%),
+        radial-gradient(circle at 100% 0%, #032046 0, transparent 55%),
+        radial-gradient(circle at 50% 100%, #022b43 0, transparent 60%);
+      opacity: 0.9;
+      animation: bgDrift 18s ease-in-out infinite alternate;
+      pointer-events: none;
+    }
+
+    @keyframes bgDrift {
+      0% {
+        background-position: 0 0, 100% 0, 50% 100%;
+      }
+      100% {
+        background-position: -10% 5%, 110% -5%, 50% 110%;
+      }
     }
 
     @keyframes bodyFadeIn {
@@ -63,6 +92,35 @@
       max-width: 1120px;
       margin: 0 auto;
       padding: 18px 16px 60px;
+      position: relative;
+    }
+
+    /* BIG WATERMARK */
+
+    .watermark {
+      position: fixed;
+      right: -80px;
+      top: 55%;
+      transform: translateY(-50%) rotate(-90deg);
+      font-size: 5.5rem;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(15, 23, 42, 0.65);
+      opacity: 0.04;
+      pointer-events: none;
+      user-select: none;
+      white-space: nowrap;
+      z-index: -1;
+      animation: watermarkFloat 20s ease-in-out infinite alternate;
+    }
+
+    @keyframes watermarkFloat {
+      0% {
+        transform: translateY(-50%) rotate(-90deg) translateX(0);
+      }
+      100% {
+        transform: translateY(-50%) rotate(-90deg) translateX(40px);
+      }
     }
 
     /* SPLASH SCREEN (Apple-style logo reveal) */
@@ -99,9 +157,11 @@
     }
 
     .splash-logo img {
-      width: 76%;
-      height: 76%;
-      object-fit: contain;
+      width: 130%;
+      height: 130%;
+      object-fit: cover;
+      border-radius: 50%;
+      transform: translateY(-4%);
     }
 
     @keyframes splashPop {
@@ -148,13 +208,32 @@
       position: relative;
       overflow: hidden;
       box-shadow:
-        0 10px 25px rgba(0, 0, 0, 0.75),
-        0 0 40px rgba(15, 23, 42, 0.9);
+        0 10px 25px rgba(0, 0, 0, var(--logo-shadow-strength)),
+        0 0 40px rgba(15, 23, 42, var(--logo-shadow-strength));
+      transform-style: preserve-3d;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
       animation: logoFloat 6s ease-in-out infinite alternate;
+      cursor: pointer;
     }
 
-    /* dark glow under main logo */
+    /* shimmer highlight on hover */
+    .brand-logo::before {
+      content: "";
+      position: absolute;
+      inset: -10%;
+      background: linear-gradient(
+        120deg,
+        transparent 0%,
+        rgba(255, 255, 255, 0.35) 45%,
+        transparent 75%
+      );
+      transform: translateX(-130%);
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .brand-logo::after {
+      /* dark glow under logo */
       content: "";
       position: absolute;
       inset: 55% -30%;
@@ -163,15 +242,41 @@
       pointer-events: none;
     }
 
+    .brand-logo:hover {
+      transform: translateY(-6px) rotateX(8deg) rotateY(-6deg);
+      box-shadow:
+        0 14px 32px rgba(0, 0, 0, 0.9),
+        0 0 60px rgba(37, 99, 235, 0.9);
+    }
+
+    .brand-logo:hover::before {
+      opacity: 1;
+      animation: logoShimmer 1.4s ease-out;
+    }
+
+    @keyframes logoShimmer {
+      0% {
+        transform: translateX(-130%);
+        opacity: 0;
+      }
+      30% {
+        opacity: 1;
+      }
+      100% {
+        transform: translateX(130%);
+        opacity: 0;
+      }
+    }
+
     .brand-logo img {
-  width: 130%;
-  height: 130%;
-  object-fit: cover;
-  border-radius: 50%;
-  z-index: 1;
-  animation: logoFadeIn 1.2s ease-out forwards;
-  transform: translateY(-4%);
-}
+      width: 130%;
+      height: 130%;
+      object-fit: cover;
+      border-radius: 50%;
+      z-index: 1;
+      animation: logoFadeIn 1.2s ease-out forwards;
+      transform: translateY(-4%);
+    }
 
     @keyframes logoFloat {
       from {
@@ -185,11 +290,11 @@
     @keyframes logoFadeIn {
       from {
         opacity: 0;
-        transform: scale(0.85);
+        transform: scale(0.85) translateY(-4%);
       }
       to {
         opacity: 1;
-        transform: scale(1);
+        transform: scale(1) translateY(-4%);
       }
     }
 
@@ -230,6 +335,93 @@
       box-shadow: 0 0 0 1px rgba(56, 189, 248, 0.4);
     }
 
+    /* STICKY MINI-HEADER */
+
+    .mini-header {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      transform: translateY(-100%);
+      transition: transform 0.35s ease;
+      z-index: 950;
+      pointer-events: none;
+    }
+
+    .mini-header-visible {
+      transform: translateY(0);
+      pointer-events: auto;
+    }
+
+    .mini-header-inner {
+      max-width: 1120px;
+      margin: 0 auto;
+      padding: 8px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      background: rgba(3, 7, 18, 0.92);
+      border-bottom: 1px solid rgba(15, 23, 42, 0.9);
+      backdrop-filter: blur(22px);
+    }
+
+    .mini-header-logo {
+      width: 34px;
+      height: 34px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 0, #4bf3ff 0, #0072ff 40%, #00163d 90%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+      box-shadow:
+        0 4px 10px rgba(0, 0, 0, 0.7),
+        0 0 18px rgba(37, 99, 235, 0.8);
+    }
+
+    .mini-header-logo img {
+      width: 130%;
+      height: 130%;
+      object-fit: cover;
+      border-radius: 50%;
+      transform: translateY(-4%);
+    }
+
+    .mini-header-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+      font-size: 0.72rem;
+    }
+
+    .mini-header-title {
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-weight: 600;
+    }
+
+    .mini-header-sub {
+      color: var(--text-muted);
+    }
+
+    .mini-header-btn {
+      border-radius: var(--radius-pill);
+      border: 1px solid rgba(148, 163, 184, 0.65);
+      background: transparent;
+      padding: 6px 14px;
+      font-size: 0.76rem;
+      color: var(--text-main);
+      cursor: pointer;
+      transition: var(--transition);
+      white-space: nowrap;
+    }
+
+    .mini-header-btn:hover {
+      border-color: var(--accent1);
+      background: rgba(15, 23, 42, 0.9);
+    }
+
     /* LAYOUT */
 
     .grid-2 {
@@ -239,28 +431,26 @@
       align-items: stretch;
     }
 
+    /* Mobile-first tweaks */
     @media (max-width: 840px) {
       .grid-2 {
         grid-template-columns: minmax(0, 1fr);
       }
       header {
         flex-direction: column;
-        align-items: flex-start;
+        align-items: center;
+        text-align: center;
       }
       nav {
         width: 100%;
-        justify-content: flex-start;
-      }
-    }
-
-    /* Extra mobile optimization for logo area */
-    @media (max-width: 640px) {
-      header {
-        align-items: center;
+        justify-content: center;
       }
       .brand {
         justify-content: center;
       }
+    }
+
+    @media (max-width: 640px) {
       .brand-logo {
         width: 54px;
         height: 54px;
@@ -271,8 +461,28 @@
       .brand-text-sub {
         font-size: 0.7rem;
       }
-      nav {
-        justify-content: center;
+      h1 {
+        font-size: 1.7rem;
+        line-height: 1.25;
+      }
+      .hero-subtitle {
+        font-size: 0.84rem;
+      }
+      .mini-header-inner {
+        padding-inline: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .app-shell {
+        padding-inline: 14px;
+      }
+      .badge-row {
+        flex-direction: column;
+      }
+      .hero-actions {
+        flex-direction: column;
+        align-items: stretch;
       }
     }
 
@@ -403,6 +613,11 @@
     .btn-ghost:hover {
       border-color: var(--accent1);
       color: var(--text-main);
+    }
+
+    .btn-disabled {
+      opacity: 0.45;
+      cursor: not-allowed;
     }
 
     .hero-footnote {
@@ -715,6 +930,25 @@
     </div>
   </div>
 
+  <!-- sticky mini-header -->
+  <div id="miniHeader" class="mini-header">
+    <div class="mini-header-inner">
+      <div style="display:flex;align-items:center;gap:8px;">
+        <div class="mini-header-logo">
+          <img src="Umoja-logo.png" alt="Umoja Logo" />
+        </div>
+        <div class="mini-header-text">
+          <span class="mini-header-title">UMOJA V2</span>
+          <span class="mini-header-sub">Holiday private sale</span>
+        </div>
+      </div>
+      <button class="mini-header-btn" data-scroll-to="invitation">Invite now</button>
+    </div>
+  </div>
+
+  <!-- watermark -->
+  <div class="watermark">UMOJA V2</div>
+
   <div class="app-shell">
     <!-- HEADER -->
     <header>
@@ -769,7 +1003,12 @@
             <button class="btn btn-ghost" data-scroll-to="invitation">
               Submit an invitation now
             </button>
+            <button id="connectWalletBtn" type="button" class="btn btn-ghost">
+              Connect MetaMask (demo)
+            </button>
           </div>
+          <p id="walletStatus" class="hero-footnote"></p>
+
           <p class="hero-footnote">
             This page is for education &amp; invitations only. Always double-check the
             official contract address before investing.
@@ -1105,7 +1344,7 @@
       }, 2000); // duration before fade-out
     });
 
-    // Smooth scroll for nav buttons
+    // Smooth scroll for nav buttons and mini-header button
     document.querySelectorAll("[data-scroll-to]").forEach((btn) => {
       btn.addEventListener("click", () => {
         const id = btn.getAttribute("data-scroll-to");
@@ -1118,6 +1357,60 @@
         }
       });
     });
+
+    // Scroll-reactive logo glow + mini-header visibility
+    const root = document.documentElement;
+    const miniHeader = document.getElementById("miniHeader");
+
+    window.addEventListener("scroll", () => {
+      const y = window.scrollY;
+      const max = 500;
+      const t = Math.min(Math.max(y / max, 0), 1);
+      const strength = 0.7 + t * 0.6; // 0.7–1.3
+      root.style.setProperty("--logo-shadow-strength", strength.toFixed(2));
+
+      if (y > 180) {
+        miniHeader.classList.add("mini-header-visible");
+      } else {
+        miniHeader.classList.remove("mini-header-visible");
+      }
+    });
+
+    // MetaMask connect (demo only)
+    const connectWalletBtn = document.getElementById("connectWalletBtn");
+    const walletStatus = document.getElementById("walletStatus");
+
+    function setWalletStatus(message, isError = false) {
+      if (!walletStatus) return;
+      walletStatus.textContent = message;
+      walletStatus.style.color = isError ? "#f97373" : "#9ca3af";
+    }
+
+    if (typeof window.ethereum === "undefined") {
+      if (connectWalletBtn) {
+        connectWalletBtn.classList.add("btn-disabled");
+        connectWalletBtn.setAttribute("disabled", "disabled");
+      }
+      setWalletStatus(
+        "MetaMask not detected. Install MetaMask to connect (demo only).",
+        true
+      );
+    } else if (connectWalletBtn) {
+      setWalletStatus("MetaMask detected. Connect to see your address (demo only).");
+      connectWalletBtn.addEventListener("click", async () => {
+        try {
+          const accounts = await window.ethereum.request({
+            method: "eth_requestAccounts",
+          });
+          const address = accounts[0];
+          const short =
+            address.slice(0, 6) + "..." + address.slice(-4);
+          setWalletStatus("Connected: " + short);
+        } catch (err) {
+          setWalletStatus("Connection request was rejected.", true);
+        }
+      });
+    }
 
     // ------------- INVITATION FORM LOGIC -------------
     const INV_KEY = "umojaInvitations";
@@ -1161,7 +1454,13 @@
         createdAt: new Date().toISOString(),
       };
 
-      if (!record.name || !record.email || !record.amount || !record.referralCode || !record.investorPassword) {
+      if (
+        !record.name ||
+        !record.email ||
+        !record.amount ||
+        !record.referralCode ||
+        !record.investorPassword
+      ) {
         invitationStatus.textContent = "Please fill all required fields.";
         invitationStatus.className = "status status-error";
         return;
@@ -1169,7 +1468,8 @@
 
       addInvitation(record);
       invitationForm.reset();
-      invitationStatus.textContent = "Invitation saved locally. Admins can see it in the dashboard.";
+      invitationStatus.textContent =
+        "Invitation saved locally. Admins can see it in the dashboard.";
       invitationStatus.className = "status status-success";
 
       if (adminUnlocked) {
