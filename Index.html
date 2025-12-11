@@ -1,0 +1,878 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Invest in Umoja V2 | Official Invitation</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta
+    name="description"
+    content="Join the Umoja V2 journey early. Learn how to invest, stay safe, and grow with the Umoja ecosystem."
+  />
+
+  <style>
+    :root {
+      --bg-dark: #050714;
+      --bg-card: #0d1022;
+      --accent: #f5c842;
+      --accent-soft: rgba(245, 200, 66, 0.18);
+      --text-main: #f5f5f7;
+      --text-muted: #9ca3af;
+      --danger: #f97373;
+      --border-soft: rgba(255, 255, 255, 0.08);
+      --radius-lg: 18px;
+      --radius-md: 12px;
+      --radius-full: 999px;
+      --shadow-soft: 0 18px 45px rgba(0, 0, 0, 0.5);
+      --max-width: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "SF Pro Text",
+        "Segoe UI", sans-serif;
+      background: radial-gradient(circle at top, #151a3c 0, #050714 55%, #000 100%);
+      color: var(--text-main);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    main {
+      max-width: var(--max-width);
+      margin: 0 auto;
+      padding: 32px 16px 64px;
+    }
+
+    header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      margin-bottom: 32px;
+    }
+
+    .brand-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .logo-circle {
+      width: 42px;
+      height: 42px;
+      border-radius: 50%;
+      background: radial-gradient(circle at 30% 30%, #ffe89b, #f5c842 40%, #7f5b12 100%);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 800;
+      font-size: 20px;
+      color: #1b1202;
+      box-shadow: 0 0 22px rgba(245, 200, 66, 0.65);
+    }
+
+    .brand-text {
+      display: flex;
+      flex-direction: column;
+      gap: 2px;
+    }
+
+    .brand-title {
+      font-size: 18px;
+      font-weight: 700;
+      letter-spacing: 0.05em;
+    }
+
+    .brand-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .brand-right {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      justify-content: flex-end;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .pill {
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      border: 1px solid var(--border-soft);
+      background: rgba(10, 13, 35, 0.85);
+      backdrop-filter: blur(18px);
+    }
+
+    .hero {
+      display: grid;
+      grid-template-columns: minmax(0, 3fr) minmax(0, 2.3fr);
+      gap: 28px;
+      margin-bottom: 40px;
+    }
+
+    .hero-left {
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(10, 13, 35, 0.9);
+      border: 1px solid var(--accent-soft);
+      width: fit-content;
+      font-size: 11px;
+      color: var(--accent);
+    }
+
+    .eyebrow-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 999px;
+      background: var(--accent);
+      box-shadow: 0 0 8px rgba(245, 200, 66, 0.9);
+    }
+
+    .hero h1 {
+      font-size: 36px;
+      line-height: 1.15;
+      letter-spacing: 0.01em;
+    }
+
+    .hero h1 span {
+      color: var(--accent);
+    }
+
+    .hero-sub {
+      color: var(--text-muted);
+      font-size: 14px;
+      max-width: 540px;
+    }
+
+    .hero-sub strong {
+      color: #e5e7eb;
+      font-weight: 600;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 4px;
+    }
+
+    .btn {
+      border-radius: var(--radius-full);
+      border: 1px solid transparent;
+      padding: 10px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      transition: 0.18s ease all;
+      text-decoration: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #f5c842, #f09c1e);
+      color: #1b1202;
+      box-shadow: 0 12px 28px rgba(0, 0, 0, 0.8);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 16px 36px rgba(0, 0, 0, 0.9);
+    }
+
+    .btn-ghost {
+      border-color: var(--border-soft);
+      background: rgba(7, 9, 28, 0.9);
+      color: var(--text-main);
+    }
+
+    .btn-ghost:hover {
+      border-color: rgba(245, 200, 66, 0.65);
+      background: rgba(13, 16, 42, 0.9);
+    }
+
+    .btn span.icon {
+      font-size: 16px;
+      line-height: 1;
+    }
+
+    .hero-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 12px;
+      margin-top: 6px;
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .hero-meta-item {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 4px 10px;
+      border-radius: var(--radius-full);
+      background: rgba(8, 10, 30, 0.9);
+      border: 1px solid var(--border-soft);
+    }
+
+    .hero-right {
+      border-radius: var(--radius-lg);
+      background: radial-gradient(circle at top, #1f2937 0, #050714 50%);
+      border: 1px solid var(--border-soft);
+      box-shadow: var(--shadow-soft);
+      padding: 18px 18px 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .hero-right::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background:
+        radial-gradient(circle at top, rgba(245, 200, 66, 0.18) 0, transparent 55%),
+        radial-gradient(circle at bottom, rgba(12, 148, 136, 0.16) 0, transparent 55%);
+      opacity: 0.8;
+      pointer-events: none;
+      z-index: -1;
+    }
+
+    .contract-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .badge-chain {
+      padding: 2px 8px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid var(--border-soft);
+      font-size: 10px;
+      color: var(--accent);
+    }
+
+    .contract-box {
+      margin-top: 2px;
+      padding: 10px 12px;
+      border-radius: var(--radius-md);
+      background: rgba(3, 7, 18, 0.9);
+      border: 1px solid rgba(248, 250, 252, 0.08);
+      font-family: "SF Mono", ui-monospace, Menlo, Monaco, Consolas, "Liberation Mono",
+        "Courier New", monospace;
+      font-size: 12px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .contract-address {
+      overflow-wrap: anywhere;
+      color: #e5e7eb;
+    }
+
+    .copy-chip {
+      font-size: 11px;
+      padding: 4px 8px;
+      border-radius: 999px;
+      border: 1px solid var(--border-soft);
+      background: rgba(15, 23, 42, 0.9);
+      cursor: pointer;
+      user-select: none;
+      transition: 0.16s ease all;
+    }
+
+    .copy-chip:hover {
+      border-color: var(--accent);
+    }
+
+    .status-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 11px;
+      margin-top: 6px;
+    }
+
+    .status-pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      background: rgba(15, 23, 42, 0.9);
+      border: 1px solid rgba(148, 163, 184, 0.4);
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .status-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 8px rgba(34, 197, 94, 0.9);
+    }
+
+    .warning-card {
+      margin-top: 10px;
+      border-radius: var(--radius-md);
+      padding: 10px 12px;
+      background: rgba(127, 29, 29, 0.18);
+      border: 1px solid rgba(248, 113, 113, 0.6);
+      font-size: 11px;
+      color: #fecaca;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+
+    .warning-title {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 600;
+      font-size: 11px;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+    }
+
+    .warning-icon {
+      font-size: 13px;
+    }
+
+    .warning-list {
+      margin-left: 15px;
+      margin-top: 4px;
+      display: grid;
+      gap: 2px;
+    }
+
+    .warning-list li {
+      list-style: disc;
+    }
+
+    .section {
+      margin-bottom: 40px;
+    }
+
+    .section-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-end;
+      gap: 12px;
+      margin-bottom: 18px;
+    }
+
+    .section-title {
+      font-size: 20px;
+      font-weight: 600;
+    }
+
+    .section-kicker {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .card-grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+
+    .card {
+      border-radius: var(--radius-md);
+      background: rgba(10, 12, 32, 0.95);
+      border: 1px solid var(--border-soft);
+      padding: 14px 14px 13px;
+      box-shadow: 0 12px 30px rgba(0, 0, 0, 0.6);
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      font-size: 13px;
+    }
+
+    .card-label {
+      font-size: 11px;
+      color: var(--text-muted);
+      text-transform: uppercase;
+      letter-spacing: 0.07em;
+    }
+
+    .card-main {
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .card-main span {
+      color: var(--accent);
+    }
+
+    .card-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .how-steps {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 14px;
+    }
+
+    .step {
+      border-radius: var(--radius-md);
+      background: rgba(9, 11, 29, 0.95);
+      border: 1px solid var(--border-soft);
+      padding: 12px 13px;
+      font-size: 12px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .step-number {
+      width: 20px;
+      height: 20px;
+      border-radius: 999px;
+      border: 1px solid rgba(248, 250, 252, 0.4);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      margin-bottom: 6px;
+    }
+
+    .step-title {
+      font-weight: 600;
+      margin-bottom: 4px;
+      font-size: 13px;
+    }
+
+    .step-note {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    .referral-strip {
+      border-radius: var(--radius-lg);
+      padding: 13px 14px;
+      background: linear-gradient(135deg, rgba(245, 200, 66, 0.14), rgba(59, 130, 246, 0.06));
+      border: 1px solid rgba(248, 250, 252, 0.08);
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 12px;
+    }
+
+    .referral-main {
+      display: flex;
+      flex-direction: column;
+      gap: 3px;
+      max-width: 420px;
+    }
+
+    .referral-main strong {
+      font-size: 13px;
+    }
+
+    .referral-badge {
+      font-size: 11px;
+      padding: 4px 9px;
+      border-radius: 999px;
+      border: 1px dashed rgba(0, 0, 0, 0.25);
+      background: rgba(0, 0, 0, 0.16);
+      color: #111827;
+    }
+
+    .faq-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+      font-size: 13px;
+    }
+
+    .faq-item {
+      border-radius: var(--radius-md);
+      border: 1px solid var(--border-soft);
+      background: rgba(8, 10, 28, 0.95);
+      padding: 12px 13px;
+    }
+
+    .faq-q {
+      font-weight: 600;
+      margin-bottom: 4px;
+    }
+
+    .faq-a {
+      color: var(--text-muted);
+      font-size: 12px;
+    }
+
+    footer {
+      margin-top: 32px;
+      padding-top: 18px;
+      border-top: 1px solid rgba(31, 41, 55, 0.8);
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .footer-top {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 8px;
+    }
+
+    .footer-warning {
+      color: #fecaca;
+      display: flex;
+      gap: 6px;
+      align-items: flex-start;
+    }
+
+    .footer-warning-icon {
+      font-size: 13px;
+      line-height: 1.2;
+    }
+
+    .footer-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .footer-meta span {
+      opacity: 0.9;
+    }
+
+    /* Responsive */
+    @media (max-width: 900px) {
+      .hero {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-right {
+        order: -1;
+      }
+
+      .card-grid,
+      .how-steps,
+      .faq-grid {
+        grid-template-columns: minmax(0, 1fr);
+      }
+    }
+
+    @media (max-width: 600px) {
+      main {
+        padding: 20px 14px 40px;
+      }
+
+      header {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .hero h1 {
+        font-size: 28px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <main>
+    <!-- TOP: BRAND BAR -->
+    <header>
+      <div class="brand-left">
+        <!-- Replace this circle with your official Umoja logo image if you want -->
+        <!-- Example: <img src="umoja-logo.png" alt="Umoja V2 logo" class="logo-img" /> -->
+        <div class="logo-circle">U</div>
+        <div class="brand-text">
+          <div class="brand-title">UMOJA V2</div>
+          <div class="brand-sub">Early investment invitation • Community-driven crypto project</div>
+        </div>
+      </div>
+      <div class="brand-right">
+        <div class="pill">Arcana10 Investment</div>
+        <div class="pill">Crosby Ventures LLC</div>
+      </div>
+    </header>
+
+    <!-- HERO -->
+    <section class="hero" id="top">
+      <div class="hero-left">
+        <div class="eyebrow">
+          <span class="eyebrow-dot"></span>
+          Official early-stage access • Umoja V2
+        </div>
+        <h1>
+          Invest early in <span>Umoja V2</span><br />
+          and grow with the ecosystem.
+        </h1>
+        <p class="hero-sub">
+          Umoja V2 is building a long-term ecosystem around payments, DeFi, and real-world usage.
+          This page helps you understand <strong>why</strong> Umoja exists, <strong>how</strong> to invest safely,
+          and <strong>what</strong> you should know before taking any risk.
+        </p>
+
+        <div class="hero-ctas">
+          <a href="#how-to-buy" class="btn btn-primary">
+            <span class="icon">⚡</span>
+            <span>How to Invest in Umoja V2</span>
+          </a>
+          <a
+            href="https://bscscan.com/token/0x8D6A79567a701FCe55b62C15d0fbB765913ac84a"
+            target="_blank"
+            rel="noopener noreferrer"
+            class="btn btn-ghost"
+          >
+            <span class="icon">🔍</span>
+            <span>View Contract on BscScan</span>
+          </a>
+        </div>
+
+        <div class="hero-meta">
+          <div class="hero-meta-item">
+            <span>🛡️</span> Contract verified on BNB Chain
+          </div>
+          <div class="hero-meta-item">
+            <span>👥</span> Community-driven, education focused
+          </div>
+          <div class="hero-meta-item">
+            <span>⚠️</span> High-risk crypto asset – invest responsibly
+          </div>
+        </div>
+      </div>
+
+      <!-- HERO SIDEBAR: CONTRACT + SAFETY -->
+      <aside class="hero-right">
+        <div class="contract-label">
+          <span>Official Umoja V2 contract address</span>
+          <span class="badge-chain">BNB Smart Chain (BEP-20)</span>
+        </div>
+        <div class="contract-box">
+          <span class="contract-address" id="contractAddress">
+            0x8D6A79567a701FCe55b62C15d0fbB765913ac84a
+          </span>
+          <button class="copy-chip" id="copyBtn" type="button">
+            📋 Copy
+          </button>
+        </div>
+
+        <div class="status-row">
+          <div class="status-pill">
+            <span class="status-dot"></span>
+            <span>Always double-check this exact address before investing.</span>
+          </div>
+        </div>
+
+        <div class="warning-card">
+          <div class="warning-title">
+            <span class="warning-icon">⚠️</span>
+            Important safety notice for investors
+          </div>
+          <ul class="warning-list">
+            <li>Only use the <strong>official contract address</strong> listed here.</li>
+            <li>Ignore screenshots or forwarded messages that show a different contract.</li>
+            <li>Never send funds to any wallet that claims to be “Umoja” but uses another address.</li>
+          </ul>
+        </div>
+      </aside>
+    </section>
+
+    <!-- WHY UMOJA SECTION -->
+    <section class="section" id="why">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Why Umoja V2?</h2>
+          <p class="section-kicker">
+            A long-term vision built around real use-cases, education, and community.
+          </p>
+        </div>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <div class="card-label">Vision</div>
+          <div class="card-main">
+            A growing <span>financial ecosystem</span>, not just a meme token.
+          </div>
+          <p class="card-sub">
+            Umoja aims to support products like wallets, peer-to-peer payments, debit cards,
+            staking, and a future Umoja Chain — with a focus on accessibility and education.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-label">Community</div>
+          <div class="card-main">
+            <span>Early believers</span> share the upside & the responsibility.
+          </div>
+          <p class="card-sub">
+            Education is central: Zoom classes, mentorship, and community calls
+            help new investors understand risk, strategy, and how crypto works.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-label">Timing</div>
+          <div class="card-main">
+            Position before <span>AI & automation</span> change the job market.
+          </div>
+          <p class="card-sub">
+            As AI reduces some traditional jobs, Umoja’s long-term goal is to help people
+            build alternative income streams through crypto literacy and disciplined investing.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- TARGETS / GOALS (OPTIONAL – ADJUST AS YOU LIKE) -->
+    <section class="section" id="targets">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Umoja V2 growth goals</h2>
+          <p class="section-kicker">
+            Example long-term targets. These are not guarantees — only aspirations.
+          </p>
+        </div>
+      </div>
+      <div class="card-grid">
+        <article class="card">
+          <div class="card-label">Market cap target</div>
+          <div class="card-main"><span>$10M+</span> before entering 2026 (illustrative)</div>
+          <p class="card-sub">
+            The project focuses on sustainable growth, not pump-and-dump speculation.
+            Real results depend on execution, adoption, and market conditions.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-label">Holders & liquidity</div>
+          <div class="card-main"><span>More active holders</span> over time</div>
+          <p class="card-sub">
+            The strategy is to steadily increase holder base, liquidity depth,
+            and real utility in the Umoja ecosystem.
+          </p>
+        </article>
+
+        <article class="card">
+          <div class="card-label">Education first</div>
+          <div class="card-main"><span>Crypto literacy</span> as core utility</div>
+          <p class="card-sub">
+            A key part of Umoja’s mission is teaching people how to manage risk,
+            understand compounding, and avoid common crypto mistakes.
+          </p>
+        </article>
+      </div>
+    </section>
+
+    <!-- HOW TO BUY -->
+    <section class="section" id="how-to-buy">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">How to invest in Umoja V2 (BNB Chain)</h2>
+          <p class="section-kicker">
+            Follow these steps carefully and always verify the contract address first.
+          </p>
+        </div>
+        <a href="#top" class="section-kicker" style="text-decoration: underline;">
+          Back to top ↑
+        </a>
+      </div>
+
+      <div class="how-steps">
+        <div class="step">
+          <div class="step-number">1</div>
+          <div class="step-title">Set up a BNB Chain wallet</div>
+          <p class="step-note">
+            Install a wallet like <strong>MetaMask</strong> or <strong>Trust Wallet</strong>.
+            Add the BNB Smart Chain network if needed. Fund it with BNB (Smart Chain) from a trusted exchange.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">2</div>
+          <div class="step-title">Use a DEX (e.g. PancakeSwap)</div>
+          <p class="step-note">
+            Open PancakeSwap (or another supported DEX) and connect your wallet.
+            Select BNB on the “From” side and add Umoja V2 on the “To” side using
+            the <strong>official contract address</strong> from this page.
+          </p>
+        </div>
+        <div class="step">
+          <div class="step-number">3</div>
+          <div class="step-title">Confirm, then secure your position</div>
+          <p class="step-note">
+            Double-check slippage settings, the contract address, and the amount.
+            Confirm the transaction in your wallet.
+            After buying, keep your seed phrase private and track your investment responsibly.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- REFERRAL / COMMUNITY STRIP (EDIT TEXT TO MATCH YOUR CURRENT OFFER) -->
+    <section class="section" id="referral">
+      <div class="referral-strip">
+        <div class="referral-main">
+          <strong>Invite friends to learn & invest responsibly.</strong>
+          <span>
+            Umoja V2 focuses on community growth through <strong>education, transparency, and long-term holding</strong>.
+            If you invite others, teach them about risk and never pressure anyone to invest money they cannot afford to lose.
+          </span>
+        </div>
+        <div>
+          <div class="referral-badge">
+            Example: private sale bonuses, referral rewards, or mentorship access.
+          </div>
+          <div style="font-size: 11px; margin-top: 4px; color: #4b5563;">
+            Customize this area with your actual holiday / private sale terms.
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FAQ / RISK -->
+    <section class="section" id="faq">
+      <div class="section-header">
+        <div>
+          <h2 class="section-title">Frequently asked questions</h2>
+          <p class="section-kicker">
+            Read this carefully before you decide to invest.
+          </p>
+        </div>
+      </div>
+
+      <div class="faq-grid">
+        <div class="faq-item">
+          <div class="faq-q">Is Umoja V2 a guaranteed investment?</div>
+          <div class="faq-a">
+            No. <strong>There are no guarantees.</strong> Umoja V
