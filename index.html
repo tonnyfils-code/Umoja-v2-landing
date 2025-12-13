@@ -990,7 +990,8 @@
       saveInvitations(list);
     }
 
-    invitationForm.addEventListener("submit", (e) => {
+    invitationForm.addEventListener("submit", async (e) => {
+
       e.preventDefault();
 
       // If referral code is empty (and not prefilled), auto-generate one
@@ -1017,7 +1018,8 @@
         return;
       }
 
-      addInvitation(rec);
+      await window.saveInvitationToFirestore(rec);
+
       invitationForm.reset();
 
       // If URL locked a referral, restore it after reset
