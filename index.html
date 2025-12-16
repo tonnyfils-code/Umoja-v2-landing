@@ -301,5 +301,29 @@
         document.getElementById('registerForm').style.display = 'none';
         document.getElementById('loginForm').style.display = '';
       }
- </script>
+</script>
+  <!-- Firebase SDKs -->
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+
+<script>
+  // 🔐 Firebase configuration (OFFICIAL – from your screenshot)
+  const firebaseConfig = {
+    apiKey: "AIzaSyCbQ9fNYrq-qko-GUhKi3xSMkb_IKhrBBo",
+    authDomain: "umoja-v2-landing.firebaseapp.com",
+    projectId: "umoja-v2-landing",
+    storageBucket: "umoja-v2-landing.firebasestorage.app",
+    messagingSenderId: "964715983746",
+    appId: "1:964715983746:web:b4bb1615f35d773ae7159b"
+  };
+
+  // Initialize Firebase
+  firebase.initializeApp(firebaseConfig);
+
+  const auth = firebase.auth();
+  auth.useDeviceLanguage();
+</script>
+
+</body>
 </html>
+
