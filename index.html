@@ -19,7 +19,7 @@
       --field-bg:#f3f3f3;
       --btn-disabled:#d9c7a8;
       --radius: 14px;
-      --shadow: 0 12px 30px rgba(0,0,0,.06);  aq
+      --shadow: 0 12px 30px rgba(0,0,0,.06);  
     }
 
     *{ box-sizing:border-box; }
@@ -189,6 +189,11 @@
       color: rgba(255,255,255,.75);
       cursor:not-allowed;
     }
+.next.active{
+  background: var(--accent);
+  cursor: pointer;
+  color: #fff;
+}
 
     /* “Account Login” centered */
     .account-login{
@@ -198,7 +203,7 @@
       font-weight: 500;
       letter-spacing:.2px;
     }
-<div id="recaptcha-container"></div>
+
 
     /* Footer help text */
     .help{
@@ -234,12 +239,14 @@
 
       <!-- Register Form -->
       <form id="registerForm" autocomplete="on">
+        <div id="recaptcha-container"></div>
         <div class="field">
           <div class="flag">
             <span class="emoji">🇺🇸</span>
             <span class="code">+1</span>
           </div>
-          <input id="phone" type="tel" placeholder="Please enter your phone number" />
+          <input id="loginPhone" type="tel" placeholder="Please enter your phone number" />
+
 
         </div>
 
@@ -271,7 +278,8 @@
             <span class="emoji">🇺🇸</span>
             <span class="code">+1</span>
           </div>
-          <input type="tel" placeholder="Please enter your phone number" />
+          <input id="phone" type="tel" placeholder="Please enter your phone number" />
+
         </div>
 
         <div class="field">
@@ -294,20 +302,22 @@
   </div>
 
   <script>
-    function setTab(which){
-      const tabs = document.querySelectorAll('.tab');
-      tabs.forEach(t => t.classList.remove('active'));
+  function setTab(which){
+    const tabs = document.querySelectorAll('.tab');
+    tabs.forEach(t => t.classList.remove('active'));
 
-      if(which === 'register'){
-        tabs[0].classList.add('active');
-        document.getElementById('registerForm').style.display = '';
-        document.getElementById('loginForm').style.display = 'none';
-      }else{
-        tabs[1].classList.add('active');
-        document.getElementById('registerForm').style.display = 'none';
-        document.getElementById('loginForm').style.display = '';
-      }
+    if(which === 'register'){
+      tabs[0].classList.add('active');
+      document.getElementById('registerForm').style.display = '';
+      document.getElementById('loginForm').style.display = 'none';
+    }else{
+      tabs[1].classList.add('active');
+      document.getElementById('registerForm').style.display = 'none';
+      document.getElementById('loginForm').style.display = '';
+    }
+  }
 </script>
+
   <!-- Firebase SDKs -->
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
 <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
