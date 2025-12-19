@@ -256,7 +256,6 @@
           
 <button id="sendBtn" type="button">Send Code</button>
 <button id="confirmBtn" type="button">Confirm</button>          
-<div id="recaptcha-container"></div>
 
         </div>
 
@@ -350,11 +349,8 @@ window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
 let confirmationResult = null;
 
 
+  
 
-// reCAPTCHA (required for Phone Auth)
-window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier("recaptcha-container", {
-  size: "invisible",
-});
 
 function getPhoneE164() {
   const raw = document.getElementById("loginPhone").value.trim();
