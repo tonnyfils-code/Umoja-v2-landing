@@ -1,446 +1,136 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
+  <meta charset="UTF-8" />
+  <title>Umoja V2 – Register</title>
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Umoja V2 • Mobile Phone Register</title>
 
   <style>
-    :root{
-      --bg: #ffffff;
-      --text: #222;
-      --muted: #8d8d8d;
-      --line: #e9e9e9;
-
-      /* The gold-ish accent from your screenshot */
-      --accent: #c7b08a;
-      --accent-2:#bfa67a;
-
-      --field-bg:#f3f3f3;
-      --btn-disabled:#d9c7a8;
-      --radius: 14px;
-      --shadow: 0 12px 30px rgba(0,0,0,.06);  
+    body {
+      font-family: Arial, sans-serif;
+      background: #f6f6f6;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
     }
 
-    *{ box-sizing:border-box; }
-    body{
-      margin:0;
-      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Inter, Arial, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-    }
-
-    /* Centered “phone” container */
-    .wrap{
-      min-height: 100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding: 28px 16px;
-    }
-
-    .phone{
-      width: min(420px, 100%);
+    .card {
       background: #fff;
-      border-radius: 26px;
-      box-shadow: var(--shadow);
-      padding: 22px 18px 16px;
-      border: 1px solid rgba(0,0,0,.05);
-      position: relative;
-    }
-
-    /* Top left close X */
-    .close{
-      width: 42px;
-      height: 42px;
-      border-radius: 999px;
-      border: 0;
-      background: transparent;
-      font-size: 26px;
-      line-height: 42px;
-      cursor: pointer;
-      color:#333;
-      margin: -6px 0 6px -6px;
-    }
-
-    h1{
-      margin: 8px 0 18px;
-      font-size: 34px;
-      letter-spacing: .2px;
-      font-weight: 650;
-    }
-
-    /* Tabs */
-    .tabs{
-      display:flex;
-      gap: 22px;
-      margin: 8px 0 18px;
-      align-items:flex-end;
-    }
-    .tab{
-      font-size: 20px;
-      color: var(--muted);
-      text-decoration:none;
-      padding-bottom: 10px;
-      position: relative;
-      font-weight: 500;
-    }
-    .tab.active{
-      color: var(--accent);
-    }
-    .tab.active::after{
-      content:"";
-      position:absolute;
-      left:0;
-      right:0;
-      bottom: 2px;
-      height: 2.5px;
-      background: var(--accent);
-      border-radius: 2px;
-    }
-
-    /* Form fields */
-    .field{
-      background: var(--field-bg);
-      border-radius: var(--radius);
-      padding: 12px 12px;
-      display:flex;
-      align-items:center;
-      gap: 10px;
-      border: 1px solid rgba(0,0,0,.04);
-    }
-    .field + .field{
-      margin-top: 12px;
-    }
-
-    .flag{
-      display:flex;
-      align-items:center;
-      gap: 8px;
-      padding-left: 2px;
-      min-width: 58px;
-      color:#666;
-      font-weight: 600;
-    }
-    .flag .emoji{ font-size: 18px; }
-    .flag .code{ font-size: 16px; }
-
-    input{
-      border:0;
-      outline:none;
-      background: transparent;
-      width:100%;
-      font-size: 16px;
-      color:#333;
-    }
-    input::placeholder{ color:#b6b6b6; }
-
-    /* Send code button inside second field */
-    .send-btn{
-      border:0;
-      outline:none;
-      background: var(--accent);
-      color:#fff;
-      font-weight: 650;
-      padding: 10px 14px;
-      border-radius: 12px;
-      cursor:pointer;
-      white-space:nowrap;
-      font-size: 14px;
-    }
-    .send-btn:active{ transform: translateY(1px); }
-
-    /* Right aligned “Forgot Password” */
-    .forgot{
-      display:block;
-      text-align:right;
-      margin: 14px 6px 12px;
-      color: var(--accent);
-      text-decoration:none;
-      font-weight: 500;
-    }
-
-    /* Agreement line */
-    .agree{
-      display:flex;
-      align-items:flex-start;
-      gap: 10px;
-      padding: 6px 4px 14px;
-      color:#8b8b8b;
-      font-size: 14px;
-      line-height: 1.35;
-    }
-    .agree input{ width:18px; height:18px; margin-top:2px; accent-color: var(--accent); }
-    .agree a{
-      color: var(--accent);
-      text-decoration:none;
-      font-weight: 600;
-    }
-
-    /* Next button (disabled look like screenshot) */
-    .next{
+      padding: 30px;
       width: 100%;
-      border: 0;
-      border-radius: 14px;
-      padding: 16px 18px;
-      font-size: 18px;
-      font-weight: 700;
-      background: var(--btn-disabled);
-      color: rgba(255,255,255,.75);
-      cursor:not-allowed;
-    }
-.next.active{
-  background: var(--accent);
-  cursor: pointer;
-  color: #fff;
-}
-
-    /* “Account Login” centered */
-    .account-login{
-      text-align:center;
-      margin: 22px 0 10px;
-      color: var(--accent);
-      font-weight: 500;
-      letter-spacing:.2px;
+      max-width: 380px;
+      border-radius: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
     }
 
-
-    /* Footer help text */
-    .help{
-      text-align:center;
-      margin-top: 46px;
-      color:#b8b8b8;
-      font-size: 14px;
-      line-height:1.35;
-      padding-bottom: 4px;
+    h2 {
+      text-align: center;
+      margin-bottom: 20px;
     }
-    .help a{ color: var(--accent); text-decoration:none; font-weight: 600; }
 
-    /* Optional: make it feel “mobile” */
-    @media (max-width: 420px){
-      .phone{ border-radius: 22px; box-shadow:none; border:0; padding: 18px 14px 12px; }
-      h1{ font-size: 32px; }
+    .field {
+      margin-bottom: 14px;
+    }
+
+    input {
+      width: 100%;
+      padding: 12px;
+      font-size: 15px;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+
+    button {
+      width: 100%;
+      padding: 12px;
+      font-size: 16px;
+      border: none;
+      border-radius: 8px;
+      background: #c7b08a;
+      color: #fff;
+      cursor: pointer;
+      margin-top: 10px;
+    }
+
+    button:hover {
+      background: #b79f75;
+    }
+
+    .note {
+      font-size: 13px;
+      color: #777;
+      text-align: center;
+      margin-top: 12px;
     }
   </style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="phone">
 
-      <button class="close" aria-label="Close">×</button>
+  <div class="card">
+    <h2>Register</h2>
 
-      <h1>Mobile Phone Register</h1>
+    <div class="field">
+      <input
+        id="identifier"
+        type="text"
+        placeholder="Email or Phone number"
+        autocomplete="username"
+      />
+    </div>
 
-      <div class="tabs">
-        <a class="tab active" href="#" onclick="setTab('register'); return false;">Register</a>
-        <a class="tab" href="#" onclick="setTab('login'); return false;">Login</a>
-      </div>
+    <div class="field">
+      <input
+        id="password"
+        type="password"
+        placeholder="Create password"
+        autocomplete="new-password"
+      />
+    </div>
 
-      <!-- Register Form -->
-      <form id="registerForm" autocomplete="on">
-        
-        <div class="field">
-          <div class="flag">
-            <span class="emoji">🇺🇸</span>
-            <span class="code">+1</span>
-          </div>
-          <input id="loginPhone" type="tel" placeholder="Phone number" />
+    <button onclick="register()">Create Account</button>
 
-
-        </div>
-
-        <div class="field">
-          
-
-          
-          
-
-        </div>
-
-        <a class="forgot" href="#">Forgot Password</a>
-
-        <label class="agree">
-          <input id="agree" type="checkbox" />
-
-          <span>You agree to the 《<a href="#">Registration Agreement</a>》</span>
-        </label>
-
-        <button id="nextBtn" type="button">Next</button>
-
-
-        <div class="account-login">Account Login</div>
-      </form>
-
-      <!-- Login Form (hidden by default) -->
-      <form id="loginForm" style="display:none;">
-        <div class="field">
-          <div class="flag">
-            <span class="emoji">🇺🇸</span>
-            <span class="code">+1</span>
-          </div>
-          <input id="phone" type="tel" placeholder="Please enter your phone number" />
-
-        </div>
-
-        <div class="field">
-          <input type="password" placeholder="Please enter your password" />
-        </div>
-
-        <a class="forgot" href="#">Forgot Password</a>
-
-        <button class="next" type="button" disabled>Login</button>
-
-        <div class="account-login">Account Login</div>
-      </form>
-
-      <div class="help">
-        Have problems? please contact online customer<br/>
-        service
-      </div>
-
+    <div class="note">
+      By continuing, you agree to the Registration Agreement
     </div>
   </div>
 
   <script>
-  function setTab(which){
-    const tabs = document.querySelectorAll('.tab');
-    tabs.forEach(t => t.classList.remove('active'));
+    function register() {
+      const identifier = document.getElementById("identifier").value.trim();
+      const password = document.getElementById("password").value;
 
-    if(which === 'register'){
-      tabs[0].classList.add('active');
-      document.getElementById('registerForm').style.display = '';
-      document.getElementById('loginForm').style.display = 'none';
-    }else{
-      tabs[1].classList.add('active');
-      document.getElementById('registerForm').style.display = 'none';
-      document.getElementById('loginForm').style.display = '';
+      if (!identifier || !password) {
+        alert("Please fill in all fields");
+        return;
+      }
+
+      if (password.length < 6) {
+        alert("Password must be at least 6 characters");
+        return;
+      }
+
+      const isEmail = identifier.includes("@");
+      const isPhone = /^[0-9+]+$/.test(identifier);
+
+      if (!isEmail && !isPhone) {
+        alert("Enter a valid email or phone number");
+        return;
+      }
+
+      // ✅ SUCCESS (for now)
+      console.log("Registered:", {
+        identifier,
+        password
+      });
+
+      alert("Registration successful ✅");
+
+      // You can redirect later
+      // window.location.href = "dashboard.html";
     }
-  }
-</script>
+  </script>
 
-  <!-- Firebase SDKs -->
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-<script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
-
-<script>
-  // 🔐 Firebase configuration (OFFICIAL – from your screenshot)
-  const firebaseConfig = {
-  apiKey: "AIzaSyCbQ9fNYrq-qko-GUhKi3xSMkb_IKhrBBo",
-  authDomain: "umoja-v2-landing.firebaseapp.com",
-  projectId: "umoja-v2-landing",
-  storageBucket: "umoja-v2-landing.appspot.com",
-  messagingSenderId: "964715983746",
-  appId: "1:964715983746:web:b4bb1615f35d773ae7159b"
-};
-
-
-  // Initialize Firebase
-  firebase.initializeApp(firebaseConfig);
-<script>
-  document.getElementById("nextBtn").addEventListener("click", () => {
-    const phone = document.getElementById("loginPhone").value.trim();
-    const agreed = document.getElementById("agree").checked;
-
-    if (!phone) {
-      alert("Please enter your phone number");
-      return;
-    }
-
-    if (!agreed) {
-      alert("Please agree to the Registration Agreement");
-      return;
-    }
-
-    alert("Registered successfully ✅");
-    document.getElementById("loginPhone").value = "";
-  });
-</script>
-
-
-
-
-  
-
-
-function getPhoneE164() {
-  const raw = document.getElementById("loginPhone").value.trim();
-
-  // If user typed + already, use it
-  if (raw.startsWith("+")) return raw;
-
-  // If they typed digits only, default to US +1 (change if needed)
-  const digits = raw.replace(/\D/g, "");
-  return "+1" + digits;
-}
-
-// SEND CODE
-document.getElementById("sendBtn").addEventListener("click", async () => {
-  try {
-    const phoneNumber = getPhoneE164();
-
-    if (!/^\+\d{8,15}$/.test(phoneNumber)) {
-      alert("Enter phone like +14809369727");
-      return;
-    }
-
-    confirmationResult = await auth.signInWithPhoneNumber(
-      phoneNumber,
-      window.recaptchaVerifier
-    );
-
-    alert("Code sent ✅ Check SMS");
-  } catch (e) {
-    console.error(e);
-    alert(e.message || "Failed to send code");
-
-    // Reset captcha so you can try again
-    try {
-      const widgetId = await window.recaptchaVerifier.render();
-      grecaptcha.reset(widgetId);
-    } catch (_) {}
-  }
-});
-
-// CONFIRM CODE
-document.getElementById("confirmBtn").addEventListener("click", async () => {
-  try {
-    if (!confirmationResult) {
-      alert("Click Send Code first");
-      return;
-    }
-
-    const code = document.getElementById("code").value.trim();
-    const result = await confirmationResult.confirm(code);
-
-    alert("Phone verified ✅ UID: " + result.user.uid);
-  } catch (e) {
-    console.error(e);
-    alert(e.message || "Invalid code");
-  }
-});
-
-// CONFIRM CODE
-document.getElementById("confirmBtn").addEventListener("click", () => {
-  const code = document.getElementById("code").value;
-
-  if (!confirmationResult) {
-    alert("Send the code first");
-    return;
-  }
-
-  confirmationResult.confirm(code)
-    .then(result => {
-      alert("Phone verified successfully!");
-      console.log("User UID:", result.user.uid);
-    })
-    .catch(() => {
-      alert("Invalid verification code");
-    });
-});
-    </script>
-
-  </body>
-</html>  
-
-
+</body>
+</html>
