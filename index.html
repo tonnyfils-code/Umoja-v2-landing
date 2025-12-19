@@ -3,326 +3,498 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Umoja V2 • Register / Login</title>
+  <title>UMOJA V2 • Register / Login</title>
 
   <style>
     :root{
-      --bg:#ffffff;
-      --text:#222;
-      --muted:#8d8d8d;
-      --line:#e9e9e9;
-      --accent:#c7b08a;
-      --field:#f3f3f3;
-      --radius:14px;
-      --shadow:0 12px 30px rgba(0,0,0,.08);
+      --bg:#07181a;
+      --card: rgba(255,255,255,.06);
+      --stroke: rgba(255,255,255,.10);
+      --text:#eaf6f5;
+      --muted: rgba(234,246,245,.70);
+      --accent:#2fd0a6;
+      --accent2:#c7b08a;
+      --danger:#ff5b5b;
+      --radius: 18px;
+      --shadow: 0 18px 50px rgba(0,0,0,.35);
     }
     *{box-sizing:border-box}
     body{
       margin:0;
       min-height:100vh;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:24px;
-      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;
-      background:var(--bg);
-      color:var(--text);
+      font-family: system-ui,-apple-system,Segoe UI,Roboto,Inter,Arial,sans-serif;
+      background: radial-gradient(1200px 700px at 15% 10%, rgba(47,208,166,.25), transparent 60%),
+                  radial-gradient(900px 600px at 80% 20%, rgba(199,176,138,.18), transparent 55%),
+                  linear-gradient(180deg, #051214 0%, #07181a 60%, #061316 100%);
+      color: var(--text);
+      padding: 28px 14px 60px;
     }
+    .wrap{max-width: 860px; margin: 0 auto;}
+    .top{
+      display:flex; gap:14px; align-items:center; justify-content:space-between;
+      margin-bottom: 16px;
+    }
+    .brand{
+      display:flex; gap:12px; align-items:center;
+    }
+    .logo{
+      width:54px; height:54px; border-radius: 50%;
+      background: radial-gradient(circle at 30% 25%, rgba(47,208,166,.55), transparent 55%),
+                  radial-gradient(circle at 70% 65%, rgba(199,176,138,.45), transparent 58%),
+                  rgba(255,255,255,.06);
+      border:1px solid var(--stroke);
+      box-shadow: var(--shadow);
+    }
+    .brand h1{font-size:18px; margin:0; letter-spacing:.5px}
+    .brand p{margin:2px 0 0; color: var(--muted); font-size: 12px}
+
     .card{
-      width:min(520px, 100%);
-      background:#fff;
-      border:1px solid var(--line);
-      border-radius:20px;
-      box-shadow:var(--shadow);
-      padding:26px;
+      background: var(--card);
+      border: 1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
     }
-    h1{
-      margin:0 0 10px;
-      font-size:44px;
-      letter-spacing:-.02em;
-    }
+    .cardInner{padding: 18px;}
     .tabs{
-      display:flex;
-      gap:18px;
-      margin:10px 0 18px;
+      display:flex; gap:14px;
+      padding: 14px 18px 0;
     }
     .tab{
       cursor:pointer;
-      padding:10px 2px;
-      color:var(--muted);
-      border-bottom:3px solid transparent;
       font-weight:600;
+      color: var(--muted);
+      padding: 10px 6px;
+      border-bottom: 2px solid transparent;
     }
     .tab.active{
-      color:var(--text);
-      border-color:var(--accent);
+      color: var(--text);
+      border-bottom-color: var(--accent2);
     }
+    .row{display:flex; gap:12px; flex-wrap:wrap}
     .field{
-      background:var(--field);
-      border:1px solid var(--line);
-      border-radius:16px;
-      padding:14px 14px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-      margin:12px 0;
+      width: 100%;
+      background: rgba(255,255,255,.06);
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 14px;
+      padding: 12px 12px;
+      display:flex; align-items:center; gap:10px;
     }
-    input{
-      border:0;
-      outline:none;
-      background:transparent;
+    .field input{
       width:100%;
-      font-size:16px;
-      color:var(--text);
+      border:none; outline:none;
+      background: transparent;
+      color: var(--text);
+      font-size: 16px;
     }
-    .row{
-      display:flex;
-      gap:10px;
-      align-items:center;
-      justify-content:space-between;
-    }
-    .link{
-      color:var(--accent);
-      cursor:pointer;
-      font-weight:600;
-      text-decoration:none;
-    }
-    .msg{
-      margin:12px 0;
-      padding:12px 14px;
-      border-radius:14px;
-      font-size:14px;
-      border:1px solid var(--line);
-      background:#fafafa;
-      color:#333;
-      display:none;
-      white-space:pre-wrap;
-    }
-    .msg.ok{ background:#f2fbf4; border-color:#bfe5c8; }
-    .msg.err{ background:#fff5f5; border-color:#f0b6b6; }
+    .hint{color: var(--muted); font-size: 12px; margin: 8px 2px 0}
     .btn{
       width:100%;
-      border:0;
-      border-radius:16px;
-      padding:16px 18px;
-      font-size:16px;
-      font-weight:700;
+      border:none;
+      border-radius: 14px;
+      padding: 14px 14px;
+      font-weight: 700;
+      font-size: 15px;
       cursor:pointer;
-      background:var(--accent);
-      color:#fff;
-      margin-top:10px;
+      background: linear-gradient(90deg, rgba(47,208,166,.9), rgba(47,208,166,.65));
+      color: #06201c;
+      margin-top: 12px;
     }
     .btn.secondary{
-      background:#fff;
-      border:1px solid var(--line);
-      color:#333;
-      margin-top:10px;
+      background: rgba(255,255,255,.08);
+      color: var(--text);
+      border: 1px solid rgba(255,255,255,.12);
     }
-    .small{
-      margin-top:14px;
-      color:var(--muted);
-      font-size:13px;
-      line-height:1.35;
-      text-align:center;
+    .msg{
+      margin: 10px 0 0;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.06);
+      color: var(--muted);
+      font-size: 13px;
     }
-    .uid{
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-size:12px;
+    .msg.good{border-color: rgba(47,208,166,.35); color: rgba(234,246,245,.92)}
+    .msg.bad{border-color: rgba(255,91,91,.35); color: rgba(255,91,91,.95)}
+
+    /* App content (shown after login) */
+    .appHeader{
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+      padding: 16px 18px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
     }
+    .pill{
+      display:inline-flex; align-items:center; gap:8px;
+      padding: 10px 14px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
+      cursor:pointer;
+      font-weight:700;
+      font-size: 13px;
+    }
+    .pill.green{
+      background: rgba(47,208,166,.18);
+      border-color: rgba(47,208,166,.25);
+    }
+    .section{padding: 16px 18px}
+    .hero{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      padding: 18px;
+    }
+    .hero h2{margin:0 0 6px; font-size: 28px; letter-spacing:.2px}
+    .hero p{margin:0; color: var(--muted); line-height: 1.5}
+    .grid{display:grid; gap: 12px; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: 12px;}
+    @media (max-width: 640px){ .grid{grid-template-columns: 1fr;} }
+    .box{
+      border-radius: 18px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(255,255,255,.05);
+      padding: 14px;
+    }
+    .box h3{margin:0 0 8px; font-size: 16px}
+    .mono{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+      word-break: break-all;
+      padding: 10px 12px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.18);
+      color: rgba(234,246,245,.92);
+      font-size: 12px;
+    }
+    .small{color: var(--muted); font-size: 12px; line-height: 1.4}
+    a.link{color: rgba(47,208,166,.95); text-decoration: none; font-weight: 700}
   </style>
 </head>
 
 <body>
-  <div class="card">
-    <h1>Register / Login</h1>
-
-    <div class="tabs">
-      <div id="tabRegister" class="tab active">Register</div>
-      <div id="tabLogin" class="tab">Login</div>
-    </div>
-
-    <div id="status" class="msg"></div>
-
-    <!-- Register Form -->
-    <div id="registerPane">
-      <div class="field">
-        <input id="regId" placeholder="Email or Phone (e.g. name@email.com or +1 555 123 4567)" autocomplete="username" />
-      </div>
-
-      <div class="field">
-        <input id="regPass" type="password" placeholder="Password (min 6 chars)" autocomplete="new-password" />
-        <a id="regShow" class="link" style="margin-left:auto;">Show</a>
-      </div>
-
-      <button id="btnRegister" class="btn">Create Account</button>
-
-      <div class="small">
-        If you enter a phone number, we register it internally (no SMS). You can login later using the same phone + password.
-      </div>
-
-      <div class="small">
-        Already have an account? <span class="link" id="goLogin">Login</span>
+  <div class="wrap">
+    <div class="top">
+      <div class="brand">
+        <div class="logo" aria-hidden="true"></div>
+        <div>
+          <h1>UMOJA V2</h1>
+          <p>Official Landing • Verify • Invest • Invite</p>
+        </div>
       </div>
     </div>
 
-    <!-- Login Form -->
-    <div id="loginPane" style="display:none;">
-      <div class="field">
-        <input id="logId" placeholder="Email or Phone" autocomplete="username" />
+    <!-- AUTH CARD -->
+    <div id="authCard" class="card">
+      <div class="tabs">
+        <div id="tabRegister" class="tab active">Register</div>
+        <div id="tabLogin" class="tab">Login</div>
       </div>
 
-      <div class="field">
-        <input id="logPass" type="password" placeholder="Password" autocomplete="current-password" />
-        <a id="logShow" class="link" style="margin-left:auto;">Show</a>
-      </div>
+      <div class="cardInner">
+        <div class="msg" id="authMsg" style="display:none"></div>
 
-      <button id="btnLogin" class="btn">Login</button>
-      <button id="btnLogout" class="btn secondary" style="display:none;">Logout</button>
+        <div class="row">
+          <div class="field">
+            <input id="identifier" placeholder="Email or Phone (ex: user@gmail.com or 4809369727)" autocomplete="username" />
+          </div>
 
-      <div class="small">
-        New here? <span class="link" id="goRegister">Create account</span>
+          <div class="field">
+            <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
+            <button id="togglePw" class="pill" type="button" style="padding:8px 12px;">Show</button>
+          </div>
+        </div>
+
+        <div class="hint">
+          ✅ Email works as normal. <br/>
+          ✅ Phone works too (no SMS): we store it internally and let the user login with the same phone + password.
+        </div>
+
+        <button id="primaryBtn" class="btn">Create Account</button>
+        <button id="forgotBtn" class="btn secondary" style="display:none">Forgot Password (Email only)</button>
+
+        <div class="hint" style="margin-top:12px">
+          By continuing you agree to the <a class="link" href="#" onclick="alert('Add your Registration Agreement link here'); return false;">Registration Agreement</a>.
+        </div>
       </div>
     </div>
 
-    <div class="small" id="uidLine" style="display:none;">
-      Logged in ✅ UID: <span class="uid" id="uidText"></span>
+    <!-- APP CONTENT (SHOW AFTER LOGIN) -->
+    <div id="appCard" class="card" style="display:none; margin-top:16px;">
+      <div class="appHeader">
+        <div style="display:flex; flex-direction:column; gap:4px;">
+          <div style="font-weight:800; letter-spacing:.3px;">Welcome ✅</div>
+          <div class="small">Logged in as: <span id="whoami" class="mono" style="display:inline-block; padding:6px 10px;"></span></div>
+        </div>
+
+        <button id="logoutBtn" class="pill">Logout</button>
+      </div>
+
+      <!-- These are the sections you said: “Once I login I want these to appear next” -->
+      <div class="section">
+        <div class="hero">
+          <div style="display:flex; gap:10px; flex-wrap:wrap; justify-content:flex-end;">
+            <button class="pill" onclick="scrollToId('how')">How to Invest</button>
+            <button class="pill" onclick="scrollToId('verify')">Verify Contract</button>
+            <button class="pill green" onclick="scrollToId('invite')">Invitation Link</button>
+          </div>
+
+          <h2 style="margin-top:10px;">Build your position early in Umoja V2.</h2>
+          <p>
+            Use the official steps below to invest safely, verify the contract address,
+            and share your invitation link to track new investors.
+          </p>
+        </div>
+
+        <div class="grid">
+          <div id="verify" class="box">
+            <h3>✅ Official Contract</h3>
+            <div id="contract" class="mono">0x8D6A79567a701FCe55b62C15d0fbB765913ac84a</div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+              <button class="pill" onclick="copyContract()">Copy Contract</button>
+              <button class="pill" onclick="openBscScan()">Open on BscScan</button>
+            </div>
+            <div class="small" style="margin-top:10px;">Tip: Always verify from official channels before sending funds.</div>
+          </div>
+
+          <div id="how" class="box">
+            <h3>🦊 How to Invest in Umoja V2 (MetaMask)</h3>
+            <ol class="small" style="margin:0; padding-left:16px; line-height:1.6;">
+              <li>Install MetaMask (browser extension or mobile app).</li>
+              <li>Add / switch to <b>BNB Smart Chain</b> network in MetaMask.</li>
+              <li>Fund your wallet with <b>BNB</b> for gas + investment.</li>
+              <li>Import the token using the official contract address.</li>
+              <li>Buy using your official DEX link (add yours later).</li>
+            </ol>
+          </div>
+
+          <div class="box" style="border-color: rgba(255,91,91,.25);">
+            <h3>⛔ Don’t do this</h3>
+            <ul class="small" style="margin:0; padding-left:16px; line-height:1.6;">
+              <li>Don’t trust screenshots or forwarded messages without verification.</li>
+              <li>Don’t send funds to any address that isn’t officially published.</li>
+              <li>Don’t buy “Umoja” tokens that are not the verified contract.</li>
+            </ul>
+          </div>
+
+          <div id="invite" class="box">
+            <h3>🔗 Invitation Link (Referral Tracking)</h3>
+            <div class="small">Enter your referral code (example: FISTON1)</div>
+            <div class="field" style="margin-top:10px;">
+              <input id="refCode" placeholder="Enter your referral code (example: FISTON1)" />
+            </div>
+            <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:10px;">
+              <button class="pill green" onclick="generateInvite()">Generate Link</button>
+              <button class="pill" onclick="copyInvite()">Copy Link</button>
+              <button class="pill" onclick="testInvite()">Test Link</button>
+            </div>
+            <div class="mono" id="inviteOut" style="margin-top:10px;">Enter a code, then click Generate Link</div>
+            <div class="small" style="margin-top:10px;">
+              Next step: We can connect this to Firestore so every signup is stored under the referrer automatically.
+            </div>
+          </div>
+        </div>
+
+        <div class="box" style="margin-top:12px;">
+          <div class="small">
+            <b>Disclaimer:</b> This page is informational and not financial advice. Crypto assets are volatile. Invest responsibly.
+          </div>
+        </div>
+      </div>
     </div>
   </div>
 
-  <!-- Firebase compat (works on simple HTML + GitHub Pages) -->
+  <!-- Firebase compat (works in simple HTML / GitHub Pages / Firebase Hosting) -->
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
   <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
 
   <script>
-    // ✅ 1) PASTE YOUR REAL FIREBASE CONFIG HERE (from Firebase Console)
+    // ✅ Put your REAL Firebase config here
     const firebaseConfig = {
-      apiKey: "PASTE_YOUR_API_KEY",
-      authDomain: "PASTE_YOUR_AUTH_DOMAIN",
-      projectId: "PASTE_YOUR_PROJECT_ID",
-      storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
-      messagingSenderId: "PASTE_YOUR_SENDER_ID",
-      appId: "PASTE_YOUR_APP_ID"
+      apiKey: "AIzaSyCbQ9fNYrq-qko-GUhKi3xSMkb_IKhrBBo",
+      authDomain: "umoja-v2-landing.firebaseapp.com",
+      projectId: "umoja-v2-landing",
+      storageBucket: "umoja-v2-landing.firebasestorage.app",
+      messagingSenderId: "964715983746",
+      appId: "1:964715983746:web:b4bb1615f35d773ae7159b"
     };
 
     firebase.initializeApp(firebaseConfig);
     const auth = firebase.auth();
 
-    // ---------- helpers ----------
-    const $ = (id) => document.getElementById(id);
+    // ---- UI refs
+    const authCard = document.getElementById('authCard');
+    const appCard = document.getElementById('appCard');
+    const tabRegister = document.getElementById('tabRegister');
+    const tabLogin = document.getElementById('tabLogin');
+    const primaryBtn = document.getElementById('primaryBtn');
+    const forgotBtn = document.getElementById('forgotBtn');
+    const authMsg = document.getElementById('authMsg');
+    const identifierEl = document.getElementById('identifier');
+    const passwordEl = document.getElementById('password');
+    const togglePw = document.getElementById('togglePw');
+    const whoami = document.getElementById('whoami');
+    const logoutBtn = document.getElementById('logoutBtn');
 
-    function showMsg(text, type){
-      const box = $("status");
-      box.className = "msg " + (type || "");
-      box.style.display = "block";
-      box.textContent = text;
+    let mode = "register"; // register | login
+
+    function setMsg(text, type){
+      authMsg.style.display = "block";
+      authMsg.className = "msg " + (type || "");
+      authMsg.textContent = text;
     }
     function clearMsg(){
-      $("status").style.display = "none";
-      $("status").textContent = "";
-      $("status").className = "msg";
+      authMsg.style.display = "none";
+      authMsg.textContent = "";
+      authMsg.className = "msg";
     }
 
-    // Turn phone into a "fake email" so Email/Password auth can work without SMS
-    function normalizeIdentifier(raw){
+    // ✅ Email OR Phone (no SMS):
+    // If user enters a phone, we convert it into a "pseudo email" so it can work with Email/Password auth.
+    // They will still login using the same phone + password.
+    function normalizeIdentifierToEmail(raw){
       const v = (raw || "").trim();
       if (!v) return "";
-
-      // If it looks like an email, keep it
       if (v.includes("@")) return v.toLowerCase();
 
-      // Otherwise treat as phone: keep digits only
+      // phone -> keep digits only
       const digits = v.replace(/[^\d]/g, "");
-      if (digits.length < 7) return ""; // too short to be a phone
-      return digits + "@phone.umoja";
+      if (digits.length < 7) return ""; // too short
+      return `${digits}@umoja.local`;
     }
 
-    function togglePass(inputId, linkId){
-      const inp = $(inputId);
-      const link = $(linkId);
-      if (inp.type === "password"){
-        inp.type = "text";
-        link.textContent = "Hide";
-      } else {
-        inp.type = "password";
-        link.textContent = "Show";
+    function isEmail(raw){
+      return (raw || "").includes("@");
+    }
+
+    function setMode(next){
+      mode = next;
+      clearMsg();
+      const isReg = mode === "register";
+      tabRegister.classList.toggle("active", isReg);
+      tabLogin.classList.toggle("active", !isReg);
+      primaryBtn.textContent = isReg ? "Create Account" : "Login";
+      forgotBtn.style.display = (!isReg) ? "block" : "none";
+    }
+
+    tabRegister.addEventListener("click", () => setMode("register"));
+    tabLogin.addEventListener("click", () => setMode("login"));
+
+    togglePw.addEventListener("click", () => {
+      const isPw = passwordEl.type === "password";
+      passwordEl.type = isPw ? "text" : "password";
+      togglePw.textContent = isPw ? "Hide" : "Show";
+    });
+
+    forgotBtn.addEventListener("click", async () => {
+      clearMsg();
+      const raw = identifierEl.value.trim();
+      if (!raw || !isEmail(raw)) {
+        setMsg("Password reset works for EMAIL only. Enter your email above.", "bad");
+        return;
       }
-    }
-
-    // ---------- tabs ----------
-    function openRegister(){
-      clearMsg();
-      $("registerPane").style.display = "block";
-      $("loginPane").style.display = "none";
-      $("tabRegister").classList.add("active");
-      $("tabLogin").classList.remove("active");
-    }
-    function openLogin(){
-      clearMsg();
-      $("registerPane").style.display = "none";
-      $("loginPane").style.display = "block";
-      $("tabLogin").classList.add("active");
-      $("tabRegister").classList.remove("active");
-    }
-
-    $("tabRegister").onclick = openRegister;
-    $("tabLogin").onclick = openLogin;
-    $("goLogin").onclick = openLogin;
-    $("goRegister").onclick = openRegister;
-
-    $("regShow").onclick = () => togglePass("regPass","regShow");
-    $("logShow").onclick = () => togglePass("logPass","logShow");
-
-    // ---------- register ----------
-    $("btnRegister").onclick = async () => {
-      clearMsg();
-      const id = normalizeIdentifier($("regId").value);
-      const pass = $("regPass").value;
-
-      if (!id) return showMsg("Enter a valid Email or Phone number.", "err");
-      if (!pass || pass.length < 6) return showMsg("Password must be at least 6 characters.", "err");
-
       try{
-        const cred = await auth.createUserWithEmailAndPassword(id, pass);
-        showMsg("Account created ✅", "ok");
-      } catch(e){
-        showMsg(e.message || "Failed to create account.", "err");
-      }
-    };
-
-    // ---------- login ----------
-    $("btnLogin").onclick = async () => {
-      clearMsg();
-      const id = normalizeIdentifier($("logId").value);
-      const pass = $("logPass").value;
-
-      if (!id) return showMsg("Enter a valid Email or Phone number.", "err");
-      if (!pass) return showMsg("Enter your password.", "err");
-
-      try{
-        await auth.signInWithEmailAndPassword(id, pass);
-        showMsg("Logged in ✅", "ok");
-      } catch(e){
-        showMsg(e.message || "Login failed.", "err");
-      }
-    };
-
-    $("btnLogout").onclick = async () => {
-      await auth.signOut();
-      showMsg("Logged out ✅", "ok");
-    };
-
-    // ---------- auth state ----------
-    auth.onAuthStateChanged((user) => {
-      if (user){
-        $("uidLine").style.display = "block";
-        $("uidText").textContent = user.uid;
-        $("btnLogout").style.display = "block";
-      } else {
-        $("uidLine").style.display = "none";
-        $("uidText").textContent = "";
-        $("btnLogout").style.display = "none";
+        await auth.sendPasswordResetEmail(raw.toLowerCase());
+        setMsg("✅ Password reset email sent. Check your inbox/spam.", "good");
+      }catch(e){
+        setMsg(e.message || "Failed to send reset email.", "bad");
       }
     });
+
+    primaryBtn.addEventListener("click", async () => {
+      clearMsg();
+
+      const raw = identifierEl.value.trim();
+      const pw = passwordEl.value;
+
+      if (!raw) return setMsg("Enter your email or phone.", "bad");
+      if (!pw || pw.length < 6) return setMsg("Password must be at least 6 characters.", "bad");
+
+      const email = normalizeIdentifierToEmail(raw);
+      if (!email) return setMsg("Enter a valid email or phone number.", "bad");
+
+      try{
+        if (mode === "register") {
+          await auth.createUserWithEmailAndPassword(email, pw);
+          setMsg("✅ Account created. You are now logged in.", "good");
+        } else {
+          await auth.signInWithEmailAndPassword(email, pw);
+          setMsg("✅ Logged in.", "good");
+        }
+      } catch(e){
+        // Most common fix:
+        // "operation-not-allowed" => enable Email/Password provider in Firebase Console
+        setMsg(e.message || "Auth failed.", "bad");
+      }
+    });
+
+    logoutBtn.addEventListener("click", async () => {
+      await auth.signOut();
+    });
+
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        authCard.style.display = "none";
+        appCard.style.display = "block";
+        whoami.textContent = user.email || user.uid;
+      } else {
+        appCard.style.display = "none";
+        authCard.style.display = "block";
+        setMode("register");
+      }
+    });
+
+    // ---- App helpers
+    function scrollToId(id){
+      const el = document.getElementById(id);
+      if (!el) return;
+      el.scrollIntoView({behavior:"smooth", block:"start"});
+    }
+    window.scrollToId = scrollToId;
+
+    function copyContract(){
+      const addr = document.getElementById('contract').textContent.trim();
+      navigator.clipboard.writeText(addr);
+      alert("✅ Contract copied");
+    }
+    window.copyContract = copyContract;
+
+    function openBscScan(){
+      const addr = document.getElementById('contract').textContent.trim();
+      // Replace if you want mainnet URL format specific to your chain
+      window.open(`https://bscscan.com/address/${addr}`, "_blank");
+    }
+    window.openBscScan = openBscScan;
+
+    function generateInvite(){
+      const code = (document.getElementById('refCode').value || "").trim();
+      if(!code) return alert("Enter a referral code first.");
+      const base = window.location.origin + window.location.pathname;
+      const url = `${base}?ref=${encodeURIComponent(code)}`;
+      document.getElementById('inviteOut').textContent = url;
+    }
+    window.generateInvite = generateInvite;
+
+    function copyInvite(){
+      const url = document.getElementById('inviteOut').textContent.trim();
+      if(!url || url.includes("Enter a code")) return alert("Generate a link first.");
+      navigator.clipboard.writeText(url);
+      alert("✅ Invitation link copied");
+    }
+    window.copyInvite = copyInvite;
+
+    function testInvite(){
+      const url = document.getElementById('inviteOut').textContent.trim();
+      if(!url || url.includes("Enter a code")) return alert("Generate a link first.");
+      window.open(url, "_blank");
+    }
+    window.testInvite = testInvite;
+
+    // Auto-fill referral from ?ref=
+    (function(){
+      const params = new URLSearchParams(window.location.search);
+      const ref = params.get("ref");
+      if (ref) document.getElementById('refCode').value = ref;
+    })();
   </script>
 </body>
 </html>
