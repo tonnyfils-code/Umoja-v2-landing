@@ -341,66 +341,52 @@
 
   const auth = firebase.auth();
   auth.useDeviceLanguage();
-</script>
-<script>
-  const phoneEl = document.getElementById('phone');
-  const codeEl  = document.getElementById('code');
-  const sendBtn = document.getElementById('sendBtn');
-  const nextBtn = document.getElementById('nextBtn');
-  const agreeEl = document.getElementById('agree');
+// reCAPTCHA (required for Phone Auth)
+window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
+  'recaptcha-container',
+  { size: 'invisible' }
+);
 
-  let confirmationResult = null;
+let confirmationResult = null;
 
-  // ✅ reCAPTCHA (required)
-  window.recaptchaVerifier = new firebase.auth.RecaptchaVerifier(
-    'recaptcha-container',
-    { size: 'invisible' }
-  );
+// SEND CODE
+document.getElementById("sendBtn").addEventListener("click", () => {
+  const phoneNumber = document.getElementById("loginPhone").value;
 
-  function normalizePhone(raw){
-    const digits = (raw || '').replace(/\D/g,'');
-    if (digits.length === 10) return '+1' + digits;
-    if (digits.length === 11 && digits.startsWith('1')) return '+' + digits;
-    return raw.startsWith('+') ? raw : ('+' + digits);
+  if (!phoneNumber.startsWith("+")) {
+    alert("Use international format, e.g. +1XXXXXXXXXX");
+    return;
   }
 
-  function updateNextState(){
-    const ok = agreeEl.checked && codeEl.value.trim().length >= 4 && confirmationResult;
-    nextBtn.disabled = !ok;
-    nextBtn.classList.toggle('active', !!ok);
+  auth.signInWithPhoneNumber(phoneNumber, window.recaptchaVerifier)
+    .then(result => {
+      confirmationResult = result;
+      alert("SMS code sent");
+    })
+    .catch(error => {
+      console.error(error);
+      alert(error.message);
+    });
+});
+
+// CONFIRM CODE
+document.getElementById("confirmBtn").addEventListener("click", () => {
+  const code = document.getElementById("code").value;
+
+  if (!confirmationResult) {
+    alert("Send the code first");
+    return;
   }
 
-  codeEl.addEventListener('input', updateNextState);
-  agreeEl.addEventListener('change', updateNextState);
-
-  sendBtn.addEventListener('click', async () => {
-    try {
-      const phone = normalizePhone(phoneEl.value);
-      if(!phone || phone.length < 8) return alert('Enter a valid phone number');
-
-      const appVerifier = window.recaptchaVerifier;
-      confirmationResult = await firebase.auth().signInWithPhoneNumber(phone, appVerifier);
-
-      alert('Code sent (or test code ready).');
-      updateNextState();
-    } catch (e) {
-      console.error(e);
-      alert(e.message || 'Failed to send code');
-    }
-  });
-
-  nextBtn.addEventListener('click', async () => {
-    try{
-      if(!confirmationResult) return alert('Click Send Code first');
-      const code = codeEl.value.trim();
-      const result = await confirmationResult.confirm(code);
-      alert('Verified ✅ UID: ' + result.user.uid);
-    } catch(e){
-      console.error(e);
-      alert(e.message || 'Invalid code');
-    }
-  });
-</script>
+  confirmationResult.confirm(code)
+    .then(result => {
+      alert("Phone verified successfully!");
+      console.log("User UID:", result.user.uid);
+    })
+    .catch(() => {
+      alert("Invalid verification code");
+    });
+});
 
 </body>
 </html>
