@@ -1,136 +1,353 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>Umoja V2 – Register</title>
+  <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Umoja V2 • Register / Login</title>
 
   <style>
-    body {
-      font-family: Arial, sans-serif;
-      background: #f6f6f6;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      height: 100vh;
+    :root{
+      --bg:#ffffff;
+      --text:#1f1f1f;
+      --muted:#7a7a7a;
+      --line:#e9e9e9;
+      --field:#f3f3f3;
+      --accent:#c7b08a;
+      --accent2:#bfa67a;
+      --danger:#c62828;
+      --ok:#2e7d32;
+      --radius:14px;
+      --shadow:0 12px 30px rgba(0,0,0,.08);
     }
-
-    .card {
-      background: #fff;
-      padding: 30px;
-      width: 100%;
-      max-width: 380px;
-      border-radius: 12px;
-      box-shadow: 0 10px 30px rgba(0,0,0,0.08);
+    *{box-sizing:border-box}
+    body{
+      margin:0;
+      font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;
+      background:var(--bg);
+      color:var(--text);
+      display:flex;
+      align-items:center;
+      justify-content:center;
+      min-height:100vh;
+      padding:24px;
     }
-
-    h2 {
-      text-align: center;
-      margin-bottom: 20px;
+    .card{
+      width:min(520px, 100%);
+      border:1px solid var(--line);
+      border-radius:24px;
+      box-shadow:var(--shadow);
+      padding:24px;
+      background:#fff;
     }
-
-    .field {
-      margin-bottom: 14px;
+    h1{
+      margin:0 0 10px 0;
+      font-size:34px;
+      letter-spacing:.2px;
     }
-
-    input {
-      width: 100%;
-      padding: 12px;
-      font-size: 15px;
-      border: 1px solid #ddd;
-      border-radius: 8px;
+    .tabs{
+      display:flex;
+      gap:18px;
+      margin-top:10px;
+      margin-bottom:18px;
+      align-items:flex-end;
     }
-
-    button {
-      width: 100%;
-      padding: 12px;
-      font-size: 16px;
-      border: none;
-      border-radius: 8px;
-      background: #c7b08a;
-      color: #fff;
-      cursor: pointer;
-      margin-top: 10px;
+    .tab{
+      font-size:18px;
+      color:var(--muted);
+      cursor:pointer;
+      padding-bottom:10px;
+      border-bottom:3px solid transparent;
+      user-select:none;
     }
-
-    button:hover {
-      background: #b79f75;
+    .tab.active{
+      color:var(--text);
+      border-bottom-color:var(--accent);
     }
-
-    .note {
-      font-size: 13px;
-      color: #777;
-      text-align: center;
-      margin-top: 12px;
+    .form{
+      display:none;
+      margin-top:10px;
+    }
+    .form.active{ display:block; }
+    .field{
+      background:var(--field);
+      border:1px solid var(--line);
+      border-radius:16px;
+      padding:14px 14px;
+      margin:12px 0;
+      display:flex;
+      gap:10px;
+      align-items:center;
+    }
+    input{
+      border:0;
+      outline:none;
+      background:transparent;
+      font-size:16px;
+      width:100%;
+    }
+    .row{
+      display:flex;
+      gap:12px;
+      align-items:center;
+    }
+    .btn{
+      width:100%;
+      border:0;
+      border-radius:18px;
+      padding:14px 16px;
+      font-size:16px;
+      cursor:pointer;
+      background:var(--accent);
+      color:#fff;
+      font-weight:600;
+    }
+    .btn:hover{ background:var(--accent2); }
+    .btn.secondary{
+      background:#fff;
+      color:var(--text);
+      border:1px solid var(--line);
+    }
+    .small{
+      font-size:13px;
+      color:var(--muted);
+      line-height:1.35;
+      margin-top:10px;
+    }
+    .msg{
+      margin-top:10px;
+      font-size:14px;
+      padding:10px 12px;
+      border-radius:12px;
+      display:none;
+      border:1px solid var(--line);
+    }
+    .msg.ok{ display:block; color:var(--ok); background:#eaf6ee; border-color:#cfe8d7; }
+    .msg.err{ display:block; color:var(--danger); background:#fdeaea; border-color:#f6c9c9; }
+    .toggle{
+      border:0;
+      background:transparent;
+      cursor:pointer;
+      color:var(--muted);
+      font-weight:600;
+      padding:6px 8px;
+      border-radius:10px;
+    }
+    .toggle:hover{ background:#eee; }
+    .footer{
+      margin-top:16px;
+      font-size:12px;
+      color:var(--muted);
+      text-align:center;
+    }
+    .link{
+      color:var(--accent2);
+      text-decoration:none;
+      font-weight:600;
+      cursor:pointer;
     }
   </style>
 </head>
 
 <body>
-
   <div class="card">
-    <h2>Register</h2>
+    <h1>Register / Login</h1>
 
-    <div class="field">
-      <input
-        id="identifier"
-        type="text"
-        placeholder="Email or Phone number"
-        autocomplete="username"
-      />
+    <div class="tabs">
+      <div id="tabRegister" class="tab active">Register</div>
+      <div id="tabLogin" class="tab">Login</div>
     </div>
 
-    <div class="field">
-      <input
-        id="password"
-        type="password"
-        placeholder="Create password"
-        autocomplete="new-password"
-      />
+    <div id="msg" class="msg"></div>
+
+    <!-- REGISTER -->
+    <div id="registerForm" class="form active">
+      <div class="field">
+        <input id="regId" autocomplete="username" placeholder="Email or Phone (e.g. name@email.com or +1480...)" />
+      </div>
+
+      <div class="field">
+        <input id="regPass" type="password" autocomplete="new-password" placeholder="Password" />
+        <button class="toggle" id="regShow">Show</button>
+      </div>
+
+      <button class="btn" id="registerBtn">Create Account</button>
+
+      <div class="small">
+        If you use a phone number, we will register it internally (no SMS). You can login later using the same phone + password.
+      </div>
+
+      <div class="footer">
+        Already have an account?
+        <span class="link" id="goLogin">Login</span>
+      </div>
     </div>
 
-    <button onclick="register()">Create Account</button>
+    <!-- LOGIN -->
+    <div id="loginForm" class="form">
+      <div class="field">
+        <input id="logId" autocomplete="username" placeholder="Email or Phone" />
+      </div>
 
-    <div class="note">
-      By continuing, you agree to the Registration Agreement
+      <div class="field">
+        <input id="logPass" type="password" autocomplete="current-password" placeholder="Password" />
+        <button class="toggle" id="logShow">Show</button>
+      </div>
+
+      <button class="btn" id="loginBtn">Login</button>
+      <button class="btn secondary" id="logoutBtn" style="margin-top:10px; display:none;">Logout</button>
+
+      <div class="footer">
+        New here?
+        <span class="link" id="goRegister">Create account</span>
+      </div>
     </div>
   </div>
 
+  <!-- Firebase compat (works in simple HTML / GitHub Pages) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+
   <script>
-    function register() {
-      const identifier = document.getElementById("identifier").value.trim();
-      const password = document.getElementById("password").value;
+    // ✅ 1) PUT YOUR REAL FIREBASE CONFIG HERE (from Firebase Console)
+    const firebaseConfig = {
+      apiKey: "PASTE_YOUR_API_KEY",
+      authDomain: "PASTE_YOUR_AUTH_DOMAIN",
+      projectId: "PASTE_YOUR_PROJECT_ID",
+      storageBucket: "PASTE_YOUR_STORAGE_BUCKET",
+      messagingSenderId: "PASTE_YOUR_SENDER_ID",
+      appId: "PASTE_YOUR_APP_ID"
+    };
 
-      if (!identifier || !password) {
-        alert("Please fill in all fields");
-        return;
-      }
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    auth.useDeviceLanguage();
 
-      if (password.length < 6) {
-        alert("Password must be at least 6 characters");
-        return;
-      }
+    // ---------------- UI helpers ----------------
+    const el = (id) => document.getElementById(id);
+    const msg = el("msg");
 
-      const isEmail = identifier.includes("@");
-      const isPhone = /^[0-9+]+$/.test(identifier);
-
-      if (!isEmail && !isPhone) {
-        alert("Enter a valid email or phone number");
-        return;
-      }
-
-      // ✅ SUCCESS (for now)
-      console.log("Registered:", {
-        identifier,
-        password
-      });
-
-      alert("Registration successful ✅");
-
-      // You can redirect later
-      // window.location.href = "dashboard.html";
+    function showMsg(type, text){
+      msg.className = "msg " + (type === "ok" ? "ok" : "err");
+      msg.textContent = text;
     }
-  </script>
+    function clearMsg(){
+      msg.className = "msg";
+      msg.textContent = "";
+    }
 
+    function isEmail(value){
+      return value.includes("@");
+    }
+
+    // If user typed phone, convert to an internal email-like identifier.
+    // This avoids SMS completely while still supporting "phone + password" login.
+    function normalizeIdentifier(raw){
+      const v = (raw || "").trim();
+      if (!v) return { mode: null, email: null, phone: null };
+
+      if (isEmail(v)) {
+        return { mode: "email", email: v.toLowerCase(), phone: null };
+      }
+
+      // phone mode
+      // keep digits/+ only for consistency
+      const cleaned = v.replace(/[^\d+]/g, "");
+      // turn it into a fake email used ONLY for Firebase auth
+      const fakeEmail = cleaned.replace(/\+/g, "plus") + "@umoja.local";
+      return { mode: "phone", email: fakeEmail.toLowerCase(), phone: cleaned };
+    }
+
+    // Tabs
+    function setTab(which){
+      clearMsg();
+      const isReg = which === "register";
+      el("tabRegister").classList.toggle("active", isReg);
+      el("tabLogin").classList.toggle("active", !isReg);
+      el("registerForm").classList.toggle("active", isReg);
+      el("loginForm").classList.toggle("active", !isReg);
+    }
+
+    el("tabRegister").onclick = () => setTab("register");
+    el("tabLogin").onclick = () => setTab("login");
+    el("goLogin").onclick = () => setTab("login");
+    el("goRegister").onclick = () => setTab("register");
+
+    // Show/hide password
+    function bindShow(btnId, inputId){
+      el(btnId).addEventListener("click", (e) => {
+        e.preventDefault();
+        const inp = el(inputId);
+        inp.type = (inp.type === "password") ? "text" : "password";
+        el(btnId).textContent = (inp.type === "password") ? "Show" : "Hide";
+      });
+    }
+    bindShow("regShow","regPass");
+    bindShow("logShow","logPass");
+
+    // ---------------- AUTH actions ----------------
+    el("registerBtn").addEventListener("click", async () => {
+      clearMsg();
+      try{
+        const rawId = el("regId").value;
+        const pass = el("regPass").value;
+
+        if (!rawId.trim()) return showMsg("err", "Please enter email or phone.");
+        if (!pass || pass.length < 6) return showMsg("err", "Password must be at least 6 characters.");
+
+        const id = normalizeIdentifier(rawId);
+        if (!id.email) return showMsg("err", "Invalid email/phone.");
+
+        const cred = await auth.createUserWithEmailAndPassword(id.email, pass);
+
+        // Save the original identifier locally (simple)
+        localStorage.setItem("umoja_identifier_mode", id.mode);
+        localStorage.setItem("umoja_identifier_raw", rawId.trim());
+        if (id.phone) localStorage.setItem("umoja_phone", id.phone);
+
+        showMsg("ok", "Account created ✅ You can now login.");
+        setTab("login");
+        el("logId").value = rawId.trim();
+      } catch(e){
+        console.error(e);
+        showMsg("err", e.message || "Failed to register.");
+      }
+    });
+
+    el("loginBtn").addEventListener("click", async () => {
+      clearMsg();
+      try{
+        const rawId = el("logId").value;
+        const pass = el("logPass").value;
+
+        if (!rawId.trim()) return showMsg("err", "Please enter email or phone.");
+        if (!pass) return showMsg("err", "Please enter password.");
+
+        const id = normalizeIdentifier(rawId);
+        const cred = await auth.signInWithEmailAndPassword(id.email, pass);
+
+        showMsg("ok", "Logged in ✅ UID: " + cred.user.uid);
+        el("logoutBtn").style.display = "block";
+      } catch(e){
+        console.error(e);
+        showMsg("err", e.message || "Failed to login.");
+      }
+    });
+
+    el("logoutBtn").addEventListener("click", async () => {
+      clearMsg();
+      await auth.signOut();
+      showMsg("ok", "Logged out ✅");
+      el("logoutBtn").style.display = "none";
+    });
+
+    // Keep UI synced if already logged in
+    auth.onAuthStateChanged((user) => {
+      if (user) {
+        el("logoutBtn").style.display = "block";
+      } else {
+        el("logoutBtn").style.display = "none";
+      }
+    });
+  </script>
 </body>
 </html>
