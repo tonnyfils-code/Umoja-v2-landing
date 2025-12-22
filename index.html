@@ -186,4 +186,336 @@
       gap:10px;
       align-items:center;
       background: rgba(255,255,255,.06);
-      border:1px solid r
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 14px;
+      padding:10px;
+      overflow:hidden;
+    }
+    .copyLine code{
+      flex:1;
+      font-size:12.8px;
+      color:rgba(234,246,245,.95);
+      white-space:nowrap;
+      overflow:hidden;
+      text-overflow:ellipsis;
+    }
+    .copyBtn{
+      border:0;
+      border-radius: 12px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:900;
+      background: rgba(34,199,166,.18);
+      color: var(--text);
+      border:1px solid rgba(34,199,166,.30);
+    }
+
+    @media (max-width:380px){
+      h1{font-size:30px}
+      .tab{font-size:24px}
+      input{font-size:18px}
+      .btn{font-size:20px}
+    }
+  </style>
+</head>
+
+<body>
+  <div class="wrap">
+    <div class="logo">
+      <!-- Put your logo file in the same repo folder, for example: umoja-logo.png -->
+      <img src="umoja-logo.png" alt="UMOJA logo" />
+    </div>
+
+    <h1>UMOJA V2</h1>
+    <p class="sub">Official Landing • Verify • Invest • Invite</p>
+
+    <div class="card">
+      <div class="tabs">
+        <div id="tabRegister" class="tab active">Register</div>
+        <div id="tabLogin" class="tab">Login</div>
+      </div>
+
+      <div id="registerView">
+        <div class="field">
+          <input id="regEmailOrPhone" placeholder="Email or Phone" autocomplete="username" />
+        </div>
+
+        <div class="field">
+          <input id="regPassword" type="password" placeholder="Password" autocomplete="new-password" />
+          <button id="regTogglePw" class="pwBtn" type="button">Show</button>
+        </div>
+
+        <button id="btnRegister" class="btn">Create Account</button>
+
+        <!-- ✅ highlighted section removed (no green check text here) -->
+
+        <p class="small">By continuing you agree to the <a href="#" id="regAgreement">Registration Agreement</a>.</p>
+      </div>
+
+      <div id="loginView" style="display:none">
+        <div class="field">
+          <input id="logEmailOrPhone" placeholder="Email or Phone" autocomplete="username" />
+        </div>
+
+        <div class="field">
+          <input id="logPassword" type="password" placeholder="Password" autocomplete="current-password" />
+          <button id="logTogglePw" class="pwBtn" type="button">Show</button>
+        </div>
+
+        <button id="btnLogin" class="btn">Login</button>
+
+        <div class="hint">
+          After login, you’ll see your invitation link and you can copy it.
+        </div>
+      </div>
+
+      <div id="afterLogin" style="display:none">
+        <div class="hint" id="welcomeText">Logged in.</div>
+
+        <div class="copyBox" id="inviteBox">
+          <div class="label">Your invitation link</div>
+          <div class="copyLine">
+            <code id="inviteLinkText">Generating…</code>
+            <button class="copyBtn" id="copyInviteBtn" type="button">Copy</button>
+          </div>
+
+          <div class="row">
+            <button class="ghost" id="openInviteBtn" type="button">Test Open</button>
+            <button class="ghost" id="logoutBtn" type="button">Logout</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Firebase compat (no type="module" needed for this approach) -->
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+
+  <script>
+    // ✅ Your Firebase config (keep yours)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbQ9fNYrq-qko-GUhKi3xSMkb_IKhrBBo",
+      authDomain: "umoja-v2-landing.firebaseapp.com",
+      projectId: "umoja-v2-landing",
+      storageBucket: "umoja-v2-landing.firebasestorage.app",
+      messagingSenderId: "964715983746",
+      appId: "1:964715983746:web:b4bb1615f35d773ae7159b"
+    };
+
+    firebase.initializeApp(firebaseConfig);
+    const auth = firebase.auth();
+    const db = firebase.firestore();
+
+    // ---------- helpers ----------
+    function getRefFromUrl(){
+      const p = new URLSearchParams(window.location.search);
+      const ref = (p.get("ref") || "").trim();
+      return ref || null;
+    }
+
+    function normalizeEmailOrPhone(v){
+      return (v || "").trim();
+    }
+
+    function makeInviteCode(uid){
+      // short invite code derived from uid (stable)
+      // ex: 8 chars
+      return uid.replace(/[^a-zA-Z0-9]/g,'').slice(0,8).toUpperCase();
+    }
+
+    async function ensureUserInviteCode(user){
+      const userRef = db.collection("users").doc(user.uid);
+      const snap = await userRef.get();
+      const data = snap.exists ? snap.data() : {};
+
+      if (data && data.inviteCode) return data.inviteCode;
+
+      const inviteCode = makeInviteCode(user.uid);
+      await userRef.set({
+        inviteCode,
+        updatedAt: firebase.firestore.FieldValue.serverTimestamp()
+      }, { merge:true });
+
+      return inviteCode;
+    }
+
+    function buildInviteLink(inviteCode){
+      const base = window.location.origin + window.location.pathname; // same page
+      return `${base}?ref=${encodeURIComponent(inviteCode)}`;
+    }
+
+    async function logInviteOpenIfAny(){
+      const ref = getRefFromUrl();
+      if (!ref) return;
+
+      // ✅ Logs EVERY open of an invitation link
+      // NOTE: browsers cannot reliably detect unique clicks vs refresh — this logs each page load.
+      await db.collection("inviteClicks").add({
+        ref,
+        type: "open",
+        page: window.location.pathname,
+        userAgent: navigator.userAgent || null,
+        createdAt: firebase.firestore.FieldValue.serverTimestamp()
+      });
+    }
+
+    // ---------- UI refs ----------
+    const tabRegister = document.getElementById("tabRegister");
+    const tabLogin = document.getElementById("tabLogin");
+    const registerView = document.getElementById("registerView");
+    const loginView = document.getElementById("loginView");
+    const afterLogin = document.getElementById("afterLogin");
+
+    const regEmailOrPhone = document.getElementById("regEmailOrPhone");
+    const regPassword = document.getElementById("regPassword");
+    const regTogglePw = document.getElementById("regTogglePw");
+    const btnRegister = document.getElementById("btnRegister");
+
+    const logEmailOrPhone = document.getElementById("logEmailOrPhone");
+    const logPassword = document.getElementById("logPassword");
+    const logTogglePw = document.getElementById("logTogglePw");
+    const btnLogin = document.getElementById("btnLogin");
+
+    const welcomeText = document.getElementById("welcomeText");
+    const inviteBox = document.getElementById("inviteBox");
+    const inviteLinkText = document.getElementById("inviteLinkText");
+    const copyInviteBtn = document.getElementById("copyInviteBtn");
+    const openInviteBtn = document.getElementById("openInviteBtn");
+    const logoutBtn = document.getElementById("logoutBtn");
+
+    function showTab(which){
+      if (which === "register"){
+        tabRegister.classList.add("active");
+        tabLogin.classList.remove("active");
+        registerView.style.display = "";
+        loginView.style.display = "none";
+      } else {
+        tabLogin.classList.add("active");
+        tabRegister.classList.remove("active");
+        registerView.style.display = "none";
+        loginView.style.display = "";
+      }
+    }
+
+    tabRegister.addEventListener("click", ()=>showTab("register"));
+    tabLogin.addEventListener("click", ()=>showTab("login"));
+
+    function togglePw(input, btn){
+      input.type = (input.type === "password") ? "text" : "password";
+      btn.textContent = (input.type === "password") ? "Show" : "Hide";
+    }
+    regTogglePw.addEventListener("click", ()=>togglePw(regPassword, regTogglePw));
+    logTogglePw.addEventListener("click", ()=>togglePw(logPassword, logTogglePw));
+
+    // ---------- AUTH ----------
+    btnRegister.addEventListener("click", async ()=>{
+      const emailOrPhoneValue = normalizeEmailOrPhone(regEmailOrPhone.value);
+      const passwordValue = (regPassword.value || "").trim();
+
+      if (!emailOrPhoneValue || !passwordValue) return alert("Enter Email/Phone and Password.");
+
+      btnRegister.disabled = true;
+
+      try{
+        // We support only Email/Password in Firebase Auth.
+        // If user types phone, it still must be an email-like string to work.
+        // Example workaround: phone@umoja.app
+        const isEmail = emailOrPhoneValue.includes("@");
+        const emailForAuth = isEmail ? emailOrPhoneValue : `${emailOrPhoneValue.replace(/\s+/g,'') }@umoja.app`;
+
+        const cred = await auth.createUserWithEmailAndPassword(emailForAuth, passwordValue);
+        const user = cred.user;
+
+        // ✅ When user registers: attach ref (referredBy) to user doc
+        const referredBy = getRefFromUrl();
+
+        await db.collection("users").doc(user.uid).set({
+          emailOrPhone: emailOrPhoneValue,
+          authEmail: emailForAuth,
+          referredBy: referredBy || null,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        }, { merge:true });
+
+        alert("Account created!");
+      }catch(e){
+        alert(e.message || "Registration error");
+      }finally{
+        btnRegister.disabled = false;
+      }
+    });
+
+    btnLogin.addEventListener("click", async ()=>{
+      const emailOrPhoneValue = normalizeEmailOrPhone(logEmailOrPhone.value);
+      const passwordValue = (logPassword.value || "").trim();
+      if (!emailOrPhoneValue || !passwordValue) return alert("Enter Email/Phone and Password.");
+
+      btnLogin.disabled = true;
+
+      try{
+        const isEmail = emailOrPhoneValue.includes("@");
+        const emailForAuth = isEmail ? emailOrPhoneValue : `${emailOrPhoneValue.replace(/\s+/g,'') }@umoja.app`;
+
+        await auth.signInWithEmailAndPassword(emailForAuth, passwordValue);
+      }catch(e){
+        alert(e.message || "Login error");
+      }finally{
+        btnLogin.disabled = false;
+      }
+    });
+
+    logoutBtn.addEventListener("click", ()=>auth.signOut());
+
+    async function renderAfterLogin(user){
+      registerView.style.display = "none";
+      loginView.style.display = "none";
+      document.querySelector(".tabs").style.display = "none";
+      afterLogin.style.display = "";
+
+      const inviteCode = await ensureUserInviteCode(user);
+      const inviteLink = buildInviteLink(inviteCode);
+
+      welcomeText.textContent = `Welcome! Your invite code: ${inviteCode}`;
+      inviteLinkText.textContent = inviteLink;
+      inviteBox.style.display = "block";
+
+      copyInviteBtn.onclick = async ()=>{
+        try{
+          await navigator.clipboard.writeText(inviteLink);
+          copyInviteBtn.textContent = "Copied";
+          setTimeout(()=>copyInviteBtn.textContent="Copy", 1000);
+        }catch(_){
+          alert("Copy failed. Manually select the link.");
+        }
+      };
+
+      openInviteBtn.onclick = async ()=>{
+        // ✅ logs a "click" action (optional extra log)
+        await db.collection("inviteClicks").add({
+          ref: inviteCode,
+          type: "click_test",
+          page: window.location.pathname,
+          userAgent: navigator.userAgent || null,
+          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        });
+        window.open(inviteLink, "_blank");
+      };
+    }
+
+    auth.onAuthStateChanged(async (user)=>{
+      if (user){
+        await renderAfterLogin(user);
+      }else{
+        // show tabs again
+        document.querySelector(".tabs").style.display = "flex";
+        afterLogin.style.display = "none";
+        showTab("register");
+      }
+    });
+
+    // ✅ Log every invitation open (anyone who visits with ?ref=CODE)
+    logInviteOpenIfAny().catch(()=>{});
+  </script>
+</body>
+</html>
