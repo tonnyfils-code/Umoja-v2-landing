@@ -1,103 +1,240 @@
 <!doctype html>
-<html>
+<html lang="en">
 <head>
   <meta charset="utf-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1"/>
-  <title>UMOJA V2 • Admin</title>
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>UMOJA V2 • Admin Dashboard</title>
   <style>
-    body{margin:0;font-family:system-ui;background:#07181a;color:#eaf6f5;padding:18px}
-    .card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.12);border-radius:18px;padding:16px;margin-bottom:14px}
-    h1{margin:0 0 10px}
-    table{width:100%;border-collapse:collapse}
-    td,th{padding:10px;border-bottom:1px solid rgba(255,255,255,.10);text-align:left}
-    .muted{color:rgba(234,246,245,.7)}
-    .btn{padding:10px 12px;border-radius:12px;border:1px solid rgba(255,255,255,.12);background:rgba(255,255,255,.08);color:#eaf6f5;cursor:pointer;font-weight:800}
+    :root{
+      --bg:#07181a; --text:#eaf6f5; --muted:rgba(234,246,245,.7);
+      --panel: rgba(255,255,255,.06); --stroke: rgba(255,255,255,.12);
+      --accent:#20d3b3;
+    }
+    *{box-sizing:border-box}
+    body{
+      margin:0; min-height:100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background: linear-gradient(180deg, #052225, #020a0c);
+      color:var(--text);
+      padding:18px;
+    }
+    .top{
+      max-width:1100px; margin:0 auto 14px;
+      display:flex; gap:10px; align-items:center; justify-content:space-between;
+    }
+    .card{
+      max-width:1100px; margin:0 auto 14px;
+      background: var(--panel);
+      border:1px solid var(--stroke);
+      border-radius:18px;
+      padding:14px;
+    }
+    .btn{
+      padding:10px 12px; border-radius:12px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color:var(--text);
+      font-weight:800;
+      cursor:pointer;
+    }
+    table{ width:100%; border-collapse:collapse; }
+    th,td{ padding:10px 8px; border-bottom:1px solid rgba(255,255,255,.10); font-size:13px; }
+    th{ text-align:left; color: var(--muted); font-weight:900; }
+    .muted{ color: var(--muted); }
+    .pill{
+      display:inline-block; padding:4px 8px; border-radius:999px;
+      border:1px solid rgba(32,211,179,.25);
+      color:#d6fff8;
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      letter-spacing:.08em;
+      font-size:12px;
+    }
+    .warn{
+      color:#ffd9d9;
+      border:1px solid rgba(255,80,80,.25);
+      background: rgba(255,80,80,.07);
+      padding:10px 12px;
+      border-radius:14px;
+    }
   </style>
 </head>
 <body>
-  <h1>Admin Dashboard</h1>
-  <p class="muted">Invitation activity (opens + registrations)</p>
 
-  <div class="card" id="authBox">Checking admin access…</div>
+  <div class="top">
+    <div>
+      <div style="font-size:20px;font-weight:1000;">UMOJA V2 • Admin Dashboard</div>
+      <div class="muted">Invitation clicks + users + referrals</div>
+    </div>
+    <div style="display:flex; gap:10px;">
+      <a class="btn" href="index.html">Main site</a>
+      <button class="btn" id="logoutBtn">Logout</button>
+    </div>
+  </div>
 
-  <div class="card" id="summary" style="display:none">
-    <button class="btn" id="back">Back to site</button>
-    <button class="btn" id="logout">Logout</button>
+  <div class="card" id="gate">
+    <div class="warn">
+      Checking admin access…
+      <div class="muted" style="margin-top:6px">
+        If you are not an admin, this page will stay locked.
+      </div>
+    </div>
+  </div>
+
+  <div class="card" id="stats" style="display:none">
+    <div style="display:flex;gap:10px;flex-wrap:wrap">
+      <div><span class="muted">Signed in:</span> <span id="who"></span></div>
+      <div><span class="muted">Total clicks loaded:</span> <span id="clickCount"></span></div>
+      <div><span class="muted">Users loaded:</span> <span id="userCount"></span></div>
+    </div>
   </div>
 
   <div class="card" id="clicksCard" style="display:none">
-    <h3>Latest Invite Opens</h3>
+    <div style="font-weight:1000;margin-bottom:10px;">Recent Invitation Opens/Clicks</div>
     <table>
-      <thead><tr><th>Ref</th><th>Time</th><th>User Agent</th></tr></thead>
-      <tbody id="clicksRows"></tbody>
+      <thead>
+        <tr>
+          <th>Time</th>
+          <th>Ref</th>
+          <th>Page</th>
+          <th>URL</th>
+        </tr>
+      </thead>
+      <tbody id="clickRows"></tbody>
     </table>
   </div>
 
   <div class="card" id="usersCard" style="display:none">
-    <h3>Latest Registrations</h3>
+    <div style="font-weight:1000;margin-bottom:10px;">Users (Referred By)</div>
     <table>
-      <thead><tr><th>Email</th><th>Referred By</th><th>Created</th></tr></thead>
-      <tbody id="usersRows"></tbody>
+      <thead>
+        <tr>
+          <th>Created</th>
+          <th>User Doc ID</th>
+          <th>Invite Code</th>
+          <th>Referred By</th>
+        </tr>
+      </thead>
+      <tbody id="userRows"></tbody>
     </table>
   </div>
 
   <script type="module">
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-    import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-    import { getFirestore, doc, getDoc, collection, query, orderBy, limit, getDocs } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+    import {
+      getAuth,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      collection,
+      query,
+      orderBy,
+      limit,
+      getDocs
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-    const firebaseConfig = PASTE_YOUR_FIREBASE_CONFIG_HERE;
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbQ9fNYrq-qko-GUhKi3xSMkb_IKhrBBo",
+      authDomain: "umoja-v2-landing.firebaseapp.com",
+      projectId: "umoja-v2-landing",
+      storageBucket: "umoja-v2-landing.firebasestorage.app",
+      messagingSenderId: "964715983746",
+      appId: "1:964715983746:web:b4bb1615f35d773ae7159b"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    const authBox = document.getElementById("authBox");
-    const summary = document.getElementById("summary");
-    const clicksCard = document.getElementById("clicksCard");
-    const usersCard = document.getElementById("usersCard");
+    const $ = (id) => document.getElementById(id);
 
-    document.getElementById("back").onclick = ()=> location.href = "index.html";
-    document.getElementById("logout").onclick = ()=> signOut(auth);
+    $("logoutBtn").onclick = async () => {
+      await signOut(auth);
+      location.href = "index.html";
+    };
 
-    function tsToText(ts){
-      if(!ts) return "";
-      const d = ts.toDate ? ts.toDate() : new Date(ts);
-      return d.toLocaleString();
+    function fmt(ts){
+      try{
+        if(!ts) return "";
+        const d = ts.toDate ? ts.toDate() : new Date(ts);
+        return d.toLocaleString();
+      }catch{return "";}
     }
 
-    onAuthStateChanged(auth, async (user)=>{
+    async function isAdmin(uid){
+      const adminRef = doc(db, "admins", uid);
+      const snap = await getDoc(adminRef);
+      return snap.exists() && (snap.data()?.role === "admin");
+    }
+
+    async function loadClicks(){
+      const q1 = query(collection(db, "invite_clicks"), orderBy("createdAt","desc"), limit(50));
+      const snaps = await getDocs(q1);
+      $("clickCount").textContent = snaps.size;
+
+      const rows = [];
+      snaps.forEach(s => {
+        const d = s.data();
+        rows.push(`
+          <tr>
+            <td>${fmt(d.createdAt)}</td>
+            <td><span class="pill">${(d.ref||"")}</span></td>
+            <td>${(d.page||"")}</td>
+            <td class="muted" style="max-width:520px;word-break:break-all;">${(d.url||"")}</td>
+          </tr>
+        `);
+      });
+      $("clickRows").innerHTML = rows.join("") || `<tr><td colspan="4" class="muted">No data yet.</td></tr>`;
+    }
+
+    async function loadUsers(){
+      const q2 = query(collection(db, "users"), orderBy("createdAt","desc"), limit(50));
+      const snaps = await getDocs(q2);
+      $("userCount").textContent = snaps.size;
+
+      const rows = [];
+      snaps.forEach(s => {
+        const d = s.data();
+        rows.push(`
+          <tr>
+            <td>${fmt(d.createdAt)}</td>
+            <td class="muted" style="font-family:ui-monospace,monospace">${s.id}</td>
+            <td><span class="pill">${(d.inviteCode||"")}</span></td>
+            <td>${d.referredBy ? `<span class="pill">${d.referredBy}</span>` : `<span class="muted">—</span>`}</td>
+          </tr>
+        `);
+      });
+      $("userRows").innerHTML = rows.join("") || `<tr><td colspan="4" class="muted">No users yet.</td></tr>`;
+    }
+
+    onAuthStateChanged(auth, async (user) => {
       if(!user){
-        authBox.textContent = "❌ Not logged in. Please login on the main site first.";
+        $("gate").innerHTML = `<div class="warn">Please login first on <a href="index.html" style="color:#20d3b3;font-weight:900;">index.html</a>.</div>`;
         return;
       }
 
-      const adminSnap = await getDoc(doc(db, "admins", user.uid));
-      if(!adminSnap.exists()){
-        authBox.textContent = "❌ Access denied. You are not an admin.";
+      $("who").textContent = user.email || user.uid;
+
+      const ok = await isAdmin(user.uid);
+      if(!ok){
+        $("gate").innerHTML = `<div class="warn">
+          Access denied. You are not an admin.
+          <div class="muted" style="margin-top:6px">Ask the owner to add your UID in Firestore → collection <b>admins</b>.</div>
+        </div>`;
         return;
       }
 
-      authBox.textContent = "✅ Admin access granted.";
-      summary.style.display = "";
-      clicksCard.style.display = "";
-      usersCard.style.display = "";
+      // show dashboard
+      $("gate").style.display = "none";
+      $("stats").style.display = "block";
+      $("clicksCard").style.display = "block";
+      $("usersCard").style.display = "block";
 
-      // Load latest clicks
-      const clicksQ = query(collection(db, "inviteClicks"), orderBy("createdAt", "desc"), limit(25));
-      const clicksSnap = await getDocs(clicksQ);
-      document.getElementById("clicksRows").innerHTML = clicksSnap.docs.map(d=>{
-        const x = d.data();
-        return `<tr><td>${x.ref || ""}</td><td>${tsToText(x.createdAt)}</td><td style="max-width:420px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap">${(x.ua||"")}</td></tr>`;
-      }).join("");
-
-      // Load latest users
-      const usersQ = query(collection(db, "users"), orderBy("createdAt", "desc"), limit(25));
-      const usersSnap = await getDocs(usersQ);
-      document.getElementById("usersRows").innerHTML = usersSnap.docs.map(d=>{
-        const x = d.data();
-        return `<tr><td>${x.email || ""}</td><td>${x.referredBy || ""}</td><td>${tsToText(x.createdAt)}</td></tr>`;
-      }).join("");
+      await loadClicks();
+      await loadUsers();
     });
   </script>
 </body>
