@@ -2,352 +2,450 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>UMOJA V2 • Register / Login</title>
+
   <style>
     :root{
       --bg:#07181a;
-      --card: rgba(255,255,255,.06);
+      --panel: rgba(255,255,255,.06);
       --stroke: rgba(255,255,255,.12);
       --text:#eaf6f5;
       --muted: rgba(234,246,245,.70);
-      --accent:#22c1a2;
-      --accent2:#1aa08a;
+      --accent:#20d3b3;
+      --accent2:#0ea68c;
+      --shadow: 0 18px 60px rgba(0,0,0,.45);
+      --radius: 22px;
     }
     *{box-sizing:border-box}
     body{
-      margin:0; min-height:100vh;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
-      background: radial-gradient(900px 500px at 50% -10%, rgba(34,193,162,.20), transparent 55%),
-                  radial-gradient(700px 400px at 50% 10%, rgba(255,255,255,.05), transparent 60%),
-                  linear-gradient(180deg, #062124, #051517);
+      margin:0;
+      min-height:100vh;
       color:var(--text);
-      display:flex; align-items:center; justify-content:center;
-      padding:18px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      background:
+        radial-gradient(900px 520px at 50% -10%, rgba(32,211,179,.20), transparent 60%),
+        radial-gradient(700px 520px at 50% 20%, rgba(255,255,255,.06), transparent 60%),
+        linear-gradient(180deg, #052225, #031012 70%, #020a0c);
+      display:flex;
+      align-items:flex-start;
+      justify-content:center;
+      padding:26px 14px 40px;
     }
-    .wrap{width:min(520px, 100%)}
-    .top{display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:14px;}
+
+    .wrap{ width:min(520px, 100%); }
+    .brand{
+      text-align:center;
+      margin:6px 0 16px;
+    }
     .logo{
-      width:86px;height:86px;border-radius:50%;
-      background: rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.10);
+      width:86px;height:86px;
+      border-radius:50%;
+      margin:0 auto 10px;
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.16);
       display:flex;align-items:center;justify-content:center;
+      box-shadow: var(--shadow);
       overflow:hidden;
     }
-    .logo img{width:100%;height:100%;object-fit:cover}
-    h1{margin:0; font-size:28px; letter-spacing:.08em}
-    .sub{margin:0; color:var(--muted); font-size:14px}
+    .logo img{ width:100%; height:100%; object-fit:cover; display:block; }
+    h1{margin:6px 0 6px; font-size:34px; letter-spacing:.08em;}
+    .sub{color:var(--muted); letter-spacing:.08em; font-size:14px}
+
     .card{
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      border-radius: 22px;
-      padding: 18px;
-      backdrop-filter: blur(10px);
-      box-shadow: 0 20px 70px rgba(0,0,0,.45);
+      margin-top:18px;
+      background: var(--panel);
+      border:1px solid var(--stroke);
+      border-radius: var(--radius);
+      box-shadow: var(--shadow);
+      overflow:hidden;
     }
-    .tabs{display:flex; gap:10px; background:rgba(0,0,0,.15); padding:10px; border-radius:16px; border:1px solid rgba(255,255,255,.08)}
+    .tabs{
+      display:flex;
+      gap:10px;
+      padding:16px 16px 10px;
+      align-items:flex-end;
+      justify-content:center;
+    }
     .tab{
-      flex:1; text-align:center; padding:12px 10px;
-      border-radius:14px; cursor:pointer; user-select:none;
-      color:var(--muted); font-weight:700;
+      cursor:pointer;
+      padding:10px 18px;
+      border-radius: 999px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(0,0,0,.12);
+      color: var(--muted);
+      font-weight:700;
+      min-width:140px;
+      text-align:center;
+      user-select:none;
     }
     .tab.active{
-      color:var(--text);
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.10);
+      background: rgba(32,211,179,.12);
+      color: var(--text);
+      border-color: rgba(32,211,179,.35);
+      box-shadow: 0 8px 30px rgba(32,211,179,.10);
     }
-    .form{margin-top:14px; display:grid; gap:12px}
+
+    .body{ padding: 14px 16px 18px; }
     .field{
-      display:flex; align-items:center; gap:10px;
+      margin:12px 0;
       background: rgba(0,0,0,.18);
       border:1px solid rgba(255,255,255,.10);
-      border-radius: 16px;
-      padding: 12px 14px;
+      border-radius: 18px;
+      padding:14px 14px;
+      display:flex;
+      align-items:center;
+      gap:10px;
     }
-    .field input{
+    input{
       flex:1;
-      background:transparent;
+      background: transparent;
       border:0;
       outline:none;
-      color:var(--text);
-      font-size:16px;
+      color: var(--text);
+      font-size:18px;
     }
-    .field button{
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      color:var(--text);
-      border-radius: 999px;
-      padding:10px 14px;
-      cursor:pointer;
-      font-weight:700;
-    }
+    input::placeholder{ color: rgba(234,246,245,.45); }
     .btn{
       width:100%;
+      margin-top:14px;
       padding:16px 14px;
-      border-radius: 16px;
-      border: 0;
-      cursor:pointer;
-      font-size:18px;
+      border-radius: 18px;
+      border:0;
       font-weight:900;
-      color:#06211f;
+      letter-spacing:.02em;
+      font-size:18px;
+      cursor:pointer;
       background: linear-gradient(180deg, var(--accent), var(--accent2));
-      box-shadow: 0 12px 26px rgba(34,193,162,.22);
+      color:#062526;
+      box-shadow: 0 14px 50px rgba(32,211,179,.22);
     }
-    .mini{margin-top:10px; font-size:13px; color:var(--muted); text-align:center}
-    .mini a{color:var(--accent); text-decoration:none; font-weight:800}
-    .box{
+    .btn:disabled{ opacity:.55; cursor:not-allowed; }
+
+    .row{
+      display:flex;
+      gap:10px;
+      align-items:center;
+      justify-content:space-between;
+      margin-top:10px;
+      color: var(--muted);
+      font-size:14px;
+    }
+    .link{
+      color: var(--accent);
+      text-decoration:none;
+      font-weight:700;
+      cursor:pointer;
+    }
+
+    .notice{
+      margin-top:14px;
+      padding:12px 14px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.18);
+      border: 1px solid rgba(255,255,255,.10);
+      color: var(--muted);
+      font-size:14px;
+      line-height:1.35;
+    }
+    .refBox{
+      margin-top:12px;
+      padding:12px 14px;
+      border-radius: 16px;
+      background: rgba(0,0,0,.22);
+      border:1px solid rgba(32,211,179,.22);
+    }
+    .refLabel{ color: rgba(234,246,245,.65); font-size:13px; margin-bottom:6px; }
+    .refValue{
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size:18px;
+      letter-spacing:.12em;
+      color:#d6fff8;
+    }
+    .inviteWrap{
       margin-top:12px;
       padding:12px 14px;
       border-radius: 16px;
       background: rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.10);
-      overflow:hidden;
+      border: 1px solid rgba(255,255,255,.10);
+      display:none;
     }
-    .box .label{font-size:12px; color:var(--muted); margin-bottom:6px}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
-    .row{display:flex; gap:10px; align-items:center}
-    .row .copy{
-      margin-left:auto;
-      background: rgba(255,255,255,.08);
-      border:1px solid rgba(255,255,255,.12);
-      color:var(--text);
-      border-radius: 12px;
-      padding:10px 12px;
-      cursor:pointer;
+    .inviteWrap.show{ display:block; }
+    .inviteTitle{ font-weight:900; margin-bottom:8px; }
+    .inviteUrl{
+      word-break:break-all;
+      color: rgba(234,246,245,.85);
+      font-size:13px;
+      line-height:1.35;
+      margin-bottom:10px;
+    }
+    .copyBtn{
+      width:100%;
+      padding:12px 14px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.06);
+      color: var(--text);
       font-weight:800;
-      white-space:nowrap;
+      cursor:pointer;
     }
-    .status{margin-top:10px; font-size:14px; color:var(--muted); min-height:18px}
+
+    /* Mobile improvement */
+    @media (max-width:420px){
+      h1{font-size:30px}
+      .tab{min-width:0; flex:1}
+      input{font-size:16px}
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
-    <div class="top">
+    <div class="brand">
       <div class="logo">
-        <!-- Replace with your logo path -->
-        <img src="umoja-logo.png" alt="UMOJA" onerror="this.style.display='none'">
+        <!-- Put your logo file in the repo: /assets/umoja.png (or change path) -->
+        <img src="assets/umoja.png" alt="UMOJA logo" onerror="this.style.display='none'">
       </div>
       <h1>UMOJA V2</h1>
-      <p class="sub">Official Landing • Verify • Invest • Invite</p>
+      <div class="sub">Official Landing • Verify • Invest • Invite</div>
     </div>
 
     <div class="card">
       <div class="tabs">
-        <div class="tab active" id="tabRegister">Register</div>
-        <div class="tab" id="tabLogin">Login</div>
+        <div id="tabRegister" class="tab active">Register</div>
+        <div id="tabLogin" class="tab">Login</div>
       </div>
 
-      <div class="form" id="registerForm">
+      <div class="body">
         <div class="field">
-          <input id="regEmail" placeholder="Email" autocomplete="email" />
-        </div>
-        <div class="field">
-          <input id="regPass" placeholder="Password" type="password" autocomplete="new-password" />
-          <button type="button" id="regToggle">Show</button>
-        </div>
-        <button class="btn" id="btnRegister">Create Account</button>
-
-        <div class="box" id="refBox" style="display:none">
-          <div class="label">Referral detected from link:</div>
-          <div class="mono" id="refValue"></div>
-        </div>
-
-        <div class="mini">By continuing you agree to the <a href="#" onclick="alert('Add your terms page later.');return false;">Registration Agreement</a>.</div>
-        <div class="status" id="regStatus"></div>
-      </div>
-
-      <div class="form" id="loginForm" style="display:none">
-        <div class="field">
-          <input id="logEmail" placeholder="Email" autocomplete="email" />
+          <input id="emailPhone" placeholder="Email or Phone" autocomplete="username" />
         </div>
         <div class="field">
-          <input id="logPass" placeholder="Password" type="password" autocomplete="current-password" />
-          <button type="button" id="logToggle">Show</button>
+          <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
+          <a class="link" id="togglePw">Show</a>
         </div>
-        <button class="btn" id="btnLogin">Login</button>
-        <div class="status" id="logStatus"></div>
 
-        <div class="box" id="inviteBox" style="display:none">
-          <div class="label">Your invitation link:</div>
-          <div class="row">
-            <div class="mono" id="inviteLink" style="word-break:break-all"></div>
-            <button class="copy" id="copyInvite">Copy</button>
-          </div>
-          <div class="mini" style="text-align:left;margin-top:8px;color:var(--muted)">
-            Share this link. Every open is logged and registrations will attach to your code.
+        <button id="actionBtn" class="btn">Create Account</button>
+
+        <!-- ✅ Removed the highlighted “Email works…” UI section on purpose -->
+
+        <div id="refDetected" class="refBox" style="display:none">
+          <div class="refLabel">Referral detected from link:</div>
+          <div id="refValue" class="refValue"></div>
+        </div>
+
+        <div id="inviteWrap" class="inviteWrap">
+          <div class="inviteTitle">Your Invitation Link</div>
+          <div id="inviteUrl" class="inviteUrl"></div>
+          <button id="copyInvite" class="copyBtn">Copy Link</button>
+          <div class="row" style="margin-top:10px">
+            <span>Admin dashboard:</span>
+            <a class="link" href="admin.html">admin.html</a>
           </div>
         </div>
 
-        <div class="box" id="adminBox" style="display:none">
-          <div class="label">Admin</div>
-          <div class="row">
-            <div class="mono">You are an admin.</div>
-            <button class="copy" onclick="window.location.href='admin.html'">Open Admin Dashboard</button>
-          </div>
+        <div class="notice">
+          By continuing you agree to the <span class="link">Registration Agreement</span>.
         </div>
       </div>
     </div>
   </div>
 
-  <!-- MODULE SCRIPT (this is the one you were asking about) -->
   <script type="module">
-    // ✅ Firebase v10+ modular imports
+    // ========= Firebase (Modular SDK) =========
     import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-    import { getFirestore, doc, getDoc, setDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      onAuthStateChanged
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+    import {
+      getFirestore,
+      doc,
+      getDoc,
+      setDoc,
+      addDoc,
+      collection,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-    // ✅ Replace this with Firebase Console -> Project settings -> General -> Your apps -> Web app config
-    const firebaseConfig = PASTE_YOUR_FIREBASE_CONFIG_HERE;
+    // ✅ YOUR Firebase config (from Firebase Console → Project settings → Your apps → Web)
+    const firebaseConfig = {
+      apiKey: "AIzaSyCbQ9fNYrq-qko-GUhKi3xSMkb_IKhrBBo",
+      authDomain: "umoja-v2-landing.firebaseapp.com",
+      projectId: "umoja-v2-landing",
+      storageBucket: "umoja-v2-landing.firebasestorage.app",
+      messagingSenderId: "964715983746",
+      appId: "1:964715983746:web:b4bb1615f35d773ae7159b"
+    };
 
     const app = initializeApp(firebaseConfig);
     const auth = getAuth(app);
     const db = getFirestore(app);
 
-    // --- UI helpers
-    const $ = (id)=>document.getElementById(id);
+    // ========= Helpers =========
+    const $ = (id) => document.getElementById(id);
+
     const tabRegister = $("tabRegister");
     const tabLogin = $("tabLogin");
-    const registerForm = $("registerForm");
-    const loginForm = $("loginForm");
+    const actionBtn = $("actionBtn");
 
-    function showRegister(){
-      tabRegister.classList.add("active");
-      tabLogin.classList.remove("active");
-      registerForm.style.display = "";
-      loginForm.style.display = "none";
-    }
-    function showLogin(){
-      tabLogin.classList.add("active");
-      tabRegister.classList.remove("active");
-      loginForm.style.display = "";
-      registerForm.style.display = "none";
-    }
-    tabRegister.onclick = showRegister;
-    tabLogin.onclick = showLogin;
+    let mode = "register"; // register | login
 
-    function togglePass(inputId, btnId){
-      const inp = $(inputId), btn = $(btnId);
-      btn.onclick = ()=>{
-        const isPass = inp.type === "password";
-        inp.type = isPass ? "text" : "password";
-        btn.textContent = isPass ? "Hide" : "Show";
-      };
+    function setMode(next){
+      mode = next;
+      if(mode === "register"){
+        tabRegister.classList.add("active");
+        tabLogin.classList.remove("active");
+        actionBtn.textContent = "Create Account";
+      } else {
+        tabRegister.classList.remove("active");
+        tabLogin.classList.add("active");
+        actionBtn.textContent = "Login";
+      }
     }
-    togglePass("regPass","regToggle");
-    togglePass("logPass","logToggle");
 
-    // --- Referral from URL
+    tabRegister.onclick = () => setMode("register");
+    tabLogin.onclick = () => setMode("login");
+
+    $("togglePw").onclick = () => {
+      const pw = $("password");
+      pw.type = pw.type === "password" ? "text" : "password";
+      $("togglePw").textContent = pw.type === "password" ? "Show" : "Hide";
+    };
+
+    // Accept email OR phone, but Firebase Email/Password requires an email.
+    // We'll allow phone by converting it to a "phone@umoja.local" email alias.
+    function normalizeLogin(value){
+      const v = (value || "").trim();
+      if(!v) return { email:null, raw:null };
+      const isEmail = v.includes("@");
+      if(isEmail) return { email: v.toLowerCase(), raw: v };
+
+      // phone alias
+      const digits = v.replace(/[^\d+]/g,"");
+      return { email: `${digits.replace("+","") }@umoja.local`, raw: v };
+    }
+
     function getRefFromUrl(){
       const p = new URLSearchParams(window.location.search);
-      return (p.get("ref") || "").trim() || null;
-    }
-    const ref = getRefFromUrl();
-    if(ref){
-      $("refBox").style.display = "";
-      $("refValue").textContent = ref;
+      return (p.get("ref") || "").trim().toUpperCase() || null;
     }
 
-    // --- Log every invite open/click (when a user opens a ?ref= link)
-    async function logInviteOpen(){
+    // Generate a stable invite code per user (not per click)
+    // Clicks are logged separately (auto-generated click records)
+    function makeInviteCode(uid){
+      // Short, readable code derived from uid
+      return ("UMJ" + uid.replace(/[^a-zA-Z0-9]/g,"").slice(0,7)).toUpperCase();
+    }
+
+    function baseSiteUrl(){
+      // Your GitHub Pages base (works even if you change repo name later)
+      return window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, "/");
+    }
+
+    async function logInviteOpenIfAny(){
+      const ref = getRefFromUrl();
       if(!ref) return;
+
+      // show UI
+      $("refDetected").style.display = "block";
+      $("refValue").textContent = ref;
+
+      // log open/click event (auto-generated doc ID)
       try{
-        await addDoc(collection(db, "inviteClicks"), {
+        await addDoc(collection(db, "invite_clicks"), {
           ref,
-          page: location.pathname || "/",
+          page: "index",
+          url: window.location.href,
           ua: navigator.userAgent,
           createdAt: serverTimestamp()
         });
-      }catch(e){
-        // silent fail is ok; don't block page
-        console.warn("invite log failed", e);
+      } catch(e){
+        // don't block user if logging fails
+        console.warn("Invite logging failed:", e);
       }
     }
-    logInviteOpen();
 
-    // --- Invite code generator (per user)
-    function makeInviteCode(uid){
-      const a = uid.slice(0,5).toUpperCase();
-      const b = Math.random().toString(36).slice(2,6).toUpperCase();
-      return `UMJ-${a}${b}`;
-    }
+    await logInviteOpenIfAny();
 
-    function inviteUrl(code){
-      return `${location.origin}${location.pathname}?ref=${encodeURIComponent(code)}`;
-    }
-
-    // --- Register
-    $("btnRegister").onclick = async ()=>{
-      $("regStatus").textContent = "Creating account...";
-      const email = $("regEmail").value.trim();
-      const pass = $("regPass").value;
+    // ========= Auth Actions =========
+    actionBtn.onclick = async () => {
+      actionBtn.disabled = true;
 
       try{
-        const cred = await createUserWithEmailAndPassword(auth, email, pass);
-        const user = cred.user;
+        const { email } = normalizeLogin($("emailPhone").value);
+        const pass = $("password").value;
 
-        // attach referral + store user profile
-        await setDoc(doc(db, "users", user.uid), {
-          email,
-          referredBy: getRefFromUrl(),
-          createdAt: serverTimestamp()
-        }, { merge:true });
+        if(!email) throw new Error("Please enter email or phone.");
+        if(!pass || pass.length < 6) throw new Error("Password must be at least 6 characters.");
 
-        $("regStatus").textContent = "✅ Account created. You can login now.";
-        showLogin();
-        $("logEmail").value = email;
-      }catch(e){
-        $("regStatus").textContent = "❌ " + (e?.message || "Registration failed");
+        if(mode === "register"){
+          const cred = await createUserWithEmailAndPassword(auth, email, pass);
+
+          // Attach ref to user doc + create invite code
+          const ref = getRefFromUrl();
+          const userRef = doc(db, "users", cred.user.uid);
+
+          const inviteCode = makeInviteCode(cred.user.uid);
+
+          await setDoc(userRef, {
+            emailOrPhone: $("emailPhone").value.trim(),
+            emailAlias: email,
+            referredBy: ref || null,
+            inviteCode,
+            createdAt: serverTimestamp()
+          }, { merge: true });
+
+          alert("Account created ✅");
+        } else {
+          await signInWithEmailAndPassword(auth, email, pass);
+          alert("Logged in ✅");
+        }
+      } catch(err){
+        alert(err?.message || String(err));
+      } finally {
+        actionBtn.disabled = false;
       }
     };
 
-    // --- Login
-    $("btnLogin").onclick = async ()=>{
-      $("logStatus").textContent = "Logging in...";
-      const email = $("logEmail").value.trim();
-      const pass = $("logPass").value;
-
-      try{
-        await signInWithEmailAndPassword(auth, email, pass);
-        $("logStatus").textContent = "✅ Logged in.";
-      }catch(e){
-        $("logStatus").textContent = "❌ " + (e?.message || "Login failed");
+    // ========= After login: show invite link =========
+    onAuthStateChanged(auth, async (user) => {
+      if(!user){
+        $("inviteWrap").classList.remove("show");
+        return;
       }
-    };
 
-    // --- After login: ensure inviteCode exists + show link + check admin
-    onAuthStateChanged(auth, async (user)=>{
-      $("inviteBox").style.display = "none";
-      $("adminBox").style.display = "none";
-      if(!user) return;
-
-      // Ensure user doc exists + has inviteCode
+      // ensure user doc exists + invite code exists
       const userRef = doc(db, "users", user.uid);
       const snap = await getDoc(userRef);
-      let inviteCode = snap.exists() ? (snap.data().inviteCode || null) : null;
 
-      if(!inviteCode){
-        inviteCode = makeInviteCode(user.uid);
-        await setDoc(userRef, { inviteCode, updatedAt: serverTimestamp() }, { merge:true });
+      let inviteCode = makeInviteCode(user.uid);
+      if(snap.exists() && snap.data()?.inviteCode) inviteCode = snap.data().inviteCode;
+
+      if(!snap.exists()){
+        await setDoc(userRef, {
+          emailOrPhone: user.email || null,
+          inviteCode,
+          createdAt: serverTimestamp()
+        }, { merge:true });
+      } else if(!snap.data()?.inviteCode){
+        await setDoc(userRef, { inviteCode }, { merge:true });
       }
 
-      const link = inviteUrl(inviteCode);
-      $("inviteLink").textContent = link;
-      $("inviteBox").style.display = "";
+      const inviteLink = `${baseSiteUrl()}?ref=${encodeURIComponent(inviteCode)}`;
+      $("inviteUrl").textContent = inviteLink;
+      $("inviteWrap").classList.add("show");
 
-      $("copyInvite").onclick = async ()=>{
+      $("copyInvite").onclick = async () => {
         try{
-          await navigator.clipboard.writeText(link);
-          $("logStatus").textContent = "✅ Invite link copied.";
-        }catch{
-          alert(link);
+          await navigator.clipboard.writeText(inviteLink);
+          alert("Copied ✅");
+        } catch {
+          alert("Copy failed. You can manually copy it from the screen.");
         }
       };
-
-      // Admin check: admins/{uid} exists
-      const adminSnap = await getDoc(doc(db, "admins", user.uid));
-      if(adminSnap.exists()){
-        $("adminBox").style.display = "";
-      }
     });
   </script>
 </body>
