@@ -4,178 +4,131 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>UMOJA V2 • Register / Login</title>
-
   <style>
     :root{
       --bg:#07181a;
-      --card: rgba(255,255,255,.07);
+      --card: rgba(255,255,255,.06);
       --stroke: rgba(255,255,255,.12);
       --text:#eaf6f5;
-      --muted: rgba(234,246,245,.72);
-      --brand:#23c7a7;
-      --brand2:#1aa68b;
-      --danger:#ff5a76;
-      --shadow: 0 18px 50px rgba(0,0,0,.35);
-      --radius: 22px;
+      --muted: rgba(234,246,245,.70);
+      --accent:#22c1a2;
+      --accent2:#1aa08a;
     }
     *{box-sizing:border-box}
     body{
-      margin:0;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      margin:0; min-height:100vh;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial;
+      background: radial-gradient(900px 500px at 50% -10%, rgba(34,193,162,.20), transparent 55%),
+                  radial-gradient(700px 400px at 50% 10%, rgba(255,255,255,.05), transparent 60%),
+                  linear-gradient(180deg, #062124, #051517);
       color:var(--text);
-      background:
-        radial-gradient(1000px 600px at 50% -50%, rgba(35,199,167,.35), transparent 60%),
-        radial-gradient(900px 600px at 110% 30%, rgba(120,255,220,.18), transparent 55%),
-        linear-gradient(180deg, #0a2a2c 0%, #061314 100%);
-      min-height:100svh;
-      display:flex;
-      justify-content:center;
-      padding:24px 14px 36px;
+      display:flex; align-items:center; justify-content:center;
+      padding:18px;
     }
-    .wrap{width:100%; max-width:440px}
-    .top{
-      text-align:center;
-      padding-top:8px;
-      padding-bottom:16px;
-    }
-    .logoCircle{
-      width:86px;height:86px;
-      margin:0 auto 12px;
-      border-radius:999px;
-      background: radial-gradient(circle at 30% 25%, rgba(35,199,167,.35), transparent 50%),
-                  rgba(0,0,0,.25);
-      border:1px solid rgba(255,255,255,.16);
-      box-shadow: 0 12px 30px rgba(0,0,0,.35);
+    .wrap{width:min(520px, 100%)}
+    .top{display:flex; flex-direction:column; align-items:center; gap:10px; margin-bottom:14px;}
+    .logo{
+      width:86px;height:86px;border-radius:50%;
+      background: rgba(0,0,0,.25);
+      border:1px solid rgba(255,255,255,.10);
       display:flex;align-items:center;justify-content:center;
       overflow:hidden;
     }
-    .logoCircle img{width:100%;height:100%;object-fit:cover;display:block}
-    .title{font-weight:800; letter-spacing:.08em; font-size:26px; margin:0}
-    .sub{margin:6px 0 0; color:var(--muted); font-size:14px}
+    .logo img{width:100%;height:100%;object-fit:cover}
+    h1{margin:0; font-size:28px; letter-spacing:.08em}
+    .sub{margin:0; color:var(--muted); font-size:14px}
     .card{
       background: var(--card);
-      border:1px solid var(--stroke);
-      border-radius: var(--radius);
-      box-shadow: var(--shadow);
-      overflow:hidden;
+      border: 1px solid var(--stroke);
+      border-radius: 22px;
+      padding: 18px;
       backdrop-filter: blur(10px);
+      box-shadow: 0 20px 70px rgba(0,0,0,.45);
     }
-    .tabs{
-      display:flex;
-      gap:8px;
-      padding:14px 14px 0;
-      justify-content:center;
-    }
+    .tabs{display:flex; gap:10px; background:rgba(0,0,0,.15); padding:10px; border-radius:16px; border:1px solid rgba(255,255,255,.08)}
     .tab{
-      flex:1;
-      max-width:180px;
-      text-align:center;
-      padding:12px 10px;
-      border-radius:14px;
-      cursor:pointer;
-      font-weight:700;
-      color:rgba(234,246,245,.65);
-      background: rgba(255,255,255,.04);
-      border:1px solid rgba(255,255,255,.08);
-      user-select:none;
+      flex:1; text-align:center; padding:12px 10px;
+      border-radius:14px; cursor:pointer; user-select:none;
+      color:var(--muted); font-weight:700;
     }
     .tab.active{
       color:var(--text);
-      background: rgba(35,199,167,.14);
-      border-color: rgba(35,199,167,.32);
-    }
-    .panel{padding:14px}
-    .field{
-      margin:12px 0;
-      background: rgba(255,255,255,.04);
+      background: rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.10);
-      border-radius:16px;
-      padding:12px;
-      display:flex;
-      align-items:center;
-      gap:10px;
     }
-    input{
-      width:100%;
-      font-size:16px;
-      color:var(--text);
+    .form{margin-top:14px; display:grid; gap:12px}
+    .field{
+      display:flex; align-items:center; gap:10px;
+      background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.10);
+      border-radius: 16px;
+      padding: 12px 14px;
+    }
+    .field input{
+      flex:1;
       background:transparent;
-      border:none;
+      border:0;
       outline:none;
+      color:var(--text);
+      font-size:16px;
+    }
+    .field button{
+      background: rgba(255,255,255,.08);
+      border:1px solid rgba(255,255,255,.12);
+      color:var(--text);
+      border-radius: 999px;
+      padding:10px 14px;
+      cursor:pointer;
+      font-weight:700;
     }
     .btn{
       width:100%;
+      padding:16px 14px;
+      border-radius: 16px;
+      border: 0;
+      cursor:pointer;
+      font-size:18px;
+      font-weight:900;
+      color:#06211f;
+      background: linear-gradient(180deg, var(--accent), var(--accent2));
+      box-shadow: 0 12px 26px rgba(34,193,162,.22);
+    }
+    .mini{margin-top:10px; font-size:13px; color:var(--muted); text-align:center}
+    .mini a{color:var(--accent); text-decoration:none; font-weight:800}
+    .box{
       margin-top:12px;
-      border:none;
-      border-radius:16px;
-      padding:14px 14px;
-      font-size:16px;
-      font-weight:800;
-      cursor:pointer;
-      color:#06201b;
-      background: linear-gradient(180deg, var(--brand) 0%, var(--brand2) 100%);
-      box-shadow: 0 12px 28px rgba(35,199,167,.25);
-    }
-    .btn:disabled{opacity:.55; cursor:not-allowed}
-    .row{
-      display:flex;
-      gap:10px;
-      margin-top:10px;
-      flex-wrap:wrap;
-    }
-    .smallBtn{
-      flex:1;
-      min-width:140px;
-      border:1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.05);
-      color:var(--text);
-      border-radius:14px;
-      padding:12px;
-      font-weight:700;
-      cursor:pointer;
-    }
-    .msg{
-      margin-top:10px;
-      font-size:14px;
-      color:rgba(234,246,245,.8);
-      line-height:1.35;
-    }
-    .msg.err{color:#ffd1d8}
-    .divider{
-      margin:14px 0;
-      height:1px;
-      background: rgba(255,255,255,.10);
-    }
-    .inviteBox{
+      padding:12px 14px;
+      border-radius: 16px;
       background: rgba(0,0,0,.18);
+      border:1px solid rgba(255,255,255,.10);
+      overflow:hidden;
+    }
+    .box .label{font-size:12px; color:var(--muted); margin-bottom:6px}
+    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;}
+    .row{display:flex; gap:10px; align-items:center}
+    .row .copy{
+      margin-left:auto;
+      background: rgba(255,255,255,.08);
       border:1px solid rgba(255,255,255,.12);
-      border-radius:16px;
-      padding:12px;
-      margin-top:10px;
+      color:var(--text);
+      border-radius: 12px;
+      padding:10px 12px;
+      cursor:pointer;
+      font-weight:800;
+      white-space:nowrap;
     }
-    .inviteLabel{font-size:13px; color:var(--muted); margin-bottom:8px}
-    .mono{font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace}
-    .copyRow{display:flex; gap:10px; align-items:center}
-    .copyRow .smallBtn{min-width:110px}
-    .footer{
-      text-align:center;
-      font-size:13px;
-      color:rgba(234,246,245,.72);
-      padding:12px 14px 16px;
-    }
-    .link{color:var(--brand); font-weight:800; text-decoration:none}
+    .status{margin-top:10px; font-size:14px; color:var(--muted); min-height:18px}
   </style>
 </head>
-
 <body>
   <div class="wrap">
     <div class="top">
-      <div class="logoCircle">
-        <!-- Replace src with your logo path -->
-        <img src="assets/umoja-logo.png" alt="UMOJA" onerror="this.style.display='none'">
+      <div class="logo">
+        <!-- Replace with your logo path -->
+        <img src="umoja-logo.png" alt="UMOJA" onerror="this.style.display='none'">
       </div>
-      <h1 class="title">UMOJA V2</h1>
-      <div class="sub">Official Landing • Verify • Invest • Invite</div>
+      <h1>UMOJA V2</h1>
+      <p class="sub">Official Landing • Verify • Invest • Invite</p>
     </div>
 
     <div class="card">
@@ -184,271 +137,218 @@
         <div class="tab" id="tabLogin">Login</div>
       </div>
 
-      <div class="panel" id="panelRegister">
+      <div class="form" id="registerForm">
         <div class="field">
-          <input id="regEmailPhone" placeholder="Email or Phone" autocomplete="username">
+          <input id="regEmail" placeholder="Email" autocomplete="email" />
         </div>
         <div class="field">
-          <input id="regPass" placeholder="Password" type="password" autocomplete="new-password">
+          <input id="regPass" placeholder="Password" type="password" autocomplete="new-password" />
+          <button type="button" id="regToggle">Show</button>
         </div>
-
         <button class="btn" id="btnRegister">Create Account</button>
 
-        <div class="msg" id="regMsg"></div>
-
-        <div class="divider"></div>
-
-        <div class="inviteBox">
-          <div class="inviteLabel">Referral detected from link:</div>
-          <div class="mono" id="refDetected">None</div>
+        <div class="box" id="refBox" style="display:none">
+          <div class="label">Referral detected from link:</div>
+          <div class="mono" id="refValue"></div>
         </div>
 
-        <div class="footer">
-          By continuing you agree to the <a class="link" href="#" onclick="alert('Add your Registration Agreement page/link here.');return false;">Registration Agreement</a>.
-        </div>
+        <div class="mini">By continuing you agree to the <a href="#" onclick="alert('Add your terms page later.');return false;">Registration Agreement</a>.</div>
+        <div class="status" id="regStatus"></div>
       </div>
 
-      <div class="panel" id="panelLogin" style="display:none">
+      <div class="form" id="loginForm" style="display:none">
         <div class="field">
-          <input id="logEmailPhone" placeholder="Email or Phone" autocomplete="username">
+          <input id="logEmail" placeholder="Email" autocomplete="email" />
         </div>
         <div class="field">
-          <input id="logPass" placeholder="Password" type="password" autocomplete="current-password">
+          <input id="logPass" placeholder="Password" type="password" autocomplete="current-password" />
+          <button type="button" id="logToggle">Show</button>
         </div>
-
         <button class="btn" id="btnLogin">Login</button>
+        <div class="status" id="logStatus"></div>
 
-        <div class="row">
-          <button class="smallBtn" id="btnLogout" style="display:none">Logout</button>
-          <button class="smallBtn" id="btnOpenHow" onclick="alert('Add your How to Invest guide here (MetaMask + Import token).')">How to Invest</button>
+        <div class="box" id="inviteBox" style="display:none">
+          <div class="label">Your invitation link:</div>
+          <div class="row">
+            <div class="mono" id="inviteLink" style="word-break:break-all"></div>
+            <button class="copy" id="copyInvite">Copy</button>
+          </div>
+          <div class="mini" style="text-align:left;margin-top:8px;color:var(--muted)">
+            Share this link. Every open is logged and registrations will attach to your code.
+          </div>
         </div>
 
-        <div class="msg" id="logMsg"></div>
-
-        <div class="inviteBox" id="myInviteBox" style="display:none">
-          <div class="inviteLabel">Your invitation link:</div>
-          <div class="copyRow">
-            <div class="mono" id="myInviteLink" style="word-break:break-all"></div>
-          </div>
+        <div class="box" id="adminBox" style="display:none">
+          <div class="label">Admin</div>
           <div class="row">
-            <button class="smallBtn" id="btnCopyInvite">Copy Link</button>
-            <button class="smallBtn" id="btnTestInvite">Open Link</button>
+            <div class="mono">You are an admin.</div>
+            <button class="copy" onclick="window.location.href='admin.html'">Open Admin Dashboard</button>
           </div>
-          <div class="msg" id="inviteMsg"></div>
         </div>
       </div>
     </div>
   </div>
 
-  <!-- Firebase compat SDK -->
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-auth-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore-compat.js"></script>
+  <!-- MODULE SCRIPT (this is the one you were asking about) -->
+  <script type="module">
+    // ✅ Firebase v10+ modular imports
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import { getAuth, createUserWithEmailAndPassword, signInWithEmailAndPassword, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
+    import { getFirestore, doc, getDoc, setDoc, addDoc, collection, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-  <script>
-    // ✅ Your Firebase config (keep yours)
-   const firebaseConfig = {
-  apiKey: "AIzaSyCbQ9fNYrq_qko-GUhKi3xSMkb_IKhrBB0",
-  authDomain: "umoja-v2-landing.firebaseapp.com",
-  projectId: "umoja-v2-landing",
-  storageBucket: "umoja-v2-landing.firebasestorage.app",
-  messagingSenderId: "964715983746",
-  appId: "1:964715983746:web:b4bb1615f35d773ae7159b"
-};
+    // ✅ Replace this with Firebase Console -> Project settings -> General -> Your apps -> Web app config
+    const firebaseConfig = PASTE_YOUR_FIREBASE_CONFIG_HERE;
 
-    firebase.initializeApp(firebaseConfig);
-    const auth = firebase.auth();
-    const db = firebase.firestore();
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-    // ---------- UI helpers ----------
-    const tabRegister = document.getElementById('tabRegister');
-    const tabLogin    = document.getElementById('tabLogin');
-    const panelRegister = document.getElementById('panelRegister');
-    const panelLogin    = document.getElementById('panelLogin');
+    // --- UI helpers
+    const $ = (id)=>document.getElementById(id);
+    const tabRegister = $("tabRegister");
+    const tabLogin = $("tabLogin");
+    const registerForm = $("registerForm");
+    const loginForm = $("loginForm");
 
-    function showTab(which){
-      const reg = which === 'register';
-      tabRegister.classList.toggle('active', reg);
-      tabLogin.classList.toggle('active', !reg);
-      panelRegister.style.display = reg ? 'block' : 'none';
-      panelLogin.style.display = reg ? 'none' : 'block';
-      clearMsgs();
+    function showRegister(){
+      tabRegister.classList.add("active");
+      tabLogin.classList.remove("active");
+      registerForm.style.display = "";
+      loginForm.style.display = "none";
     }
-    function clearMsgs(){
-      document.getElementById('regMsg').textContent = '';
-      document.getElementById('logMsg').textContent = '';
-      document.getElementById('inviteMsg').textContent = '';
+    function showLogin(){
+      tabLogin.classList.add("active");
+      tabRegister.classList.remove("active");
+      loginForm.style.display = "";
+      registerForm.style.display = "none";
     }
-    tabRegister.onclick = () => showTab('register');
-    tabLogin.onclick    = () => showTab('login');
+    tabRegister.onclick = showRegister;
+    tabLogin.onclick = showLogin;
 
-    // ---------- Referral (from URL) ----------
+    function togglePass(inputId, btnId){
+      const inp = $(inputId), btn = $(btnId);
+      btn.onclick = ()=>{
+        const isPass = inp.type === "password";
+        inp.type = isPass ? "text" : "password";
+        btn.textContent = isPass ? "Hide" : "Show";
+      };
+    }
+    togglePass("regPass","regToggle");
+    togglePass("logPass","logToggle");
+
+    // --- Referral from URL
     function getRefFromUrl(){
-      const p = new URLSearchParams(location.search);
-      const ref = (p.get('ref') || '').trim();
-      return ref || null;
+      const p = new URLSearchParams(window.location.search);
+      return (p.get("ref") || "").trim() || null;
     }
-    const detectedRef = getRefFromUrl();
-    document.getElementById('refDetected').textContent = detectedRef ? detectedRef : 'None';
+    const ref = getRefFromUrl();
+    if(ref){
+      $("refBox").style.display = "";
+      $("refValue").textContent = ref;
+    }
 
-    // Log every open/click of an invitation link (only when ref exists)
-    async function logInviteOpenIfAny(){
-      if(!detectedRef) return;
+    // --- Log every invite open/click (when a user opens a ?ref= link)
+    async function logInviteOpen(){
+      if(!ref) return;
       try{
-        await db.collection('inviteClicks').add({
-          ref: detectedRef,
-          page: 'index',
-          uid: auth.currentUser ? auth.currentUser.uid : null,
-          ua: navigator.userAgent || null,
-          url: location.href,
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        await addDoc(collection(db, "inviteClicks"), {
+          ref,
+          page: location.pathname || "/",
+          ua: navigator.userAgent,
+          createdAt: serverTimestamp()
         });
       }catch(e){
-        // ignore logging errors to not block UX
+        // silent fail is ok; don't block page
+        console.warn("invite log failed", e);
       }
     }
-    logInviteOpenIfAny();
+    logInviteOpen();
 
-    // ---------- Auth (Email OR Phone "as email") ----------
-    // For "Phone without SMS", we store it as a fake email:
-    // Example: +15551234567 -> +15551234567@phone.umoja
-    function normalizeEmailOrPhone(v){
-      v = (v || '').trim();
-      if(!v) return null;
-
-      // already an email
-      if(v.includes('@')) return v.toLowerCase();
-
-      // treat as phone
-      const phone = v.replace(/\s+/g,'');
-      return phone + "@phone.umoja";
+    // --- Invite code generator (per user)
+    function makeInviteCode(uid){
+      const a = uid.slice(0,5).toUpperCase();
+      const b = Math.random().toString(36).slice(2,6).toUpperCase();
+      return `UMJ-${a}${b}`;
     }
 
-    // Invitation code for user: use their UID first 8 chars (stable + simple)
-    function makeUserRef(uid){
-      return (uid || '').replace(/[^a-zA-Z0-9]/g,'').slice(0,8);
-    }
-    function buildInviteLink(ref){
-      return location.origin + location.pathname.replace(/\/[^\/]*$/, '/index.html') + "?ref=" + encodeURIComponent(ref);
+    function inviteUrl(code){
+      return `${location.origin}${location.pathname}?ref=${encodeURIComponent(code)}`;
     }
 
-    // ---------- Register ----------
-    document.getElementById('btnRegister').onclick = async () => {
-      clearMsgs();
-      const msg = document.getElementById('regMsg');
-
-      const emailOrPhone = normalizeEmailOrPhone(document.getElementById('regEmailPhone').value);
-      const pass = (document.getElementById('regPass').value || '').trim();
-
-      if(!emailOrPhone || pass.length < 6){
-        msg.textContent = "Enter Email/Phone and a password (min 6 chars).";
-        msg.className = "msg err";
-        return;
-      }
+    // --- Register
+    $("btnRegister").onclick = async ()=>{
+      $("regStatus").textContent = "Creating account...";
+      const email = $("regEmail").value.trim();
+      const pass = $("regPass").value;
 
       try{
-        const cred = await auth.createUserWithEmailAndPassword(emailOrPhone, pass);
+        const cred = await createUserWithEmailAndPassword(auth, email, pass);
         const user = cred.user;
 
-        // ✅ attach ref to user profile
-        await db.collection("users").doc(user.uid).set({
-          emailOrPhone: emailOrPhone,
-          referredBy: detectedRef || null,
-          myRef: makeUserRef(user.uid),
-          createdAt: firebase.firestore.FieldValue.serverTimestamp()
+        // attach referral + store user profile
+        await setDoc(doc(db, "users", user.uid), {
+          email,
+          referredBy: getRefFromUrl(),
+          createdAt: serverTimestamp()
         }, { merge:true });
 
-        msg.textContent = "Account created successfully ✅";
-        msg.className = "msg";
-
-        // Switch to Login tab and show invite link immediately
-        showTab('login');
+        $("regStatus").textContent = "✅ Account created. You can login now.";
+        showLogin();
+        $("logEmail").value = email;
       }catch(e){
-        msg.textContent = e.message || "Registration failed.";
-        msg.className = "msg err";
+        $("regStatus").textContent = "❌ " + (e?.message || "Registration failed");
       }
     };
 
-    // ---------- Login / Logout ----------
-    const btnLogout = document.getElementById('btnLogout');
-    document.getElementById('btnLogin').onclick = async () => {
-      clearMsgs();
-      const msg = document.getElementById('logMsg');
-
-      const emailOrPhone = normalizeEmailOrPhone(document.getElementById('logEmailPhone').value);
-      const pass = (document.getElementById('logPass').value || '').trim();
-
-      if(!emailOrPhone || !pass){
-        msg.textContent = "Enter Email/Phone and password.";
-        msg.className = "msg err";
-        return;
-      }
+    // --- Login
+    $("btnLogin").onclick = async ()=>{
+      $("logStatus").textContent = "Logging in...";
+      const email = $("logEmail").value.trim();
+      const pass = $("logPass").value;
 
       try{
-        await auth.signInWithEmailAndPassword(emailOrPhone, pass);
-
-        msg.textContent = "Logged in ✅";
-        msg.className = "msg";
+        await signInWithEmailAndPassword(auth, email, pass);
+        $("logStatus").textContent = "✅ Logged in.";
       }catch(e){
-        msg.textContent = e.message || "Login failed.";
-        msg.className = "msg err";
+        $("logStatus").textContent = "❌ " + (e?.message || "Login failed");
       }
     };
 
-    btnLogout.onclick = async () => {
-      await auth.signOut();
-    };
+    // --- After login: ensure inviteCode exists + show link + check admin
+    onAuthStateChanged(auth, async (user)=>{
+      $("inviteBox").style.display = "none";
+      $("adminBox").style.display = "none";
+      if(!user) return;
 
-    // ---------- After login: show invite link + ensure user doc exists ----------
-    auth.onAuthStateChanged(async (user) => {
-      const myInviteBox = document.getElementById('myInviteBox');
-      const myInviteLinkEl = document.getElementById('myInviteLink');
-      const logMsg = document.getElementById('logMsg');
+      // Ensure user doc exists + has inviteCode
+      const userRef = doc(db, "users", user.uid);
+      const snap = await getDoc(userRef);
+      let inviteCode = snap.exists() ? (snap.data().inviteCode || null) : null;
 
-      if(user){
-        btnLogout.style.display = "block";
-        myInviteBox.style.display = "block";
+      if(!inviteCode){
+        inviteCode = makeInviteCode(user.uid);
+        await setDoc(userRef, { inviteCode, updatedAt: serverTimestamp() }, { merge:true });
+      }
 
-        // ensure user doc exists (for older users)
-        const myRef = makeUserRef(user.uid);
-        await db.collection("users").doc(user.uid).set({
-          emailOrPhone: user.email || null,
-          myRef: myRef,
-          updatedAt: firebase.firestore.FieldValue.serverTimestamp()
-        }, { merge:true });
+      const link = inviteUrl(inviteCode);
+      $("inviteLink").textContent = link;
+      $("inviteBox").style.display = "";
 
-        // show invite link
-        const link = buildInviteLink(myRef);
-        myInviteLinkEl.textContent = link;
+      $("copyInvite").onclick = async ()=>{
+        try{
+          await navigator.clipboard.writeText(link);
+          $("logStatus").textContent = "✅ Invite link copied.";
+        }catch{
+          alert(link);
+        }
+      };
 
-        // when logged in, log invite open again (with uid) if link had ref
-        await logInviteOpenIfAny();
-
-        logMsg.textContent = "Welcome ✅";
-        logMsg.className = "msg";
-      }else{
-        btnLogout.style.display = "none";
-        myInviteBox.style.display = "none";
+      // Admin check: admins/{uid} exists
+      const adminSnap = await getDoc(doc(db, "admins", user.uid));
+      if(adminSnap.exists()){
+        $("adminBox").style.display = "";
       }
     });
-
-    // ---------- Copy / Test invite ----------
-    document.getElementById('btnCopyInvite').onclick = async () => {
-      const t = document.getElementById('myInviteLink').textContent.trim();
-      const m = document.getElementById('inviteMsg');
-      try{
-        await navigator.clipboard.writeText(t);
-        m.textContent = "Copied ✅";
-        m.className = "msg";
-      }catch(e){
-        m.textContent = "Copy failed. You can manually select and copy.";
-        m.className = "msg err";
-      }
-    };
-    document.getElementById('btnTestInvite').onclick = () => {
-      const t = document.getElementById('myInviteLink').textContent.trim();
-      window.open(t, "_blank");
-    };
   </script>
 </body>
 </html>
