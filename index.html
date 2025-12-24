@@ -198,179 +198,264 @@
   </div>
 
   <script type="module">
-  // Firebase (Modular CDN)
+  // =====================================================
+  //  UMOJA V2 - Main Site (Register/Login + Invitation)
+  //  IMPORTANT:
+  //  1) Remove ALL firebase-*-compat scripts if present.
+  //  2) Keep ONLY this module script.
+  //  3) Replace firebaseConfig with the config from the
+  //     web app whose appId matches your project (b4bb...).
+  // =====================================================
+
   import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
   import {
     getAuth,
     createUserWithEmailAndPassword,
     signInWithEmailAndPassword,
-    onAuthStateChanged
+    onAuthStateChanged,
+    signOut
   } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-
   import {
     getFirestore,
     doc,
     setDoc,
+    getDoc,
     addDoc,
     collection,
     serverTimestamp
   } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-  // ✅ REPLACE with your Firebase Console Web App config
+  // ✅ REPLACE THESE VALUES with Firebase Console -> Project settings -> Your apps -> (choose correct web app) -> Config
   const firebaseConfig = {
-    apiKey: "PASTE_YOURS",
-    authDomain: "PASTE_YOURS",
-    projectId: "PASTE_YOURS",
-    storageBucket: "PASTE_YOURS",
-    messagingSenderId: "PASTE_YOURS",
-    appId: "PASTE_YOURS"
+    apiKey: "REPLACE_ME",
+    authDomain: "REPLACE_ME",
+    projectId: "REPLACE_ME",
+    storageBucket: "REPLACE_ME",
+    messagingSenderId: "REPLACE_ME",
+    appId: "REPLACE_ME"
   };
 
   const app = initializeApp(firebaseConfig);
   const auth = getAuth(app);
   const db = getFirestore(app);
 
-  // --------------------------
-  // Referral capture + logging
-  // --------------------------
+  // -------------------------
+  // Helpers
+  // -------------------------
+  function qs(id) { return document.getElementById(id); }
+
+  function isPhoneLike(v) {
+    const s = (v || "").trim();
+    return /^[+]?[\d\s().-]{7,}$/.test(s) && /[0-9]/.test(s);
+  }
+
+  // We support "Email or Phone" WITHOUT SMS by turning phone into a safe pseudo-email
+  function toAuthEmail(emailOrPhoneRaw) {
+    const v = (emailOrPhoneRaw || "").trim();
+    if (!v) return "";
+    if (v.includes("@")) return v.toLowerCase();
+    // phone -> normalize digits -> pseudo email
+    const digits = v.replace(/[^\d+]/g, "");
+    const safe = digits.replace(/\+/g, "plus");
+    return `${safe}@umojav2.local`;
+  }
+
   function getRefFromUrl() {
     const p = new URLSearchParams(window.location.search);
-    return (p.get("ref") || "").trim() || null;
+    return (p.get("ref") || "").trim();
   }
 
-  function getRefStored() {
-    return localStorage.getItem("umoja_ref") || null;
+  function randomRefCode(len = 8) {
+    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
+    let out = "";
+    for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
+    return out;
   }
 
-  function setRefStored(ref) {
-    localStorage.setItem("umoja_ref", ref);
+  async function ensureMyRefCode(uid) {
+    const userRef = doc(db, "users", uid);
+    const snap = await getDoc(userRef);
+    if (snap.exists() && snap.data()?.myRefCode) return snap.data().myRefCode;
+
+    // generate + save
+    const myRefCode = randomRefCode(8);
+    await setDoc(userRef, { myRefCode, updatedAt: serverTimestamp() }, { merge: true });
+    return myRefCode;
   }
 
-  async function logInviteClick(ref) {
-    // logs even before login
-    await addDoc(collection(db, "inviteClicks"), {
-      ref,
-      page: window.location.pathname || "/",
-      userAgent: navigator.userAgent,
-      createdAt: serverTimestamp()
+  // -------------------------
+  // Invitation click logging (auto every open with ?ref=)
+  // -------------------------
+  async function logInviteOpenIfAny() {
+    const ref = getRefFromUrl();
+    if (!ref) return;
+
+    // OPTIONAL: show "Referral detected" UI if you have these IDs
+    const refBox = qs("refDetectedBox");
+    const refValue = qs("refDetectedValue");
+    if (refBox && refValue) {
+      refBox.style.display = "block";
+      refValue.textContent = ref;
+    }
+
+    // Log every open/click
+    try {
+      await addDoc(collection(db, "inviteClicks"), {
+        ref,
+        page: "index",
+        userAgent: navigator.userAgent || null,
+        url: window.location.href,
+        createdAt: serverTimestamp()
+      });
+    } catch (e) {
+      // don’t break UI
+      console.warn("invite click log failed:", e);
+    }
+  }
+
+  // -------------------------
+  // UI bindings (IDs must exist in your HTML)
+  // -------------------------
+  // Expected IDs:
+  // Tabs: registerTabBtn, loginTabBtn
+  // Panels: registerPanel, loginPanel
+  // Register: regEmailPhone, regPassword, regBtn
+  // Login: loginEmailPhone, loginPassword, loginBtn
+  // Optional: logoutBtn, statusMsg, inviteLinkOut, copyInviteBtn
+  // Optional referral box: refDetectedBox, refDetectedValue
+
+  function showMsg(msg, type = "ok") {
+    const el = qs("statusMsg");
+    if (!el) return;
+    el.textContent = msg;
+    el.style.display = "block";
+    el.style.borderColor = type === "err" ? "rgba(255,90,90,.6)" : "rgba(0,255,180,.5)";
+  }
+
+  function setTab(which) {
+    const regTab = qs("registerTabBtn");
+    const logTab = qs("loginTabBtn");
+    const regPanel = qs("registerPanel");
+    const logPanel = qs("loginPanel");
+
+    if (regTab && logTab) {
+      regTab.classList.toggle("active", which === "register");
+      logTab.classList.toggle("active", which === "login");
+    }
+    if (regPanel && logPanel) {
+      regPanel.style.display = which === "register" ? "block" : "none";
+      logPanel.style.display = which === "login" ? "block" : "none";
+    }
+  }
+
+  // Hook tabs if present
+  if (qs("registerTabBtn")) qs("registerTabBtn").addEventListener("click", () => setTab("register"));
+  if (qs("loginTabBtn")) qs("loginTabBtn").addEventListener("click", () => setTab("login"));
+
+  // Register
+  if (qs("regBtn")) {
+    qs("regBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const emailOrPhone = qs("regEmailPhone")?.value || "";
+      const password = qs("regPassword")?.value || "";
+      if (!emailOrPhone.trim() || password.length < 6) {
+        showMsg("Enter Email/Phone and a password (6+ chars).", "err");
+        return;
+      }
+
+      const authEmail = toAuthEmail(emailOrPhone);
+      const ref = getRefFromUrl() || null;
+
+      try {
+        const cred = await createUserWithEmailAndPassword(auth, authEmail, password);
+
+        // Save user profile + attach referral
+        await setDoc(doc(db, "users", cred.user.uid), {
+          emailOrPhone: emailOrPhone.trim(),
+          authEmail,
+          referredBy: ref,
+          createdAt: serverTimestamp()
+        }, { merge: true });
+
+        const myRefCode = await ensureMyRefCode(cred.user.uid);
+
+        const inviteOut = qs("inviteLinkOut");
+        if (inviteOut) inviteOut.textContent = `${location.origin}${location.pathname}?ref=${myRefCode}`;
+
+        showMsg("✅ Account created successfully.", "ok");
+        setTab("login"); // or stay on register if you prefer
+      } catch (err) {
+        showMsg(err?.message || String(err), "err");
+      }
     });
   }
 
-  (async function initReferral() {
-    const ref = getRefFromUrl();
-    if (ref) {
-      setRefStored(ref);
-      try { await logInviteClick(ref); } catch (e) { console.log("inviteClick log failed:", e); }
+  // Login
+  if (qs("loginBtn")) {
+    qs("loginBtn").addEventListener("click", async (e) => {
+      e.preventDefault();
+
+      const emailOrPhone = qs("loginEmailPhone")?.value || "";
+      const password = qs("loginPassword")?.value || "";
+      if (!emailOrPhone.trim() || !password) {
+        showMsg("Enter Email/Phone and password.", "err");
+        return;
+      }
+
+      const authEmail = toAuthEmail(emailOrPhone);
+
+      try {
+        await signInWithEmailAndPassword(auth, authEmail, password);
+
+        // show invite link after login
+        const uid = auth.currentUser?.uid;
+        if (uid) {
+          const myRefCode = await ensureMyRefCode(uid);
+          const inviteOut = qs("inviteLinkOut");
+          if (inviteOut) inviteOut.textContent = `${location.origin}${location.pathname}?ref=${myRefCode}`;
+        }
+
+        showMsg("✅ Logged in.", "ok");
+      } catch (err) {
+        showMsg(err?.message || String(err), "err");
+      }
+    });
+  }
+
+  // Logout (optional)
+  if (qs("logoutBtn")) {
+    qs("logoutBtn").addEventListener("click", async () => {
+      await signOut(auth);
+      showMsg("Logged out.", "ok");
+    });
+  }
+
+  // Copy invite (optional)
+  if (qs("copyInviteBtn")) {
+    qs("copyInviteBtn").addEventListener("click", async () => {
+      const txt = qs("inviteLinkOut")?.textContent?.trim();
+      if (!txt) return showMsg("No invite link yet.", "err");
+      await navigator.clipboard.writeText(txt);
+      showMsg("✅ Invite link copied.", "ok");
+    });
+  }
+
+  // Auth state (optional UI updates)
+  onAuthStateChanged(auth, async (user) => {
+    // You can add UI changes here if you want
+    // Example: show invite link when logged in
+    if (user) {
+      try {
+        const myRefCode = await ensureMyRefCode(user.uid);
+        const inviteOut = qs("inviteLinkOut");
+        if (inviteOut) inviteOut.textContent = `${location.origin}${location.pathname}?ref=${myRefCode}`;
+      } catch {}
     }
-
-    // OPTIONAL: show it in UI if you have an element with id="refDetected"
-    const show = document.getElementById("refDetected");
-    const finalRef = getRefStored();
-    if (show && finalRef) show.textContent = finalRef;
-  })();
-
-  // --------------------------
-  // Hook your existing UI
-  // --------------------------
-  // Update these IDs to match your HTML input/button IDs:
-  const regEmailPhone = document.getElementById("regEmailPhone"); // input
-  const regPassword   = document.getElementById("regPassword");   // input
-  const regBtn        = document.getElementById("createAccountBtn"); // button
-
-  const loginEmailPhone = document.getElementById("loginEmailPhone"); // input
-  const loginPassword   = document.getElementById("loginPassword");   // input
-  const loginBtn        = document.getElementById("loginBtn");        // button
-
-  const statusBox = document.getElementById("statusBox"); // div for messages (optional)
-
-  function msg(text, ok=false){
-    if (!statusBox) return alert(text);
-    statusBox.textContent = text;
-    statusBox.style.opacity = "1";
-    statusBox.style.borderColor = ok ? "rgba(60,220,140,.8)" : "rgba(255,90,90,.8)";
-  }
-
-  // --------------------------
-  // Register (EMAIL only)
-  // --------------------------
-  // NOTE: Firebase Auth does NOT accept phone number like email unless you implement real Phone Auth (SMS).
-  // So we do: if user types a phone, we store it in Firestore but Auth uses a generated email alias.
-  function looksLikePhone(v){
-    return /^[+0-9() \-]{7,}$/.test(v);
-  }
-
-  function normalizePhone(v){
-    return v.replace(/[^\d+]/g,"");
-  }
-
-  function phoneToEmailAlias(phone){
-    const p = normalizePhone(phone);
-    return `${p}@phone.umoja.local`;
-  }
-
-  async function register(){
-    const raw = (regEmailPhone?.value || "").trim();
-    const pass = (regPassword?.value || "").trim();
-    if (!raw || !pass) return msg("Enter email/phone + password");
-
-    let authEmail = raw;
-    let phone = null;
-    let email = null;
-
-    if (looksLikePhone(raw) && !raw.includes("@")) {
-      phone = normalizePhone(raw);
-      authEmail = phoneToEmailAlias(phone);
-    } else {
-      email = raw;
-    }
-
-    try {
-      const cred = await createUserWithEmailAndPassword(auth, authEmail, pass);
-      const user = cred.user;
-
-      await setDoc(doc(db, "users", user.uid), {
-        emailOrPhone: raw,
-        email: email || null,
-        phone: phone || null,
-        referredBy: getRefStored(),
-        createdAt: serverTimestamp()
-      }, { merge: true });
-
-      msg("Account created ✅", true);
-    } catch (e) {
-      msg(e?.message || String(e));
-    }
-  }
-
-  // --------------------------
-  // Login (same logic)
-  // --------------------------
-  async function login(){
-    const raw = (loginEmailPhone?.value || "").trim();
-    const pass = (loginPassword?.value || "").trim();
-    if (!raw || !pass) return msg("Enter email/phone + password");
-
-    let authEmail = raw;
-    if (looksLikePhone(raw) && !raw.includes("@")) {
-      authEmail = phoneToEmailAlias(raw);
-    }
-
-    try{
-      await signInWithEmailAndPassword(auth, authEmail, pass);
-      msg("Logged in ✅", true);
-    }catch(e){
-      msg(e?.message || String(e));
-    }
-  }
-
-  regBtn?.addEventListener("click", register);
-  loginBtn?.addEventListener("click", login);
-
-  onAuthStateChanged(auth, (user)=>{
-    // optional: show user state somewhere
-    const el = document.getElementById("whoami");
-    if (el) el.textContent = user ? user.uid : "not logged";
   });
+
+  // Log invitation open immediately
+  logInviteOpenIfAny();
 </script>
 
 </body>
