@@ -97,20 +97,44 @@
       animation: spin 5.5s linear infinite;
     }
 
-    .logo{
-  width: clamp(86px, 16vw, 130px);     /* ✅ mobile scaling */
-  aspect-ratio: 1 / 1;                 /* ✅ perfect circle */
+    /* ====== LOGO: perfect circle, centered, rotating, glow ====== */
+.logo{
+  width: 120px;
+  height: 120px;
   border-radius: 50%;
   overflow: hidden;
-
+  margin: 0 auto 14px;
   display: grid;
   place-items: center;
-
-  background: radial-gradient(circle at 30% 30%, rgba(90,255,245,.20), rgba(0,0,0,0));
-  border: 1px solid rgba(255,255,255,.18);
-
-  animation: glowPulse 2.2s ease-in-out infinite;
+  background: rgba(0,0,0,.14);
+  box-shadow: 0 0 28px rgba(64,224,208,.35), 0 0 0 1px rgba(255,255,255,.10);
+  position: relative;
+  z-index: 2;
+  animation: logoSpin 14s linear infinite;
 }
+
+.logo img{
+  width: 100%;
+  height: 100%;
+  display: block;
+
+  /* THIS is the key fix: NO CROPPING */
+  object-fit: contain;
+
+  /* optional: give a little breathing room so logo doesn't touch edges */
+  transform: scale(0.92);
+}
+
+@keyframes logoSpin{
+  from{ transform: rotate(0deg); }
+  to{ transform: rotate(360deg); }
+}
+
+/* Mobile scaling */
+@media (max-width: 520px){
+  .logo{ width: 96px; height: 96px; }
+}
+
 .logoSpin{
   width: 100%;
   height: 100%;
