@@ -752,6 +752,18 @@ if (btnDex) {
     window.open(DEXTOOLS_URL, "_blank");
   };
 }
+// === Open DEXTools button (direct link) ===
+const btnDex = document.getElementById("btnDex");
+
+if (btnDex) {
+  btnDex.onclick = () => {
+    window.open(
+      "https://www.dextools.io/app/en/meme-board",
+      "_blank",
+      "noopener,noreferrer"
+    );
+  };
+}
 
 </script>
 
