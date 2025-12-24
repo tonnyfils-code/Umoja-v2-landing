@@ -704,6 +704,32 @@
     });
   }
 </script>
+<script>
+  // ===============================
+  // UMOJA V2 – FINAL DEX WIRING
+  // ===============================
+
+  const PANCAKESWAP_URL = "https://www.dextools.io/app/en/meme-board";
+  const OFFICIAL_CONTRACT = "0x8D6A79567a701FCe55b62C15d0fbB765913ac84a";
+
+  // Open DEX (override old alert)
+  const openDexBtn = document.getElementById("openDex");
+  if (openDexBtn) {
+    openDexBtn.onclick = () => {
+      window.open(PANCAKESWAP_URL, "_blank");
+    };
+  }
+
+  // Copy Contract
+  const copyBtn = document.getElementById("copyContract");
+  if (copyBtn) {
+    copyBtn.onclick = async () => {
+      await navigator.clipboard.writeText(OFFICIAL_CONTRACT);
+      copyBtn.innerText = "Copied ✓";
+      setTimeout(() => (copyBtn.innerText = "Copy Contract"), 1500);
+    };
+  }
+</script>
 
 </body>
 </html>
