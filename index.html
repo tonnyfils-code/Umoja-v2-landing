@@ -207,6 +207,67 @@
       color: rgba(234,246,245,.80);
       font-weight:700;
     }
+    /* ===== Logged-in popups (Verify / Invest / Invite) ===== */
+.modalOverlay{
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,.55);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+.modal{
+  width: min(720px, 100%);
+  background: rgba(10, 25, 27, .92);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 18px;
+  box-shadow: 0 20px 60px rgba(0,0,0,.55);
+  overflow: hidden;
+}
+.modalHeader{
+  display:flex; align-items:center; justify-content:space-between;
+  padding: 14px 16px;
+  border-bottom: 1px solid rgba(255,255,255,.10);
+}
+.modalTitle{
+  font-weight: 800;
+  letter-spacing: .5px;
+}
+.modalClose{
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.08);
+  color: rgba(234,246,245,.92);
+  cursor: pointer;
+}
+.modalBody{
+  padding: 16px;
+  max-height: min(70vh, 520px);
+  overflow: auto;
+}
+.modalBody .box{
+  margin-top: 12px;
+  padding: 14px;
+  border-radius: 16px;
+  border: 1px solid rgba(255,255,255,.10);
+  background: rgba(255,255,255,.06);
+}
+.modalBody .muted{ color: rgba(234,246,245,.72); }
+.modalBody .rowBtns{ display:flex; gap:10px; flex-wrap:wrap; margin-top: 10px; }
+
+.codePill{
+  width: 100%;
+  padding: 12px 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.06);
+  color: rgba(234,246,245,.92);
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  overflow-x: auto;
+}
+
   </style>
 </head>
 
