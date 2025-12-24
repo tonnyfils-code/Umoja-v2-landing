@@ -1,746 +1,236 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>UMOJA V2 • Official Landing</title>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>UMOJA V2 • Official Landing</title>
 
-  <style>
-    :root{
-      --bg:#07181a;
-      --bg2:#061316;
-      --card: rgba(255,255,255,.06);
-      --stroke: rgba(255,255,255,.10);
-      --text:#eaf6f5;
-      --muted: rgba(234,246,245,.72);
-      --accent:#35d7c6;
-      --accent2:#45e0d1;
-      --danger:#ff6b6b;
-      --ok:#45e06a;
-    }
-    *{box-sizing:border-box}
-    html,body{height:100%}
-    body{
-      margin:0;
-      font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Helvetica, Arial, "Apple Color Emoji","Segoe UI Emoji";
-      color:var(--text);
-      background:
-        radial-gradient(900px 520px at 50% 0%, rgba(53,215,198,.18), transparent 60%),
-        radial-gradient(700px 520px at 0% 100%, rgba(69,224,209,.10), transparent 55%),
-        linear-gradient(180deg, var(--bg), var(--bg2));
-      overflow-x:hidden;
-    }
-    .wrap{
-      min-height:100%;
-      display:flex;
-      align-items:center;
-      justify-content:center;
-      padding:34px 16px 44px;
-    }
-    .shell{
-      width:min(820px, 100%);
-      text-align:center;
-    }
+<style>
+:root {
+  --bg: #07181a;
+  --card: rgba(255,255,255,0.06);
+  --stroke: rgba(255,255,255,0.12);
+  --accent: #40e0d0;
+  --text: #eaf6f5;
+  --muted: rgba(234,246,245,0.65);
+}
 
-    /* ===== BRAND ===== */
-    .brand{margin-bottom:18px}
-    .logoWrap{
-      display:flex;
-      justify-content:center;
-      align-items:center;
-      margin:0 auto 10px;
-    }
+* {
+  box-sizing: border-box;
+  font-family: system-ui, -apple-system, BlinkMacSystemFont, sans-serif;
+}
 
-    /* PERFECT CIRCLE + centered + rotating + glow (TEXT-ONLY LOGO) */
-    .logo{
-      width:120px;
-      height:120px;
-      border-radius:999px;
-      display:grid;
-      place-items:center;
-      position:relative;
-      margin:0 auto;
-      overflow:hidden;
-      background: radial-gradient(circle at 35% 25%, rgba(69,224,209,.30), rgba(0,0,0,.10));
-      box-shadow:
-        0 0 0 1px rgba(255,255,255,.10),
-        0 0 26px rgba(53,215,198,.20),
-        0 0 60px rgba(53,215,198,.12);
-      animation: logoFloat 4.5s ease-in-out infinite;
-    }
-    .logo::before{
-      content:"";
-      position:absolute;
-      inset:-18px;
-      border-radius:999px;
-      background:
-        conic-gradient(from 0deg,
-          rgba(53,215,198,.00),
-          rgba(53,215,198,.45),
-          rgba(255,255,255,.10),
-          rgba(53,215,198,.00));
-      filter: blur(10px);
-      opacity:.55;
-      animation: spin 4.8s linear infinite;
-      pointer-events:none;
-    }
-    .logo::after{
-      content:"";
-      position:absolute;
-      inset:10px;
-      border-radius:999px;
-      box-shadow: inset 0 0 0 1px rgba(255,255,255,.10);
-      pointer-events:none;
-    }
-    .logoText{
-      position:relative;
-      z-index:2;
-      font-weight:900;
-      letter-spacing:.18em;
-      font-size:22px;
-      text-transform:uppercase;
-      color:rgba(234,246,245,.95);
-      text-shadow:
-        0 0 10px rgba(53,215,198,.35),
-        0 0 22px rgba(53,215,198,.18);
-      user-select:none;
-    }
-    @keyframes spin{to{transform:rotate(360deg)}}
-    @keyframes logoFloat{
-      0%,100%{transform: translateY(0)}
-      50%{transform: translateY(-6px)}
-    }
+body {
+  margin: 0;
+  background: radial-gradient(circle at top, #0c2b2f, #050c0e);
+  color: var(--text);
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
-    h1{
-      margin:6px 0 6px;
-      font-size: clamp(32px, 5vw, 54px);
-      letter-spacing:.12em;
-      font-weight:900;
-    }
-    .sub{
-      color:var(--muted);
-      font-weight:600;
-      letter-spacing:.06em;
-      margin:0 0 18px;
-    }
+/* ===== LAYOUT ===== */
+.wrapper {
+  width: 100%;
+  max-width: 420px;
+  padding: 24px;
+}
 
-    /* ===== CARDS ===== */
-    .card{
-      margin:0 auto;
-      width:min(560px, 100%);
-      background: var(--card);
-      border: 1px solid var(--stroke);
-      border-radius: 22px;
-      box-shadow: 0 18px 70px rgba(0,0,0,.35);
-      overflow:hidden;
-      backdrop-filter: blur(10px);
-    }
-    .cardInner{padding:18px}
+.card {
+  background: var(--card);
+  border: 1px solid var(--stroke);
+  border-radius: 20px;
+  padding: 24px;
+  backdrop-filter: blur(14px);
+}
 
-    .tabs{
-      display:flex;
-      gap:10px;
-      padding:10px;
-      background: rgba(0,0,0,.16);
-      border: 1px solid rgba(255,255,255,.06);
-      border-radius: 16px;
-      margin-bottom:14px;
-    }
-    .tab{
-      flex:1;
-      padding:12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(255,255,255,.04);
-      color:var(--muted);
-      font-weight:800;
-      letter-spacing:.04em;
-      cursor:pointer;
-      user-select:none;
-      transition: .18s ease;
-    }
-    .tab.active{
-      color:rgba(0,0,0,.78);
-      background: linear-gradient(90deg, rgba(53,215,198,.92), rgba(69,224,209,.72));
-      border-color: rgba(53,215,198,.50);
-      box-shadow: 0 10px 26px rgba(53,215,198,.20);
-    }
+/* ===== LOGO ===== */
+.logo {
+  display: flex;
+  justify-content: center;
+  margin-bottom: 16px;
+}
 
-    .field{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      padding:10px 12px;
-      border-radius: 14px;
-      background: rgba(255,255,255,.06);
-      border: 1px solid rgba(255,255,255,.10);
-      margin:10px 0;
-    }
-    input{
-      width:100%;
-      border:0;
-      outline:0;
-      background:transparent;
-      color:var(--text);
-      font-size:16px;
-      padding:6px 2px;
-    }
-    .miniBtn{
-      border: 1px solid rgba(255,255,255,.14);
-      background: rgba(255,255,255,.06);
-      color: var(--text);
-      padding:10px 14px;
-      border-radius: 14px;
-      font-weight:800;
-      cursor:pointer;
-      transition:.18s ease;
-    }
-    .miniBtn:hover{transform: translateY(-1px)}
-    .primaryBtn{
-      width:100%;
-      padding:14px 16px;
-      border-radius: 16px;
-      border: 1px solid rgba(53,215,198,.55);
-      background: linear-gradient(90deg, rgba(53,215,198,.92), rgba(69,224,209,.72));
-      color: rgba(0,0,0,.78);
-      font-weight:900;
-      letter-spacing:.06em;
-      cursor:pointer;
-      margin-top:10px;
-      transition:.18s ease;
-    }
-    .primaryBtn:hover{transform: translateY(-1px)}
-    .hint{
-      margin-top:10px;
-      color: var(--muted);
-      font-weight:600;
-      font-size: 13px;
-    }
-    .msg{
-      margin-top:12px;
-      padding:10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.16);
-      color: var(--muted);
-      font-weight:700;
-      text-align:left;
-      min-height: 40px;
-      display:flex;
-      align-items:center;
-      gap:10px;
-    }
-    .msg.ok{border-color: rgba(69,224,106,.45)}
-    .msg.err{border-color: rgba(255,107,107,.50); color: rgba(255,220,220,.95)}
+.logo img {
+  width: 120px;
+  height: auto;
+  display: block;
+  filter: drop-shadow(0 0 24px rgba(64,224,208,0.45));
+}
 
-    /* ===== DASH ===== */
-    .rowBetween{
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      gap:10px;
-      flex-wrap:wrap;
-      padding:14px 16px;
-      border-bottom: 1px solid rgba(255,255,255,.07);
-      background: rgba(0,0,0,.10);
-    }
-    .pill{
-      padding:10px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-      font-weight:800;
-      cursor:pointer;
-    }
-    .btnRow{
-      display:flex;
-      gap:10px;
-      justify-content:center;
-      padding:14px 16px 6px;
-      flex-wrap:wrap;
-    }
-    .segBtn{
-      flex:1;
-      min-width: 140px;
-      padding:12px 12px;
-      border-radius: 16px;
-      border: 1px solid rgba(255,255,255,.10);
-      background: rgba(255,255,255,.05);
-      color: var(--text);
-      font-weight:900;
-      cursor:pointer;
-      transition:.18s ease;
-    }
-    .segBtn.active{
-      background: linear-gradient(90deg, rgba(53,215,198,.28), rgba(69,224,209,.12));
-      border-color: rgba(53,215,198,.35);
-      box-shadow: 0 12px 28px rgba(53,215,198,.12);
-    }
+h1 {
+  text-align: center;
+  margin: 8px 0 4px;
+  letter-spacing: 0.18em;
+  font-weight: 800;
+}
 
-    .panel{
-      padding:14px 16px 18px;
-    }
-    .panelBox{
-      border-radius: 18px;
-      border: 1px solid rgba(255,255,255,.09);
-      background: rgba(0,0,0,.12);
-      padding:14px;
-      text-align:left;
-    }
-    .panelTitle{
-      display:flex;
-      align-items:center;
-      gap:10px;
-      font-weight:900;
-      letter-spacing:.02em;
-      margin:0 0 8px;
-      font-size:18px;
-    }
-    .panelTitle small{
-      color:var(--muted);
-      font-weight:800;
-      font-size: 13px;
-    }
-    .contract{
-      margin-top:10px;
-      padding:12px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.12);
-      background: rgba(255,255,255,.05);
-      font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
-      font-weight:800;
-      overflow:auto;
-      white-space:nowrap;
-    }
-    .actionRow{
-      margin-top:10px;
-      display:flex;
-      gap:10px;
-      flex-wrap:wrap;
-    }
-    .actionRow .pill{flex:1; min-width: 160px; text-align:center}
-    .dangerList{
-      margin:12px 0 0;
-      padding:0 0 0 18px;
-      color: rgba(234,246,245,.92);
-      font-weight:650;
-    }
-    .dangerList li{margin:8px 0}
-    .footerNote{
-      margin-top:12px;
-      text-align:center;
-      color: rgba(234,246,245,.80);
-      font-weight:800;
-      padding:10px 12px;
-      border-radius: 14px;
-      border: 1px solid rgba(255,255,255,.08);
-      background: rgba(0,0,0,.10);
-    }
+.sub {
+  text-align: center;
+  font-size: 13px;
+  color: var(--muted);
+  margin-bottom: 20px;
+}
 
-    /* ===== MOBILE ===== */
-    @media (max-width: 520px){
-      .logo{width:96px; height:96px}
-      .logoText{font-size:18px}
-      .cardInner{padding:14px}
-      .segBtn{min-width: 120px}
-      .actionRow .pill{min-width: 140px}
-    }
-  </style>
+/* ===== TABS ===== */
+.tabs {
+  display: flex;
+  background: rgba(255,255,255,0.05);
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 16px;
+}
+
+.tabs button {
+  flex: 1;
+  padding: 10px;
+  border: none;
+  background: transparent;
+  color: var(--muted);
+  cursor: pointer;
+}
+
+.tabs button.active {
+  background: var(--accent);
+  color: #022;
+  font-weight: 700;
+}
+
+/* ===== INPUTS ===== */
+.input {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  border: 1px solid var(--stroke);
+  background: rgba(255,255,255,0.08);
+  color: var(--text);
+  margin-bottom: 12px;
+}
+
+.input::placeholder {
+  color: var(--muted);
+}
+
+/* ===== BUTTON ===== */
+.main-btn {
+  width: 100%;
+  padding: 14px;
+  border-radius: 999px;
+  border: none;
+  background: linear-gradient(135deg, #42f5e6, #2db4ff);
+  color: #022;
+  font-weight: 800;
+  cursor: pointer;
+  margin-top: 6px;
+}
+
+.note {
+  text-align: center;
+  font-size: 12px;
+  color: var(--muted);
+  margin-top: 10px;
+}
+
+.error {
+  margin-top: 12px;
+  font-size: 13px;
+  color: #ff7b7b;
+  text-align: center;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
-    <div class="shell">
 
-      <header class="brand">
-        <div class="logoWrap">
-          <!-- TEXT-ONLY LOGO (no image) -->
-          <div class="logo" aria-label="UMOJA Logo">
-            <div class="logoText">UMOJA</div>
-          </div>
-        </div>
-        <h1>UMOJA V2</h1>
-        <div class="sub">Official Landing • Verify • Invest • Invite</div>
-      </header>
+<div class="wrapper">
+  <div class="card">
 
-      <!-- AUTH CARD -->
-      <section id="authCard" class="card">
-        <div class="cardInner">
-          <div class="tabs">
-            <button id="tabRegister" class="tab active" type="button">Register</button>
-            <button id="tabLogin" class="tab" type="button">Login</button>
-          </div>
-
-          <div class="field">
-            <input id="email" type="email" placeholder="Email (example@gmail.com)" autocomplete="email" />
-          </div>
-
-          <div class="field">
-            <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
-            <button id="togglePw" class="miniBtn" type="button">Show</button>
-          </div>
-
-          <button id="submitBtn" class="primaryBtn" type="button">Create Account</button>
-          <div class="hint" id="hintText">Register using email + password.</div>
-
-          <div id="authMsg" class="msg" style="display:none;"></div>
-        </div>
-      </section>
-
-      <!-- DASHBOARD CARD -->
-      <section id="dashCard" class="card" style="display:none;">
-        <div class="rowBetween">
-          <div style="font-weight:900;">Logged in as: <span id="who" style="color:rgba(69,224,209,.95)"></span></div>
-          <button id="logoutBtn" class="pill" type="button">Logout</button>
-        </div>
-
-        <div class="btnRow">
-          <button class="segBtn active" id="btnVerifyTab" type="button">Verify</button>
-          <button class="segBtn" id="btnInvestTab" type="button">Invest</button>
-          <button class="segBtn" id="btnInviteTab" type="button">Invite</button>
-        </div>
-
-        <div class="panel">
-          <!-- VERIFY -->
-          <div id="panelVerify" class="panelBox">
-            <div class="panelTitle">✅ Verify Contract <small>Always verify before sending funds.</small></div>
-
-            <div class="contract" id="contractBox">0x8D6A79567a701FCe55b62C15d0fbB765913ac84a</div>
-
-            <div class="actionRow">
-              <button id="copyContract" class="pill" type="button">Copy Contract</button>
-              <button id="openBscScan" class="pill" type="button">Open on BscScan</button>
-            </div>
-
-            <div class="panelTitle" style="margin-top:14px;">🚫 Don’t do this</div>
-            <ul class="dangerList">
-              <li>Don’t trust screenshots or forwarded messages without verification.</li>
-              <li>Don’t send funds to any address that isn’t officially published.</li>
-              <li>Don’t buy “Umoja” tokens that are not the verified contract.</li>
-            </ul>
-
-            <div class="footerNote">Welcome ✅ Choose Verify / Invest / Invite.</div>
-          </div>
-
-          <!-- INVEST -->
-          <div id="panelInvest" class="panelBox" style="display:none;">
-            <div class="panelTitle">🦊 How to Invest (MetaMask)</div>
-            <ol class="dangerList" style="padding-left:18px; margin-top:8px;">
-              <li>Install MetaMask (browser extension or mobile app).</li>
-              <li>Add / switch to <b>BNB Smart Chain</b> network.</li>
-              <li>Fund your wallet with <b>BNB</b> (gas + investment).</li>
-              <li>Import the token using the <b>official contract address</b>.</li>
-              <li>Buy using your official DEX link (you can plug it in later).</li>
-            </ol>
-
-            <div class="panelTitle" style="margin-top:14px;">Token Import <small>(copy contract)</small></div>
-            <div class="actionRow">
-              <button id="copyContract2" class="pill" type="button">Copy Contract</button>
-              <button id="btnDex" class="pill" type="button">Open DEXTools</button>
-            </div>
-
-            <div class="hint" style="text-align:left;margin-top:10px;">
-              Tip: Make sure MetaMask is on <b>BNB Smart Chain</b> before swapping.
-            </div>
-
-            <div class="footerNote" id="dashMsg" style="display:none;"></div>
-          </div>
-
-          <!-- INVITE -->
-          <div id="panelInvite" class="panelBox" style="display:none;">
-            <div class="panelTitle">🎟️ Invite <small>Share your referral link.</small></div>
-
-            <div class="hint" style="text-align:left;margin-top:0;">
-              Your invite code is saved in this browser (simple local demo).
-            </div>
-
-            <div class="contract" id="inviteCodeBox">—</div>
-
-            <div class="actionRow">
-              <button id="genInvite" class="pill" type="button">Generate / Refresh Code</button>
-              <button id="copyInvite" class="pill" type="button">Copy Invite Link</button>
-            </div>
-
-            <div class="footerNote">Post your invite link on social media to bring new investors.</div>
-          </div>
-        </div>
-      </section>
-
+    <!-- LOGO -->
+    <div class="logo">
+      <img src="./assets/umoja-logo.png" alt="UMOJA Logo" />
     </div>
+
+    <h1>UMOJA V2</h1>
+    <div class="sub">Official Landing • Verify • Invest • Invite</div>
+
+    <!-- TABS -->
+    <div class="tabs">
+      <button id="registerTab">Register</button>
+      <button id="loginTab" class="active">Login</button>
+    </div>
+
+    <!-- FORM -->
+    <input id="email" class="input" placeholder="Email address" />
+    <input id="password" type="password" class="input" placeholder="Password" />
+
+    <button class="main-btn" id="submitBtn">Login</button>
+
+    <div class="note">
+      Use the same email + password you registered with.
+    </div>
+
+    <div id="errorBox" class="error"></div>
+
   </div>
+</div>
 
-  <script type="module">
-    // =========================
-    // 0) HELPERS
-    // =========================
-    const qs = (id) => document.getElementById(id);
-    const show = (el) => el && (el.style.display = "");
-    const hide = (el) => el && (el.style.display = "none");
-    const setActive = (btn, on) => btn && btn.classList.toggle("active", !!on);
+<script type="module">
+/* ========= FIREBASE PLACEHOLDER =========
+   Replace with your real Firebase config
+======================================== */
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.7.1/firebase-auth.js";
 
-    const authCard = qs("authCard");
-    const dashCard = qs("dashCard");
-
-    const authMsg = qs("authMsg");
-    const dashMsg = qs("dashMsg");
-
-    function setAuthMessage(text, type="info"){
-      if(!authMsg) return;
-      authMsg.className = "msg";
-      if(type==="ok") authMsg.classList.add("ok");
-      if(type==="err") authMsg.classList.add("err");
-      authMsg.textContent = text;
-      show(authMsg);
-    }
-    function clearAuthMessage(){
-      if(!authMsg) return;
-      authMsg.textContent = "";
-      hide(authMsg);
-    }
-    function setDashMessage(text){
-      if(!dashMsg) return;
-      dashMsg.textContent = text;
-      show(dashMsg);
-      setTimeout(()=> hide(dashMsg), 1800);
-    }
-
-    // =========================
-    // 1) CONFIG YOU MUST SET
-    // =========================
-    // IMPORTANT: Paste your REAL Firebase config values here (from Firebase Console).
-    // If you see "auth/api-key-not-valid", your apiKey here is wrong OR not from this project.
-    const firebaseConfig = {
-  apiKey: "AIzaSyCbQ9fNYrq_qko-GUhKi3xSMkb_IKhrBB0",
-  authDomain: "umoja-v2-landing.firebaseapp.com",
-  projectId: "umoja-v2-landing",
-  storageBucket: "umoja-v2-landing.firebasestorage.app",
-  messagingSenderId: "964715983746",
-  appId: "1:964715983746:web:b4bb1615f35d773ae7159b"
+const firebaseConfig = {
+  apiKey: "YOUR_API_KEY",
+  authDomain: "YOUR_PROJECT.firebaseapp.com",
+  projectId: "YOUR_PROJECT",
 };
 
-    // Your official contract:
-    const OFFICIAL_CONTRACT = "0x8D6A79567a701FCe55b62C15d0fbB765913ac84a";
+const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 
-    // BscScan link:
-    const BSCSCAN_URL = `https://bscscan.com/address/${OFFICIAL_CONTRACT}`;
+/* ========= UI LOGIC ========= */
+const loginTab = document.getElementById("loginTab");
+const registerTab = document.getElementById("registerTab");
+const submitBtn = document.getElementById("submitBtn");
+const errorBox = document.getElementById("errorBox");
 
-    // DEXTools (set later if you want). For now it opens DEXTools main page:
-    const DEXTOOLS_URL = "https://www.dextools.io/app/en/bnb";
+let mode = "login";
 
-    // =========================
-    // 2) FIREBASE (MODULAR CDN)
-    // =========================
-    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-app.js";
-    import {
-      getAuth,
-      createUserWithEmailAndPassword,
-      signInWithEmailAndPassword,
-      onAuthStateChanged,
-      signOut
-    } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-auth.js";
+loginTab.onclick = () => {
+  mode = "login";
+  loginTab.classList.add("active");
+  registerTab.classList.remove("active");
+  submitBtn.textContent = "Login";
+};
 
-    // Init Firebase
-    const app = initializeApp(firebaseConfig);
-    const auth = getAuth(app);
+registerTab.onclick = () => {
+  mode = "register";
+  registerTab.classList.add("active");
+  loginTab.classList.remove("active");
+  submitBtn.textContent = "Register";
+};
 
-    // =========================
-    // 3) AUTH UI
-    // =========================
-    let mode = "register"; // or "login"
+submitBtn.onclick = async () => {
+  errorBox.textContent = "";
+  const email = document.getElementById("email").value;
+  const password = document.getElementById("password").value;
 
-    const tabRegister = qs("tabRegister");
-    const tabLogin = qs("tabLogin");
-    const submitBtn = qs("submitBtn");
-    const hintText = qs("hintText");
-
-    const emailEl = qs("email");
-    const pwEl = qs("password");
-    const togglePw = qs("togglePw");
-
-    function setMode(next){
-      mode = next;
-      clearAuthMessage();
-      setActive(tabRegister, mode==="register");
-      setActive(tabLogin, mode==="login");
-      if(submitBtn) submitBtn.textContent = mode==="register" ? "Create Account" : "Login";
-      if(hintText) hintText.textContent = mode==="register"
-        ? "Register using email + password."
-        : "Use the same email + password you registered with.";
-      if(pwEl) pwEl.autocomplete = mode==="register" ? "new-password" : "current-password";
+  try {
+    if (mode === "login") {
+      await signInWithEmailAndPassword(auth, email, password);
+      alert("Logged in successfully");
+    } else {
+      await createUserWithEmailAndPassword(auth, email, password);
+      alert("Registered successfully");
     }
+  } catch (e) {
+    errorBox.textContent = e.message;
+  }
+};
+</script>
 
-    tabRegister?.addEventListener("click", ()=> setMode("register"));
-    tabLogin?.addEventListener("click", ()=> setMode("login"));
-
-    togglePw?.addEventListener("click", ()=>{
-      if(!pwEl) return;
-      const isPw = pwEl.type === "password";
-      pwEl.type = isPw ? "text" : "password";
-      togglePw.textContent = isPw ? "Hide" : "Show";
-    });
-
-    submitBtn?.addEventListener("click", async ()=>{
-      clearAuthMessage();
-      const email = (emailEl?.value || "").trim();
-      const password = (pwEl?.value || "").trim();
-
-      if(!email || !password){
-        setAuthMessage("Please enter email and password.", "err");
-        return;
-      }
-
-      try{
-        if(mode==="register"){
-          await createUserWithEmailAndPassword(auth, email, password);
-          setAuthMessage("✅ Account created. Logging you in…", "ok");
-        }else{
-          await signInWithEmailAndPassword(auth, email, password);
-          setAuthMessage("✅ Logged in successfully.", "ok");
-        }
-      }catch(e){
-        const msg = (e && e.message) ? e.message : "Authentication error.";
-        setAuthMessage("Firebase: " + msg, "err");
-      }
-    });
-
-    // =========================
-    // 4) DASH UI + PANELS
-    // =========================
-    const who = qs("who");
-    const logoutBtn = qs("logoutBtn");
-
-    const btnVerifyTab = qs("btnVerifyTab");
-    const btnInvestTab = qs("btnInvestTab");
-    const btnInviteTab = qs("btnInviteTab");
-
-    const panelVerify = qs("panelVerify");
-    const panelInvest = qs("panelInvest");
-    const panelInvite = qs("panelInvite");
-
-    function showPanel(which){
-      // tabs
-      setActive(btnVerifyTab, which==="verify");
-      setActive(btnInvestTab, which==="invest");
-      setActive(btnInviteTab, which==="invite");
-      // panels
-      panelVerify.style.display = (which==="verify") ? "" : "none";
-      panelInvest.style.display = (which==="invest") ? "" : "none";
-      panelInvite.style.display = (which==="invite") ? "" : "none";
-    }
-
-    btnVerifyTab?.addEventListener("click", ()=> showPanel("verify"));
-    btnInvestTab?.addEventListener("click", ()=> showPanel("invest"));
-    btnInviteTab?.addEventListener("click", ()=> showPanel("invite"));
-
-    logoutBtn?.addEventListener("click", async ()=>{
-      try{ await signOut(auth); } catch(_e){}
-    });
-
-    // Contract actions
-    qs("contractBox").textContent = OFFICIAL_CONTRACT;
-
-    function copyText(text){
-      return navigator.clipboard.writeText(text);
-    }
-
-    qs("copyContract")?.addEventListener("click", async ()=>{
-      try{
-        await copyText(OFFICIAL_CONTRACT);
-        setDashMessage("✅ Copied contract.");
-      }catch(e){
-        setDashMessage("❌ Copy failed (browser blocked).");
-      }
-    });
-
-    qs("copyContract2")?.addEventListener("click", async ()=>{
-      try{
-        await copyText(OFFICIAL_CONTRACT);
-        setDashMessage("✅ Copied contract.");
-      }catch(e){
-        setDashMessage("❌ Copy failed (browser blocked).");
-      }
-    });
-
-    qs("openBscScan")?.addEventListener("click", ()=>{
-      window.open(BSCSCAN_URL, "_blank", "noopener,noreferrer");
-    });
-
-    // DEXTools button
-    qs("btnDex")?.addEventListener("click", ()=>{
-      window.open(DEXTOOLS_URL, "_blank", "noopener,noreferrer");
-      setDashMessage("✅ Opening DEXTools…");
-    });
-
-    // Invite
-    const inviteCodeBox = qs("inviteCodeBox");
-    const INVITE_KEY = "umoja_invite_code";
-
-    function randomCode(len=8){
-      const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-      let out="";
-      for(let i=0;i<len;i++) out += chars[Math.floor(Math.random()*chars.length)];
-      return out;
-    }
-    function getOrCreateInvite(){
-      let code = localStorage.getItem(INVITE_KEY);
-      if(!code){
-        code = "UMJ-" + randomCode(8);
-        localStorage.setItem(INVITE_KEY, code);
-      }
-      return code;
-    }
-    function refreshInvite(){
-      const code = "UMJ-" + randomCode(8);
-      localStorage.setItem(INVITE_KEY, code);
-      return code;
-    }
-    function inviteLink(code){
-      const url = new URL(window.location.href);
-      url.searchParams.set("ref", code);
-      return url.toString();
-    }
-    function renderInvite(){
-      const code = getOrCreateInvite();
-      inviteCodeBox.textContent = code;
-    }
-
-    qs("genInvite")?.addEventListener("click", ()=>{
-      const code = refreshInvite();
-      inviteCodeBox.textContent = code;
-      setDashMessage("✅ New invite code generated.");
-    });
-
-    qs("copyInvite")?.addEventListener("click", async ()=>{
-      const code = getOrCreateInvite();
-      const link = inviteLink(code);
-      try{
-        await copyText(link);
-        setDashMessage("✅ Copied invite link.");
-      }catch(e){
-        setDashMessage("❌ Copy failed (browser blocked).");
-      }
-    });
-
-    // =========================
-    // 5) AUTH STATE ROUTING
-    // =========================
-    onAuthStateChanged(auth, (user)=>{
-      if(user){
-        hide(authCard);
-        show(dashCard);
-        if(who) who.textContent = user.email || "user";
-        showPanel("verify");
-        renderInvite();
-      }else{
-        hide(dashCard);
-        show(authCard);
-        setMode(mode); // keep current mode
-      }
-    });
-
-    // Default mode
-    setMode("register");
-  </script>
 </body>
 </html>
