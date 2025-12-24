@@ -162,11 +162,13 @@
 .logo img{
   width: 100%;
   height: 100%;
-  object-fit: contain;     /* 🔥 show FULL logo */
-  padding: 10%;
-            /* breathing room inside circle */
+  object-fit: contain;          /* ✅ NO cropping */
+  object-position: center;      /* ✅ center it */
   display: block;
+  padding: 10%;                 /* ✅ gives breathing room so edges don’t touch */
+  filter: drop-shadow(0 0 10px rgba(58, 255, 245, .35));
 }
+
 
 
 /* fallback if image missing */
