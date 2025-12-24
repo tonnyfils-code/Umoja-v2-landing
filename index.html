@@ -102,79 +102,7 @@
 .logo{
   width:120px;
   height:120px;
-  border-radius:999px;
-  overflow:hidden;
-  position:relative;
   margin:0 auto 14px;
-  display:flex;
-  align-items:center;
-  justify-content:center;
-
-  /* THIS stops background text showing through */
-  background:#07181a;              /* match your site bg */
-  border:1px solid rgba(255,255,255,.14);
-  box-shadow: 0 0 26px rgba(64,224,208,.35);
-}
-
-/* keep the PNG fully visible (no cropping) */
-.logo img{
-  width:92%;
-  height:92%;
-  object-fit:contain;               /* IMPORTANT: not cover */
-  display:block;
-}
-
-/* rotating glow ring (NOT the PNG) */
-.logo::before{
-  content:"";
-  position:absolute;
-  inset:-10px;
-  border-radius:999px;
-  background: conic-gradient(
-    from 0deg,
-    rgba(64,224,208,.0),
-    rgba(64,224,208,.55),
-    rgba(64,224,208,.0)
-  );
-  animation: spinRing 3.2s linear infinite;
-  filter: blur(1px);
-  opacity:.9;
-  pointer-events:none;
-}
-
-.logo::after{
-  content:"";
-  position:absolute;
-  inset:2px;
-  border-radius:999px;
-  background: rgba(7,24,26,.75);    /* inner “glass” */
-  pointer-events:none;
-}
-
-@keyframes spinRing{
-  to { transform: rotate(360deg); }
-}
-
-.logo img{
-  width: 100%;
-  height: 100%;
-  display: block;
-
-  /* THIS is the key fix: NO CROPPING */
-  object-fit: contain;
-
-  /* optional: give a little breathing room so logo doesn't touch edges */
-  transform: scale(0.92);
-}
-
-@keyframes logoSpin{
-  from{ transform: rotate(0deg); }
-  to{ transform: rotate(360deg); }
-}
-
-/* Mobile scaling */
-@media (max-width: 520px){
-  .logo{ width: 96px; height: 96px; }
 }
 
 .logoSpin{
@@ -479,15 +407,8 @@
 
       <div class="brand">
         <div class="logoWrap">
-       <div class="logo">
-  <img
-    id="umojaLogoImg"
-    src="./assets/umoja-logo.png"
-    alt="UMOJA Logo"
-    onerror="this.style.display='none'; document.getElementById('logoFallback').style.display='block';"
-  />
-  <div id="logoFallback" class="logoFallback" style="display:none;">UMOJA</div>
-</div>
+       <div class="logo"></div>
+
 
 
 
