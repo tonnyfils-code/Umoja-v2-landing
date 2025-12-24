@@ -611,6 +611,206 @@
         setTab("login");
       }
     });
+    // ===== Verify / Invest / Invite popups =====
+const CONTRACT = "0x8D6A79567a701FCe55b62C15d0fbB765913ac84a";
+const BSCSCAN = `https://bscscan.com/token/${CONTRACT}`;
+
+// quick selector
+const qs = (id) => document.getElementById(id);
+
+// modal elements
+const modalOverlay = qs("modalOverlay");
+const modalTitle = qs("modalTitle");
+const modalBody = qs("modalBody");
+const modalClose = qs("modalClose");
+
+function openModal(title, html){
+  modalTitle.textContent = title;
+  modalBody.innerHTML = html;
+  modalOverlay.style.display = "flex";
+  modalOverlay.setAttribute("aria-hidden", "false");
+}
+function closeModal(){
+  modalOverlay.style.display = "none";
+  modalOverlay.setAttribute("aria-hidden", "true");
+  modalBody.innerHTML = "";
+}
+modalClose?.addEventListener("click", closeModal);
+modalOverlay?.addEventListener("click", (e) => { if(e.target === modalOverlay) closeModal(); });
+document.addEventListener("keydown", (e) => { if(e.key === "Escape") closeModal(); });
+
+// helpers
+async function copyText(text){
+  try{
+    await navigator.clipboard.writeText(text);
+    return true;
+  }catch(e){
+    // fallback
+    const ta = document.createElement("textarea");
+    ta.value = text;
+    document.body.appendChild(ta);
+    ta.select();
+    document.execCommand("copy");
+    ta.remove();
+    return true;
+  }
+}
+
+// ---- CONTENT: VERIFY ----
+function verifyHTML(){
+  return `
+    <div class="box">
+      <div style="font-weight:800; margin-bottom:8px;">✅ Official Contract</div>
+      <div class="muted" style="margin-bottom:10px;">Always verify from official channels before sending funds.</div>
+
+      <div class="codePill" id="contractText">${CONTRACT}</div>
+
+      <div class="rowBtns">
+        <button class="btn" id="copyContractBtn" type="button">Copy Contract</button>
+        <button class="btn" id="openBscScanBtn" type="button">Open on BscScan</button>
+      </div>
+    </div>
+
+    <div class="box" style="border-color: rgba(255,95,95,.35);">
+      <div style="font-weight:800; margin-bottom:8px;">⛔ Don’t do this</div>
+      <ul class="muted" style="margin:0; padding-left:18px; line-height:1.6;">
+        <li>Don’t trust screenshots or forwarded messages without verification.</li>
+        <li>Don’t send funds to any address that isn’t officially published.</li>
+        <li>Don’t buy “Umoja” tokens that are not the verified contract.</li>
+      </ul>
+    </div>
+  `;
+}
+
+// ---- CONTENT: INVEST ----
+function investHTML(){
+  return `
+    <div class="box">
+      <div style="font-weight:800; margin-bottom:8px;">🦊 How to Invest in Umoja V2 (MetaMask)</div>
+      <ol class="muted" style="margin:0; padding-left:18px; line-height:1.7;">
+        <li>Install MetaMask (browser extension or mobile app).</li>
+        <li>Add / switch to <b>BNB Smart Chain</b> network in MetaMask.</li>
+        <li>Fund your wallet with <b>BNB</b> for gas + investment.</li>
+        <li>Import the token using the official contract address.</li>
+        <li>Buy using the official DEX link (you can add it next).</li>
+      </ol>
+
+      <div style="height:10px;"></div>
+
+      <div class="box">
+        <div style="font-weight:800; margin-bottom:8px;">✅ Token Import</div>
+        <div class="muted" style="margin-bottom:10px;">In MetaMask: <b>Import Tokens</b> → paste the contract:</div>
+        <div class="codePill">${CONTRACT}</div>
+        <div class="rowBtns">
+          <button class="btn" id="copyContractBtn2" type="button">Copy</button>
+          <button class="btn" id="openBscScanBtn2" type="button">Open on BscScan</button>
+        </div>
+      </div>
+
+      <div class="muted" style="margin-top:10px;">
+        Want the “Buy” button to open the exact PancakeSwap page? Tell me your PancakeSwap URL and I’ll wire it.
+      </div>
+    </div>
+  `;
+}
+
+// ---- CONTENT: INVITE ----
+function inviteHTML(){
+  return `
+    <div class="box">
+      <div style="font-weight:800; margin-bottom:8px;">🔗 Invitation Link (Referral Tracking)</div>
+      <div class="muted">
+        Enter your referral code, then generate a shareable invitation link.
+      </div>
+
+      <div style="height:10px;"></div>
+
+      <div class="field">
+        <input id="refCodeInput" type="text" placeholder="Enter your referral code (example: FISTON1)" />
+      </div>
+
+      <div class="rowBtns">
+        <button class="btn" id="genLinkBtn" type="button">Generate Link</button>
+      </div>
+
+      <div style="height:10px;"></div>
+
+      <div class="box" style="border-color: rgba(255,215,0,.28);">
+        <div style="font-weight:800; margin-bottom:8px;">Your Invitation Link</div>
+        <div class="codePill" id="inviteOut">Enter a code, then click Generate Link</div>
+
+        <div class="rowBtns">
+          <button class="btn" id="copyInviteBtn" type="button">Copy Link</button>
+          <button class="btn" id="testInviteBtn" type="button">Test Link</button>
+        </div>
+
+        <div class="muted" style="margin-top:10px;">
+          Next step: connect this to Firebase Auth + Firestore so every signup is stored under the referrer automatically.
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// wire buttons (make sure these IDs exist in your logged-in section)
+qs("goVerify")?.addEventListener("click", () => {
+  openModal("Verify Contract", verifyHTML());
+
+  // bind inside modal
+  qs("copyContractBtn")?.addEventListener("click", async () => {
+    await copyText(CONTRACT);
+  });
+  qs("openBscScanBtn")?.addEventListener("click", () => window.open(BSCSCAN, "_blank"));
+});
+
+qs("goInvest")?.addEventListener("click", () => {
+  openModal("How to Invest", investHTML());
+
+  qs("copyContractBtn2")?.addEventListener("click", async () => {
+    await copyText(CONTRACT);
+  });
+  qs("openBscScanBtn2")?.addEventListener("click", () => window.open(BSCSCAN, "_blank"));
+});
+
+qs("goInvite")?.addEventListener("click", () => {
+  openModal("Invitation Link", inviteHTML());
+
+  const base = location.origin + location.pathname; // works for /Umoja-v2-landing/ too
+  const refInput = qs("refCodeInput");
+  const inviteOut = qs("inviteOut");
+
+  qs("genLinkBtn")?.addEventListener("click", () => {
+    const code = (refInput?.value || "").trim();
+    if(!code){
+      inviteOut.textContent = "Please enter a referral code first.";
+      return;
+    }
+    const url = `${base}?ref=${encodeURIComponent(code)}`;
+    inviteOut.textContent = url;
+  });
+
+  qs("copyInviteBtn")?.addEventListener("click", async () => {
+    const txt = inviteOut?.textContent || "";
+    if(txt.startsWith("http")) await copyText(txt);
+  });
+
+  qs("testInviteBtn")?.addEventListener("click", () => {
+    const txt = inviteOut?.textContent || "";
+    if(txt.startsWith("http")) window.open(txt, "_blank");
+  });
+});
+
   </script>
+  <!-- ===== POPUP MODAL (Verify / Invest / Invite) ===== -->
+<div id="modalOverlay" class="modalOverlay" aria-hidden="true">
+  <div class="modal" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+    <div class="modalHeader">
+      <div id="modalTitle" class="modalTitle">Modal</div>
+      <button id="modalClose" class="modalClose" type="button">Close</button>
+    </div>
+    <div id="modalBody" class="modalBody"></div>
+  </div>
+</div>
+
 </body>
 </html>
