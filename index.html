@@ -171,10 +171,41 @@
         <div id="tabLogin" class="tab">Login</div>
       </div>
 
-      <div class="form">
-        <div class="field">
-          <input id="emailOrPhone" type="text" placeholder="Email or Phone" autocomplete="username" />
-        </div>
+      <div id="registerPanel">
+  <div class="form">
+
+    <div class="field">
+      <input id="emailOrPhone" type="text" placeholder="Email or Phone" autocomplete="username" />
+    </div>
+
+    <div class="field row">
+      <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
+      <button id="togglePw" type="button">Show</button>
+    </div>
+
+    <button id="actionBtn" class="btn">Create Account</button>
+
+    <div id="inviteBox" class="inviteBox"></div>
+
+  </div>
+</div>
+<div id="loginPanel" style="display:none;">
+  <div class="form">
+
+    <div class="field">
+      <input id="loginEmail" type="text" placeholder="Email" />
+    </div>
+
+    <div class="field row">
+      <input id="loginPassword" type="password" placeholder="Password" />
+      <button type="button" id="loginShowBtn">Show</button>
+    </div>
+
+    <button id="loginBtn" class="btn">Login</button>
+
+  </div>
+</div>
+
 
         <div class="field row">
           <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
@@ -456,6 +487,51 @@
 
   // Log invitation open immediately
   logInviteOpenIfAny();
+    <script>
+  // Tab switching (fix Login tab not clickable / not working)
+  const tabRegister = document.getElementById("tabRegister");
+  const tabLogin = document.getElementById("tabLogin");
+  const registerPanel = document.getElementById("registerPanel");
+  const loginPanel = document.getElementById("loginPanel");
+
+  function showRegister(){
+    tabRegister.classList.add("active");
+    tabLogin.classList.remove("active");
+    registerPanel.style.display = "block";
+    loginPanel.style.display = "none";
+  }
+
+  function showLogin(){
+    tabLogin.classList.add("active");
+    tabRegister.classList.remove("active");
+    loginPanel.style.display = "block";
+    registerPanel.style.display = "none";
+  }
+
+  tabRegister.addEventListener("click", showRegister);
+  tabLogin.addEventListener("click", showLogin);
+</script>
+
+</script>
+<script>
+const tabRegister = document.getElementById("tabRegister");
+const tabLogin = document.getElementById("tabLogin");
+const registerPanel = document.getElementById("registerPanel");
+const loginPanel = document.getElementById("loginPanel");
+
+tabRegister.onclick = () => {
+  tabRegister.classList.add("active");
+  tabLogin.classList.remove("active");
+  registerPanel.style.display = "block";
+  loginPanel.style.display = "none";
+};
+
+tabLogin.onclick = () => {
+  tabLogin.classList.add("active");
+  tabRegister.classList.remove("active");
+  registerPanel.style.display = "none";
+  loginPanel.style.display = "block";
+};
 </script>
 
 </body>
