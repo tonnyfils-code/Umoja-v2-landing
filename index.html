@@ -631,6 +631,116 @@ tabLogin.onclick = () => {
   registerPanel.style.display = "none";
   loginPanel.style.display = "block";
 };
+  // ===== UI HELPERS =====
+const qs = (id) => document.getElementById(id);
+
+const tabRegister = qs("tabRegister");
+const tabLogin = qs("tabLogin");
+const registerPanel = qs("registerPanel");
+const loginPanel = qs("loginPanel");
+
+const errorBox = qs("errorBox");
+const errorBox2 = qs("errorBox2");
+
+function showError(box, msg){
+  if(!box) return;
+  box.style.display = "block";
+  box.textContent = msg;
+}
+function clearErrors(){
+  if(errorBox){ errorBox.style.display="none"; errorBox.textContent=""; }
+  if(errorBox2){ errorBox2.style.display="none"; errorBox2.textContent=""; }
+}
+
+function setTab(mode){
+  clearErrors();
+  const isRegister = mode === "register";
+  tabRegister.classList.toggle("active", isRegister);
+  tabLogin.classList.toggle("active", !isRegister);
+  registerPanel.style.display = isRegister ? "block" : "none";
+  loginPanel.style.display = isRegister ? "none" : "block";
+}
+
+tabRegister?.addEventListener("click", () => setTab("register"));
+tabLogin?.addEventListener("click", () => setTab("login"));
+
+// ===== PASSWORD TOGGLES (fix “password not showing”) =====
+qs("toggleRegPw")?.addEventListener("click", () => {
+  const inp = qs("regPassword");
+  if(!inp) return;
+  inp.type = inp.type === "password" ? "text" : "password";
+  qs("toggleRegPw").textContent = inp.type === "password" ? "Show" : "Hide";
+});
+
+qs("toggleLoginPw")?.addEventListener("click", () => {
+  const inp = qs("loginPassword");
+  if(!inp) return;
+  inp.type = inp.type === "password" ? "text" : "password";
+  qs("toggleLoginPw").textContent = inp.type === "password" ? "Show" : "Hide";
+});
+
+// ===== AUTH ACTIONS =====
+qs("registerBtn")?.addEventListener("click", async () => {
+  clearErrors();
+  try{
+    const email = (qs("regEmail")?.value || "").trim();
+    const pw = qs("regPassword")?.value || "";
+    if(!email || pw.length < 6) return showError(errorBox, "Enter email/phone and a password (6+ chars).");
+
+    await createUserWithEmailAndPassword(auth, email, pw);
+    // onAuthStateChanged will handle showing logged-in view
+  }catch(e){
+    showError(errorBox, (e && e.message) ? e.message : String(e));
+  }
+});
+
+qs("loginBtn")?.addEventListener("click", async () => {
+  clearErrors();
+  try{
+    const email = (qs("loginEmail")?.value || "").trim();
+    const pw = qs("loginPassword")?.value || "";
+    if(!email || !pw) return showError(errorBox2, "Enter email/phone and password.");
+
+    await signInWithEmailAndPassword(auth, email, pw);
+    // onAuthStateChanged will handle showing logged-in view
+  }catch(e){
+    showError(errorBox2, (e && e.message) ? e.message : String(e));
+  }
+});
+
+// ===== LOGGED-IN VIEW =====
+const loggedInPage = qs("loggedInPage");
+const authCard = document.querySelector(".card"); // your first card
+
+function showLoggedInUI(user){
+  // hide the login/register card, show logged in section
+  if(authCard) authCard.style.display = "none";
+  if(loggedInPage) loggedInPage.style.display = "block";
+  qs("pageArea").textContent = `Signed in as: ${user.email || user.phoneNumber || user.uid}`;
+}
+
+function showAuthUI(){
+  if(authCard) authCard.style.display = "block";
+  if(loggedInPage) loggedInPage.style.display = "none";
+  setTab("register");
+}
+
+qs("logoutBtn")?.addEventListener("click", async () => {
+  await signOut(auth);
+});
+
+qs("goVerify")?.addEventListener("click", () => qs("pageArea").textContent = "✅ Verify page (next we will build this section).");
+qs("goInvest")?.addEventListener("click", () => qs("pageArea").textContent = "💰 Invest page (next we will build this section).");
+qs("goInvite")?.addEventListener("click", () => qs("pageArea").textContent = "📨 Invite page (next we will build this section).");
+
+onAuthStateChanged(auth, (user) => {
+  if(user) showLoggedInUI(user);
+  else showAuthUI();
+});
+
+// default tab
+setTab("register");
+
 </script>
 
 </body>
