@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>UMOJA V2 • Register / Login</title>
 
   <style>
@@ -16,6 +16,7 @@
       --accent2:#0bbf9a;
       --danger:#ff5d5d;
     }
+
     *{box-sizing:border-box}
     body{
       margin:0;
@@ -23,725 +24,531 @@
       display:flex;
       align-items:center;
       justify-content:center;
-      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-      background:
-        radial-gradient(900px 600px at 50% 10%, rgba(43,211,177,.14), transparent 55%),
-        radial-gradient(900px 700px at 50% 100%, rgba(0,0,0,.65), rgba(0,0,0,.9)),
-        linear-gradient(180deg, #0a2a2c, #061618);
+      background: radial-gradient(900px 600px at 50% 15%, rgba(43,211,177,.14), transparent 55%),
+                  radial-gradient(700px 450px at 50% 90%, rgba(11,191,154,.12), transparent 60%),
+                  var(--bg);
       color:var(--text);
-      padding:24px;
+      font-family: system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
+      padding: 28px 14px;
     }
-    .wrap{width:min(460px, 100%);}
+
+    .wrap{
+      width:min(520px, 100%);
+    }
+
     .brand{
       text-align:center;
       margin-bottom:16px;
     }
-    .logo{
-      width:74px;height:74px;border-radius:50%;
-      margin:0 auto 10px;
-      display:grid;place-items:center;
-      background: radial-gradient(circle at 30% 30%, rgba(43,211,177,.25), rgba(0,0,0,.55));
+    .orb{
+      width:74px;height:74px;
+      margin:0 auto 10px auto;
+      border-radius:999px;
+      background:
+        radial-gradient(circle at 35% 30%, rgba(255,255,255,.22), transparent 45%),
+        radial-gradient(circle at 50% 60%, rgba(43,211,177,.35), rgba(11,191,154,.10) 55%, rgba(0,0,0,.10));
+      box-shadow: 0 20px 55px rgba(43,211,177,.18);
       border:1px solid rgba(255,255,255,.10);
-      overflow:hidden;
     }
-    .brand h1{
+    h1{
       margin:0;
-      font-size:32px;
-      letter-spacing:2px;
+      letter-spacing:.08em;
+      font-weight:800;
     }
-    .brand p{margin:6px 0 0; color:var(--muted)}
+    .sub{
+      margin:6px 0 0 0;
+      color:var(--muted);
+      font-weight:600;
+      letter-spacing:.02em;
+    }
+
     .card{
-      margin-top:14px;
-      background: var(--card);
+      background: linear-gradient(180deg, rgba(255,255,255,.07), rgba(255,255,255,.04));
       border:1px solid var(--stroke);
-      border-radius:22px;
+      border-radius:24px;
       padding:18px;
+      box-shadow: 0 24px 60px rgba(0,0,0,.35);
       backdrop-filter: blur(10px);
-      box-shadow: 0 20px 60px rgba(0,0,0,.45);
     }
+
     .tabs{
       display:flex;
       gap:10px;
-      background: rgba(0,0,0,.18);
-      padding:8px;
+      background: rgba(0,0,0,.16);
+      border:1px solid rgba(255,255,255,.10);
+      padding:10px;
       border-radius:18px;
-      border:1px solid rgba(255,255,255,.08);
+      margin-bottom:14px;
     }
     .tab{
       flex:1;
+      text-align:center;
       padding:12px 10px;
       border-radius:14px;
-      text-align:center;
-      font-weight:700;
       cursor:pointer;
-      color: rgba(234,246,245,.65);
       user-select:none;
+      font-weight:800;
+      color: rgba(234,246,245,.80);
+      border:1px solid transparent;
     }
     .tab.active{
       background: rgba(43,211,177,.14);
+      border-color: rgba(43,211,177,.28);
       color: var(--text);
-      border:1px solid rgba(43,211,177,.20);
+      box-shadow: inset 0 0 0 1px rgba(255,255,255,.06);
     }
-    .form{margin-top:14px;}
+
+    .panel{ display:none; }
+    .panel.active{ display:block; }
+
     .field{
-      margin-top:12px;
-      background: rgba(0,0,0,.18);
-      border:1px solid rgba(255,255,255,.10);
-      border-radius:18px;
-      padding:12px;
+      margin: 10px 0;
     }
-    .field input{
+    input{
       width:100%;
-      border:none;
-      outline:none;
-      background: transparent;
+      padding: 14px 14px;
+      border-radius:16px;
+      border:1px solid rgba(255,255,255,.12);
+      background: rgba(0,0,0,.18);
       color: var(--text);
-      font-size:18px;
-      padding:8px 6px;
+      outline: none;
+      font-size: 16px;
     }
+    input::placeholder{ color: rgba(234,246,245,.45); }
     .row{
       display:flex;
       gap:10px;
       align-items:center;
     }
+
     .btn{
       width:100%;
-      margin-top:14px;
-      border:none;
+      padding: 16px 14px;
+      border: none;
       border-radius:18px;
-      padding:14px 14px;
-      font-size:18px;
-      font-weight:800;
+      background: linear-gradient(90deg, var(--accent), var(--accent2));
+      color:#042b2c;
+      font-weight:900;
+      font-size: 18px;
       cursor:pointer;
-      color:#06201e;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      box-shadow: 0 10px 25px rgba(43,211,177,.18);
+      margin-top: 8px;
+      box-shadow: 0 18px 40px rgba(43,211,177,.22);
     }
-    .btn:disabled{opacity:.55; cursor:not-allowed}
-    .small{
-      margin-top:10px;
-      text-align:center;
-      color: rgba(234,246,245,.70);
-      font-size:14px;
-      line-height:1.35;
+    .btn:disabled{
+      opacity:.55;
+      cursor:not-allowed;
     }
-    .small a{color:var(--accent); text-decoration:none; font-weight:700}
-    .msg{
-      margin-top:10px;
-      padding:10px 12px;
-      border-radius:14px;
-      border:1px solid rgba(255,255,255,.10);
-      background: rgba(0,0,0,.18);
-      color: rgba(234,246,245,.85);
-      font-size:14px;
-      display:none;
-    }
-    .msg.error{border-color: rgba(255,93,93,.35); color: #ffd6d6;}
-    .inviteBox{
-      margin-top:12px;
-      border-radius:18px;
-      padding:12px;
-      border:1px dashed rgba(255,255,255,.18);
-      background: rgba(0,0,0,.14);
-      display:none;
-    }
-    .inviteBox .label{color:rgba(234,246,245,.65); font-size:13px}
-    .inviteBox .code{
-      margin-top:6px;
-      font-size:20px;
-      letter-spacing:2px;
+
+    .smallBtn{
+      padding: 10px 14px;
+      border-radius: 14px;
+      border: 1px solid rgba(255,255,255,.14);
+      background: rgba(255,255,255,.08);
+      color: rgba(234,246,245,.92);
+      cursor:pointer;
+      white-space:nowrap;
       font-weight:800;
     }
-    .smallBtn{
-  padding: 10px 14px;
-  border-radius: 14px;
-  border: 1px solid rgba(255,255,255,.14);
-  background: rgba(255,255,255,.08);
-  color: rgba(234,246,245,.9);
-  cursor: pointer;
-}
-.errorBox{
-  margin-top: 12px;
-  padding: 10px 12px;
-  border-radius: 12px;
-  border: 1px solid rgba(255,80,80,.35);
-  background: rgba(255,80,80,.10);
-  color: rgba(255,200,200,.95);
-  font-size: 14px;
-}
 
+    .fineprint{
+      margin-top: 10px;
+      text-align:center;
+      color: rgba(234,246,245,.65);
+      font-weight:600;
+    }
+    .fineprint a{ color: var(--accent); text-decoration:none; }
+
+    .errorBox{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(255,93,93,.35);
+      background: rgba(255,93,93,.10);
+      color: rgba(255,220,220,.95);
+      display:none;
+      font-weight:700;
+      word-break: break-word;
+    }
+    .okBox{
+      margin-top: 12px;
+      padding: 10px 12px;
+      border-radius: 12px;
+      border:1px solid rgba(43,211,177,.35);
+      background: rgba(43,211,177,.10);
+      color: rgba(220,255,248,.95);
+      display:none;
+      font-weight:700;
+    }
+
+    /* Logged-in page */
+    #loggedInPage{
+      display:none;
+    }
+    .loggedCard{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+    .navRow{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+    }
+    .navRow .smallBtn{
+      flex:1;
+      min-width: 120px;
+      text-align:center;
+    }
+    .mutedBox{
+      padding: 10px 12px;
+      border-radius: 14px;
+      border:1px solid rgba(255,255,255,.10);
+      background: rgba(0,0,0,.14);
+      color: rgba(234,246,245,.80);
+      font-weight:700;
+    }
   </style>
 </head>
+
 <body>
   <div class="wrap">
+
     <div class="brand">
-      <div class="logo">
-        <!-- Optional: put your logo image inside -->
-        <!-- <img src="logo.png" alt="UMOJA" style="width:100%;height:100%;object-fit:cover;"> -->
-      </div>
+      <div class="orb"></div>
       <h1>UMOJA V2</h1>
-      <p>Official Landing • Verify • Invest • Invite</p>
+      <div class="sub">Official Landing • Verify • Invest • Invite</div>
     </div>
 
-    <div class="card">
-      <div class="tabs">
-        <div id="tabRegister" class="tab active">Register</div>
-        <div id="tabLogin" class="tab">Login</div>
+    <!-- AUTH CARD -->
+    <div class="card" id="authCard">
+      <div class="tabs" id="tabs">
+        <div class="tab active" id="tabRegister" role="button" tabindex="0">Register</div>
+        <div class="tab" id="tabLogin" role="button" tabindex="0">Login</div>
       </div>
 
-     <!-- PANELS -->
-<div id="registerPanel">
-  <div class="form">
-    <div class="field">
-      <input id="regEmail" type="text" placeholder="Email or Phone" autocomplete="username" />
-    </div>
-
-    <div class="field row">
-      <input id="regPassword" type="password" placeholder="Password" autocomplete="new-password" />
-      <button id="toggleRegPw" type="button" class="smallBtn">Show</button>
-    </div>
-
-    <button id="registerBtn" class="btn">Create Account</button>
-
-    <div id="inviteBox" class="inviteBox" style="display:none;">
-      <div class="muted">Referral detected from link:</div>
-      <div id="refOut" class="refCode"></div>
-    </div>
-
-    <div class="agree">
-      By continuing you agree to the <span class="link">Registration Agreement</span>.
-    </div>
-
-    <div id="errorBox" class="errorBox" style="display:none;"></div>
-  </div>
-</div>
-
-<div id="loginPanel" style="display:none;">
-  <div class="form">
-    <div class="field">
-      <input id="loginEmail" type="text" placeholder="Email or Phone" autocomplete="username" />
-    </div>
-
-    <div class="field row">
-      <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" />
-      <button id="toggleLoginPw" type="button" class="smallBtn">Show</button>
-    </div>
-
-    <button id="loginBtn" class="btn">Login</button>
-
-    <div class="agree">
-      By continuing you agree to the <span class="link">Registration Agreement</span>.
-    </div>
-
-    <div id="errorBox2" class="errorBox" style="display:none;"></div>
-  </div>
-</div>
-
-<!-- LOGGED-IN VIEW (put this right under the card, still inside <body>) -->
-<section id="loggedInPage" style="display:none; margin-top:18px;">
-  <div class="card">
-    <h2 style="margin:0 0 10px 0;">Welcome ✅</h2>
-
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn" id="goVerify">Verify</button>
-      <button class="btn" id="goInvest">Invest</button>
-      <button class="btn" id="goInvite">Invite</button>
-      <button class="btn" id="logoutBtn">Logout</button>
-    </div>
-
-    <div id="pageArea" style="margin-top:14px; opacity:.9;"></div>
-  </div>
-</section>
-
-
-<div id="loginPanel" style="display:none;">
-  <div class="form">
-    <div class="field">
-      <input id="loginEmail" type="text" placeholder="Email or Phone" autocomplete="username" />
-    </div>
-
-    <div class="field row">
-      <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" />
-      <button id="toggleLoginPw" type="button">Show</button>
-    </div>
-
-    <button id="loginBtn" class="btn">Login</button>
-
-    <div class="smallMuted">
-      By continuing you agree to the <a href="#" id="openAgreement2">Registration Agreement</a>.
-    </div>
-
-    <div id="loginMsg" class="msg"></div>
-  </div>
-</div>
-
-<!-- LOGIN PANEL -->
-<div id="loginPanel" style="display:none;">
-  <div class="form">
-    <div class="field">
-      <input id="loginEmail" type="text" placeholder="Email" autocomplete="username" />
-    </div>
-
-    <div class="field row">
-      <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" />
-      <button id="toggleLoginPw" type="button">Show</button>
-    </div>
-
-    <button id="loginBtn" class="btn">Login</button>
-    <div id="loginMsg" class="msg"></div>
-  </div>
-</div>
-
+      <!-- REGISTER PANEL -->
+      <div class="panel active" id="registerPanel">
+        <div class="field">
+          <input id="regEmail" type="email" placeholder="Email" autocomplete="username" />
+        </div>
 
         <div class="field row">
-          <input id="password" type="password" placeholder="Password" autocomplete="current-password" />
-          <button id="togglePw" type="button" style="border:none;background:rgba(255,255,255,.08);color:var(--text);padding:10px 12px;border-radius:14px;cursor:pointer;font-weight:700;">Show</button>
+          <input id="regPassword" type="password" placeholder="Password" autocomplete="new-password" />
+          <button class="smallBtn" id="toggleRegPw" type="button">Show</button>
         </div>
 
-        <button id="actionBtn" class="btn">Create Account</button>
+        <button class="btn" id="registerBtn" type="button">Create Account</button>
 
-        <div id="inviteBox" class="inviteBox">
-          <div class="label">Referral detected from link:</div>
-          <div id="inviteCode" class="code"></div>
-        </div>
-
-        <div id="msg" class="msg"></div>
-
-        <div class="small">
-          By continuing you agree to the <a href="#" onclick="alert('Add your Registration Agreement page/link here');return false;">Registration Agreement</a>.
+        <div class="fineprint">
+          By continuing you agree to the <a href="#" onclick="return false;">Registration Agreement</a>.
         </div>
       </div>
-    </div>
-  </div>
-<!-- LOGGED IN VIEW -->
-<section id="loggedInPage" style="display:none; margin-top:16px;">
-  <div class="card">
-    <h2 style="margin:0 0 10px 0;">Welcome ✅</h2>
 
-    <div style="display:flex; gap:10px; flex-wrap:wrap;">
-      <button class="btn" id="goVerify">Verify</button>
-      <button class="btn" id="goInvest">Invest</button>
-      <button class="btn" id="goInvite">Invite</button>
-      <button class="btn" id="logoutBtn">Logout</button>
+      <!-- LOGIN PANEL -->
+      <div class="panel" id="loginPanel">
+        <div class="field">
+          <input id="loginEmail" type="email" placeholder="Email" autocomplete="username" />
+        </div>
+
+        <div class="field row">
+          <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" />
+          <button class="smallBtn" id="toggleLoginPw" type="button">Show</button>
+        </div>
+
+        <button class="btn" id="loginBtn" type="button">Login</button>
+
+        <div class="fineprint">
+          By continuing you agree to the <a href="#" onclick="return false;">Registration Agreement</a>.
+        </div>
+      </div>
+
+      <div class="errorBox" id="errorBox"></div>
+      <div class="okBox" id="okBox"></div>
     </div>
+
+    <!-- LOGGED IN PAGE -->
+    <div class="card" id="loggedInPage">
+      <div class="loggedCard">
+        <div class="mutedBox" id="whoami">Logged in.</div>
+
+        <div class="navRow">
+          <button class="smallBtn" id="goVerify" type="button">Verify</button>
+          <button class="smallBtn" id="goInvest" type="button">Invest</button>
+          <button class="smallBtn" id="goInvite" type="button">Invite</button>
+          <button class="smallBtn" id="logoutBtn" type="button">Logout</button>
+        </div>
+
+        <div class="mutedBox" id="pageBox">
+          Choose an option above.
+        </div>
+
+        <div class="okBox" id="inviteOk"></div>
+        <div class="errorBox" id="inviteErr"></div>
+      </div>
+    </div>
+
   </div>
-</section>
 
   <script type="module">
-  // =====================================================
-  //  UMOJA V2 - Main Site (Register/Login + Invitation)
-  //  IMPORTANT:
-  //  1) Remove ALL firebase-*-compat scripts if present.
-  //  2) Keep ONLY this module script.
-  //  3) Replace firebaseConfig with the config from the
-  //     web app whose appId matches your project (b4bb...).
-  // =====================================================
+    // ============================
+    // 1) Firebase (MODULAR CDN)
+    // ============================
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
+    import {
+      getAuth,
+      createUserWithEmailAndPassword,
+      signInWithEmailAndPassword,
+      onAuthStateChanged,
+      signOut
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
 
-  import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-app.js";
-  import {
-    getAuth,
-    createUserWithEmailAndPassword,
-    signInWithEmailAndPassword,
-    onAuthStateChanged,
-    signOut
-  } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-auth.js";
-  import {
-    getFirestore,
-    doc,
-    setDoc,
-    getDoc,
-    addDoc,
-    collection,
-    serverTimestamp
-  } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
+    import {
+      getFirestore,
+      doc,
+      setDoc,
+      getDoc,
+      serverTimestamp
+    } from "https://www.gstatic.com/firebasejs/10.12.4/firebase-firestore.js";
 
-  // ✅ REPLACE THESE VALUES with Firebase Console -> Project settings -> Your apps -> (choose correct web app) -> Config
-  const firebaseConfig = {
-    apiKey: "REPLACE_ME",
-    authDomain: "REPLACE_ME",
-    projectId: "REPLACE_ME",
-    storageBucket: "REPLACE_ME",
-    messagingSenderId: "REPLACE_ME",
-    appId: "REPLACE_ME"
-  };
+    // ✅ REPLACE THIS WITH YOUR REAL WEB APP CONFIG (Firebase console → Project settings → Your apps → Web app → Config)
+    const firebaseConfig = {
+      apiKey: "PASTE_YOUR_API_KEY_HERE",
+      authDomain: "PASTE_YOUR_AUTH_DOMAIN_HERE",
+      projectId: "PASTE_YOUR_PROJECT_ID_HERE",
+      storageBucket: "PASTE_YOUR_STORAGE_BUCKET_HERE",
+      messagingSenderId: "PASTE_YOUR_SENDER_ID_HERE",
+      appId: "PASTE_YOUR_APP_ID_HERE"
+    };
 
-  const app = initializeApp(firebaseConfig);
-  const auth = getAuth(app);
-  const db = getFirestore(app);
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
 
-  // -------------------------
-  // Helpers
-  // -------------------------
-  function qs(id) { return document.getElementById(id); }
+    // ============================
+    // 2) Helpers
+    // ============================
+    const qs = (id) => document.getElementById(id);
 
-  function isPhoneLike(v) {
-    const s = (v || "").trim();
-    return /^[+]?[\d\s().-]{7,}$/.test(s) && /[0-9]/.test(s);
-  }
+    const errorBox = qs("errorBox");
+    const okBox = qs("okBox");
 
-  // We support "Email or Phone" WITHOUT SMS by turning phone into a safe pseudo-email
-  function toAuthEmail(emailOrPhoneRaw) {
-    const v = (emailOrPhoneRaw || "").trim();
-    if (!v) return "";
-    if (v.includes("@")) return v.toLowerCase();
-    // phone -> normalize digits -> pseudo email
-    const digits = v.replace(/[^\d+]/g, "");
-    const safe = digits.replace(/\+/g, "plus");
-    return `${safe}@umojav2.local`;
-  }
-
-  function getRefFromUrl() {
-    const p = new URLSearchParams(window.location.search);
-    return (p.get("ref") || "").trim();
-  }
-
-  function randomRefCode(len = 8) {
-    const chars = "ABCDEFGHJKLMNPQRSTUVWXYZ23456789";
-    let out = "";
-    for (let i = 0; i < len; i++) out += chars[Math.floor(Math.random() * chars.length)];
-    return out;
-  }
-
-  async function ensureMyRefCode(uid) {
-    const userRef = doc(db, "users", uid);
-    const snap = await getDoc(userRef);
-    if (snap.exists() && snap.data()?.myRefCode) return snap.data().myRefCode;
-
-    // generate + save
-    const myRefCode = randomRefCode(8);
-    await setDoc(userRef, { myRefCode, updatedAt: serverTimestamp() }, { merge: true });
-    return myRefCode;
-  }
-
-  // -------------------------
-  // Invitation click logging (auto every open with ?ref=)
-  // -------------------------
-  async function logInviteOpenIfAny() {
-    const ref = getRefFromUrl();
-    if (!ref) return;
-
-    // OPTIONAL: show "Referral detected" UI if you have these IDs
-    const refBox = qs("refDetectedBox");
-    const refValue = qs("refDetectedValue");
-    if (refBox && refValue) {
-      refBox.style.display = "block";
-      refValue.textContent = ref;
+    function showError(msg){
+      okBox.style.display = "none";
+      errorBox.textContent = msg || "Something went wrong.";
+      errorBox.style.display = "block";
+    }
+    function showOk(msg){
+      errorBox.style.display = "none";
+      okBox.textContent = msg || "Success.";
+      okBox.style.display = "block";
+    }
+    function clearMsgs(){
+      errorBox.style.display = "none";
+      okBox.style.display = "none";
+      errorBox.textContent = "";
+      okBox.textContent = "";
     }
 
-    // Log every open/click
-    try {
-      await addDoc(collection(db, "inviteClicks"), {
-        ref,
-        page: "index",
-        userAgent: navigator.userAgent || null,
-        url: window.location.href,
-        createdAt: serverTimestamp()
+    function togglePw(inputId, btnId){
+      const inp = qs(inputId);
+      const btn = qs(btnId);
+      btn.addEventListener("click", () => {
+        inp.type = inp.type === "password" ? "text" : "password";
+        btn.textContent = inp.type === "password" ? "Show" : "Hide";
       });
-    } catch (e) {
-      // don’t break UI
-      console.warn("invite click log failed:", e);
     }
-  }
 
-  // -------------------------
-  // UI bindings (IDs must exist in your HTML)
-  // -------------------------
-  // Expected IDs:
-  // Tabs: registerTabBtn, loginTabBtn
-  // Panels: registerPanel, loginPanel
-  // Register: regEmailPhone, regPassword, regBtn
-  // Login: loginEmailPhone, loginPassword, loginBtn
-  // Optional: logoutBtn, statusMsg, inviteLinkOut, copyInviteBtn
-  // Optional referral box: refDetectedBox, refDetectedValue
+    // ============================
+    // 3) Tabs (Register/Login)
+    // ============================
+    const tabRegister = qs("tabRegister");
+    const tabLogin = qs("tabLogin");
+    const registerPanel = qs("registerPanel");
+    const loginPanel = qs("loginPanel");
 
-  function showMsg(msg, type = "ok") {
-    const el = qs("statusMsg");
-    if (!el) return;
-    el.textContent = msg;
-    el.style.display = "block";
-    el.style.borderColor = type === "err" ? "rgba(255,90,90,.6)" : "rgba(0,255,180,.5)";
-  }
-
-  function setTab(which) {
-    const regTab = qs("registerTabBtn");
-    const logTab = qs("loginTabBtn");
-    const regPanel = qs("registerPanel");
-    const logPanel = qs("loginPanel");
-
-    if (regTab && logTab) {
-      regTab.classList.toggle("active", which === "register");
-      logTab.classList.toggle("active", which === "login");
-    }
-    if (regPanel && logPanel) {
-      regPanel.style.display = which === "register" ? "block" : "none";
-      logPanel.style.display = which === "login" ? "block" : "none";
-    }
-  }
-
-  // Hook tabs if present
-  if (qs("registerTabBtn")) qs("registerTabBtn").addEventListener("click", () => setTab("register"));
-  if (qs("loginTabBtn")) qs("loginTabBtn").addEventListener("click", () => setTab("login"));
-
-  // Register
-  if (qs("regBtn")) {
-    qs("regBtn").addEventListener("click", async (e) => {
-      e.preventDefault();
-
-      const emailOrPhone = qs("regEmailPhone")?.value || "";
-      const password = qs("regPassword")?.value || "";
-      if (!emailOrPhone.trim() || password.length < 6) {
-        showMsg("Enter Email/Phone and a password (6+ chars).", "err");
-        return;
+    function setTab(which){
+      clearMsgs();
+      if(which === "register"){
+        tabRegister.classList.add("active");
+        tabLogin.classList.remove("active");
+        registerPanel.classList.add("active");
+        loginPanel.classList.remove("active");
+      } else {
+        tabLogin.classList.add("active");
+        tabRegister.classList.remove("active");
+        loginPanel.classList.add("active");
+        registerPanel.classList.remove("active");
       }
+    }
 
-      const authEmail = toAuthEmail(emailOrPhone);
-      const ref = getRefFromUrl() || null;
+    tabRegister.addEventListener("click", () => setTab("register"));
+    tabLogin.addEventListener("click", () => setTab("login"));
 
-      try {
-        const cred = await createUserWithEmailAndPassword(auth, authEmail, password);
+    // Keyboard support
+    tabRegister.addEventListener("keydown", (e)=>{ if(e.key === "Enter" || e.key === " ") setTab("register"); });
+    tabLogin.addEventListener("keydown", (e)=>{ if(e.key === "Enter" || e.key === " ") setTab("login"); });
 
-        // Save user profile + attach referral
-        await setDoc(doc(db, "users", cred.user.uid), {
-          emailOrPhone: emailOrPhone.trim(),
-          authEmail,
-          referredBy: ref,
-          createdAt: serverTimestamp()
-        }, { merge: true });
+    // ============================
+    // 4) Show/Hide password
+    // ============================
+    togglePw("regPassword", "toggleRegPw");
+    togglePw("loginPassword", "toggleLoginPw");
 
-        const myRefCode = await ensureMyRefCode(cred.user.uid);
+    // ============================
+    // 5) Register & Login actions
+    // ============================
+    const registerBtn = qs("registerBtn");
+    const loginBtn = qs("loginBtn");
 
-        const inviteOut = qs("inviteLinkOut");
-        if (inviteOut) inviteOut.textContent = `${location.origin}${location.pathname}?ref=${myRefCode}`;
+    registerBtn.addEventListener("click", async () => {
+      clearMsgs();
+      const email = (qs("regEmail").value || "").trim();
+      const pass = (qs("regPassword").value || "").trim();
 
-        showMsg("✅ Account created successfully.", "ok");
-        setTab("login"); // or stay on register if you prefer
-      } catch (err) {
-        showMsg(err?.message || String(err), "err");
+      if(!email || !pass) return showError("Please enter email and password.");
+      if(pass.length < 6) return showError("Password must be at least 6 characters.");
+
+      registerBtn.disabled = true;
+      try{
+        await createUserWithEmailAndPassword(auth, email, pass);
+        showOk("Account created. You are now logged in.");
+      }catch(err){
+        showError(err?.message || String(err));
+      }finally{
+        registerBtn.disabled = false;
       }
     });
-  }
 
-  // Login
-  if (qs("loginBtn")) {
-    qs("loginBtn").addEventListener("click", async (e) => {
-      e.preventDefault();
+    loginBtn.addEventListener("click", async () => {
+      clearMsgs();
+      const email = (qs("loginEmail").value || "").trim();
+      const pass = (qs("loginPassword").value || "").trim();
 
-      const emailOrPhone = qs("loginEmailPhone")?.value || "";
-      const password = qs("loginPassword")?.value || "";
-      if (!emailOrPhone.trim() || !password) {
-        showMsg("Enter Email/Phone and password.", "err");
-        return;
+      if(!email || !pass) return showError("Please enter email and password.");
+
+      loginBtn.disabled = true;
+      try{
+        await signInWithEmailAndPassword(auth, email, pass);
+        showOk("Logged in successfully.");
+      }catch(err){
+        showError(err?.message || String(err));
+      }finally{
+        loginBtn.disabled = false;
       }
+    });
 
-      const authEmail = toAuthEmail(emailOrPhone);
+    // ============================
+    // 6) Logged-in page + Invite code (optional)
+    // ============================
+    const authCard = qs("authCard");
+    const loggedInPage = qs("loggedInPage");
+    const whoami = qs("whoami");
+    const pageBox = qs("pageBox");
 
-      try {
-        await signInWithEmailAndPassword(auth, authEmail, password);
+    const inviteOk = qs("inviteOk");
+    const inviteErr = qs("inviteErr");
 
-        // show invite link after login
-        const uid = auth.currentUser?.uid;
-        if (uid) {
-          const myRefCode = await ensureMyRefCode(uid);
-          const inviteOut = qs("inviteLinkOut");
-          if (inviteOut) inviteOut.textContent = `${location.origin}${location.pathname}?ref=${myRefCode}`;
+    function showInviteOk(msg){
+      inviteErr.style.display="none";
+      inviteOk.textContent = msg;
+      inviteOk.style.display="block";
+    }
+    function showInviteErr(msg){
+      inviteOk.style.display="none";
+      inviteErr.textContent = msg;
+      inviteErr.style.display="block";
+    }
+    function clearInviteMsg(){
+      inviteOk.style.display="none";
+      inviteErr.style.display="none";
+      inviteOk.textContent="";
+      inviteErr.textContent="";
+    }
+
+    function getRefFromUrl(){
+      const u = new URL(window.location.href);
+      return (u.searchParams.get("ref") || "").trim();
+    }
+
+    async function saveReferralIfAny(user){
+      clearInviteMsg();
+      const ref = getRefFromUrl();
+      if(!ref) return;
+
+      try{
+        // Save who referred this user
+        await setDoc(doc(db, "referrals", user.uid), {
+          referredBy: ref,
+          referredUser: user.uid,
+          email: user.email || null,
+          createdAt: serverTimestamp(),
+          landing: window.location.href
+        }, { merge:true });
+
+        showInviteOk("Referral captured ✅");
+      } catch (e){
+        showInviteErr("Referral save failed: " + (e?.message || String(e)));
+      }
+    }
+
+    // Basic navigation: replace these later with real pages/sections
+    qs("goVerify").addEventListener("click", () => {
+      pageBox.textContent = "✅ VERIFY: (Put your Verify content here)";
+    });
+    qs("goInvest").addEventListener("click", () => {
+      pageBox.textContent = "💰 INVEST: (Put your Invest instructions here)";
+    });
+    qs("goInvite").addEventListener("click", async () => {
+      const user = auth.currentUser;
+      if(!user) return;
+
+      // Create a simple invite code if one doesn't exist
+      try{
+        const userRef = doc(db, "users", user.uid);
+        const snap = await getDoc(userRef);
+
+        let myRef = snap.exists() ? (snap.data().refCode || "") : "";
+        if(!myRef){
+          myRef = "UMJ-" + Math.random().toString(36).slice(2, 8).toUpperCase();
+          await setDoc(userRef, { refCode: myRef, email: user.email || null, createdAt: serverTimestamp() }, { merge:true });
         }
 
-        showMsg("✅ Logged in.", "ok");
-      } catch (err) {
-        showMsg(err?.message || String(err), "err");
+        const inviteLink = `${window.location.origin}${window.location.pathname}?ref=${encodeURIComponent(myRef)}`;
+        pageBox.textContent = `🔗 INVITE LINK:\n${inviteLink}`;
+        showInviteOk("Invite link generated ✅ (copy from the box)");
+      } catch (e){
+        showInviteErr("Invite generation failed: " + (e?.message || String(e)));
       }
     });
-  }
 
-  // Logout (optional)
-  if (qs("logoutBtn")) {
     qs("logoutBtn").addEventListener("click", async () => {
       await signOut(auth);
-      showMsg("Logged out.", "ok");
     });
-  }
 
-  // Copy invite (optional)
-  if (qs("copyInviteBtn")) {
-    qs("copyInviteBtn").addEventListener("click", async () => {
-      const txt = qs("inviteLinkOut")?.textContent?.trim();
-      if (!txt) return showMsg("No invite link yet.", "err");
-      await navigator.clipboard.writeText(txt);
-      showMsg("✅ Invite link copied.", "ok");
+    // ============================
+    // 7) Auth state switching (THIS is what makes it open the logged-in page)
+    // ============================
+    onAuthStateChanged(auth, async (user) => {
+      clearMsgs();
+      clearInviteMsg();
+
+      if(user){
+        authCard.style.display = "none";
+        loggedInPage.style.display = "block";
+        whoami.textContent = `Logged in as: ${user.email || user.uid}`;
+
+        // Save referral if someone joined through ?ref=CODE
+        await saveReferralIfAny(user);
+
+        // Default view
+        pageBox.textContent = "Welcome ✅ Choose Verify / Invest / Invite.";
+      } else {
+        loggedInPage.style.display = "none";
+        authCard.style.display = "block";
+        // Default to Login tab when logged out (you can change to register)
+        setTab("login");
+      }
     });
-  }
-
-  // Auth state (optional UI updates)
-  onAuthStateChanged(auth, async (user) => {
-    // You can add UI changes here if you want
-    // Example: show invite link when logged in
-    if (user) {
-      try {
-        const myRefCode = await ensureMyRefCode(user.uid);
-        const inviteOut = qs("inviteLinkOut");
-        if (inviteOut) inviteOut.textContent = `${location.origin}${location.pathname}?ref=${myRefCode}`;
-      } catch {}
-    }
-  });
-
-  // Log invitation open immediately
-  logInviteOpenIfAny();
-    <script>
-  // Tab switching (fix Login tab not clickable / not working)
-  const tabRegister = document.getElementById("tabRegister");
-  const tabLogin = document.getElementById("tabLogin");
-  const registerPanel = document.getElementById("registerPanel");
-  const loginPanel = document.getElementById("loginPanel");
-
-  function showRegister(){
-    tabRegister.classList.add("active");
-    tabLogin.classList.remove("active");
-    registerPanel.style.display = "block";
-    loginPanel.style.display = "none";
-  }
-
-  function showLogin(){
-    tabLogin.classList.add("active");
-    tabRegister.classList.remove("active");
-    loginPanel.style.display = "block";
-    registerPanel.style.display = "none";
-  }
-
-  tabRegister.addEventListener("click", showRegister);
-  tabLogin.addEventListener("click", showLogin);
-</script>
-
-</script>
-<script>
-const tabRegister = document.getElementById("tabRegister");
-const tabLogin = document.getElementById("tabLogin");
-const registerPanel = document.getElementById("registerPanel");
-const loginPanel = document.getElementById("loginPanel");
-
-tabRegister.onclick = () => {
-  tabRegister.classList.add("active");
-  tabLogin.classList.remove("active");
-  registerPanel.style.display = "block";
-  loginPanel.style.display = "none";
-};
-
-tabLogin.onclick = () => {
-  tabLogin.classList.add("active");
-  tabRegister.classList.remove("active");
-  registerPanel.style.display = "none";
-  loginPanel.style.display = "block";
-};
-  // ===== UI HELPERS =====
-const qs = (id) => document.getElementById(id);
-
-const tabRegister = qs("tabRegister");
-const tabLogin = qs("tabLogin");
-const registerPanel = qs("registerPanel");
-const loginPanel = qs("loginPanel");
-
-const errorBox = qs("errorBox");
-const errorBox2 = qs("errorBox2");
-
-function showError(box, msg){
-  if(!box) return;
-  box.style.display = "block";
-  box.textContent = msg;
-}
-function clearErrors(){
-  if(errorBox){ errorBox.style.display="none"; errorBox.textContent=""; }
-  if(errorBox2){ errorBox2.style.display="none"; errorBox2.textContent=""; }
-}
-
-function setTab(mode){
-  clearErrors();
-  const isRegister = mode === "register";
-  tabRegister.classList.toggle("active", isRegister);
-  tabLogin.classList.toggle("active", !isRegister);
-  registerPanel.style.display = isRegister ? "block" : "none";
-  loginPanel.style.display = isRegister ? "none" : "block";
-}
-
-tabRegister?.addEventListener("click", () => setTab("register"));
-tabLogin?.addEventListener("click", () => setTab("login"));
-
-// ===== PASSWORD TOGGLES (fix “password not showing”) =====
-qs("toggleRegPw")?.addEventListener("click", () => {
-  const inp = qs("regPassword");
-  if(!inp) return;
-  inp.type = inp.type === "password" ? "text" : "password";
-  qs("toggleRegPw").textContent = inp.type === "password" ? "Show" : "Hide";
-});
-
-qs("toggleLoginPw")?.addEventListener("click", () => {
-  const inp = qs("loginPassword");
-  if(!inp) return;
-  inp.type = inp.type === "password" ? "text" : "password";
-  qs("toggleLoginPw").textContent = inp.type === "password" ? "Show" : "Hide";
-});
-
-// ===== AUTH ACTIONS =====
-qs("registerBtn")?.addEventListener("click", async () => {
-  clearErrors();
-  try{
-    const email = (qs("regEmail")?.value || "").trim();
-    const pw = qs("regPassword")?.value || "";
-    if(!email || pw.length < 6) return showError(errorBox, "Enter email/phone and a password (6+ chars).");
-
-    await createUserWithEmailAndPassword(auth, email, pw);
-    // onAuthStateChanged will handle showing logged-in view
-  }catch(e){
-    showError(errorBox, (e && e.message) ? e.message : String(e));
-  }
-});
-
-qs("loginBtn")?.addEventListener("click", async () => {
-  clearErrors();
-  try{
-    const email = (qs("loginEmail")?.value || "").trim();
-    const pw = qs("loginPassword")?.value || "";
-    if(!email || !pw) return showError(errorBox2, "Enter email/phone and password.");
-
-    await signInWithEmailAndPassword(auth, email, pw);
-    // onAuthStateChanged will handle showing logged-in view
-  }catch(e){
-    showError(errorBox2, (e && e.message) ? e.message : String(e));
-  }
-});
-
-// ===== LOGGED-IN VIEW =====
-const loggedInPage = qs("loggedInPage");
-const authCard = document.querySelector(".card"); // your first card
-
-function showLoggedInUI(user){
-  // hide the login/register card, show logged in section
-  if(authCard) authCard.style.display = "none";
-  if(loggedInPage) loggedInPage.style.display = "block";
-  qs("pageArea").textContent = `Signed in as: ${user.email || user.phoneNumber || user.uid}`;
-}
-
-function showAuthUI(){
-  if(authCard) authCard.style.display = "block";
-  if(loggedInPage) loggedInPage.style.display = "none";
-  setTab("register");
-}
-
-qs("logoutBtn")?.addEventListener("click", async () => {
-  await signOut(auth);
-});
-
-qs("goVerify")?.addEventListener("click", () => qs("pageArea").textContent = "✅ Verify page (next we will build this section).");
-qs("goInvest")?.addEventListener("click", () => qs("pageArea").textContent = "💰 Invest page (next we will build this section).");
-qs("goInvite")?.addEventListener("click", () => qs("pageArea").textContent = "📨 Invite page (next we will build this section).");
-
-onAuthStateChanged(auth, (user) => {
-  if(user) showLoggedInUI(user);
-  else showAuthUI();
-});
-
-// default tab
-setTab("register");
-
-</script>
-
+  </script>
 </body>
 </html>
