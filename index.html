@@ -1,181 +1,187 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <title>UMOJA V2 • Official</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<title>UMOJA V2 • Official</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-  <style>
-    :root{
-      --bg:#07181a;
-      --card:rgba(255,255,255,.06);
-      --stroke:rgba(255,255,255,.10);
-      --text:#eaf6f5;
-      --muted:rgba(234,246,245,.70);
-      --accent:#40e0d0;
-    }
+<style>
+:root{
+  --bg:#07181a;
+  --card:rgba(255,255,255,.06);
+  --stroke:rgba(255,255,255,.10);
+  --text:#eaf6f5;
+  --muted:rgba(234,246,245,.70);
+  --accent:#40e0d0;
+}
 
-    *{box-sizing:border-box}
-    body{
-      margin:0;
-      font-family:system-ui,-apple-system,Segoe UI,Roboto;
-      background:radial-gradient(80% 60% at 50% -10%,#0f3a40 0%,var(--bg) 55%);
-      color:var(--text);
-      min-height:100vh;
-      display:flex;
-      justify-content:center;
-      align-items:flex-start;
-      padding:40px 16px;
-    }
+*{box-sizing:border-box}
 
-    .wrap{
-      width:100%;
-      max-width:420px;
-      text-align:center;
-    }
+body{
+  margin:0;
+  font-family:system-ui,-apple-system,Segoe UI,Roboto;
+  background:radial-gradient(80% 60% at 50% -10%,#0f3a40 0%,var(--bg) 55%);
+  color:var(--text);
+  min-height:100vh;
+  display:flex;
+  justify-content:center;
+  padding:40px 16px;
+}
 
-    /* ===== TEXT LOGO ===== */
-    .logo-text{
-      font-size:28px;
-      font-weight:800;
-      letter-spacing:.18em;
-      margin:6px 0 10px;
-      text-transform:uppercase;
-      color:var(--text);
-      text-shadow:0 0 14px rgba(64,224,208,.35);
-    }
+.wrap{
+  width:100%;
+  max-width:420px;
+  text-align:center;
+}
 
-    h1{
-      margin:0;
-      font-size:22px;
-      letter-spacing:.08em;
-    }
+/* LOGO CONTAINER (EMPTY – restored) */
+.logo{
+  width:120px;
+  height:120px;
+  margin:0 auto 10px;
+  border-radius:50%;
+  background:rgba(255,255,255,.04);
+  border:1px solid var(--stroke);
+}
 
-    .sub{
-      margin-top:6px;
-      font-size:13px;
-      color:var(--muted);
-    }
+/* TITLE */
+h1{
+  margin:0;
+  font-size:22px;
+  letter-spacing:.08em;
+}
 
-    .card{
-      margin-top:22px;
-      background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));
-      border:1px solid var(--stroke);
-      border-radius:18px;
-      padding:18px;
-      box-shadow:0 20px 40px rgba(0,0,0,.25);
-    }
+.sub{
+  margin-top:6px;
+  font-size:13px;
+  color:var(--muted);
+}
 
-    .tabs{
-      display:flex;
-      background:rgba(0,0,0,.2);
-      border-radius:14px;
-      padding:4px;
-      margin-bottom:14px;
-    }
+/* CARD */
+.card{
+  margin-top:22px;
+  background:linear-gradient(180deg,rgba(255,255,255,.07),rgba(255,255,255,.03));
+  border:1px solid var(--stroke);
+  border-radius:18px;
+  padding:18px;
+  box-shadow:0 20px 40px rgba(0,0,0,.25);
+}
 
-    .tab{
-      flex:1;
-      padding:10px;
-      border-radius:10px;
-      font-size:14px;
-      cursor:pointer;
-      color:var(--muted);
-    }
+/* TABS */
+.tabs{
+  display:flex;
+  background:rgba(0,0,0,.2);
+  border-radius:14px;
+  padding:4px;
+  margin-bottom:14px;
+}
 
-    .tab.active{
-      background:linear-gradient(135deg,var(--accent),#59f0dc);
-      color:#002b2b;
-      font-weight:600;
-    }
+.tab{
+  flex:1;
+  padding:10px;
+  border-radius:10px;
+  font-size:14px;
+  color:var(--muted);
+}
 
-    input{
-      width:100%;
-      padding:12px 14px;
-      margin-bottom:12px;
-      border-radius:12px;
-      border:1px solid var(--stroke);
-      background:rgba(0,0,0,.25);
-      color:var(--text);
-      outline:none;
-      font-size:14px;
-    }
+.tab.active{
+  background:linear-gradient(135deg,var(--accent),#59f0dc);
+  color:#002b2b;
+  font-weight:600;
+}
 
-    button{
-      width:100%;
-      padding:13px;
-      border-radius:14px;
-      border:none;
-      cursor:pointer;
-      font-weight:600;
-      font-size:15px;
-      background:linear-gradient(135deg,var(--accent),#59f0dc);
-      color:#002b2b;
-    }
+/* INPUTS */
+input{
+  width:100%;
+  padding:12px 14px;
+  margin-bottom:12px;
+  border-radius:12px;
+  border:1px solid var(--stroke);
+  background:rgba(0,0,0,.25);
+  color:var(--text);
+  font-size:14px;
+  outline:none;
+}
 
-    .hint{
-      margin-top:10px;
-      font-size:12px;
-      color:var(--muted);
-    }
+button{
+  width:100%;
+  padding:13px;
+  border-radius:14px;
+  border:none;
+  cursor:pointer;
+  font-weight:600;
+  font-size:15px;
+  background:linear-gradient(135deg,var(--accent),#59f0dc);
+  color:#002b2b;
+}
 
-    .error{
-      margin-top:12px;
-      padding:10px;
-      border-radius:12px;
-      background:rgba(255,0,0,.12);
-      color:#ffb4b4;
-      font-size:13px;
-      display:none;
-    }
-  </style>
+.hint{
+  margin-top:10px;
+  font-size:12px;
+  color:var(--muted);
+}
+
+/* DASH BUTTONS */
+.actions{
+  margin-top:18px;
+  display:grid;
+  grid-template-columns:repeat(3,1fr);
+  gap:10px;
+}
+
+.actions button{
+  background:rgba(255,255,255,.06);
+  color:var(--text);
+  font-size:13px;
+}
+</style>
 </head>
 
 <body>
-  <div class="wrap">
+<div class="wrap">
 
-    <!-- TEXT LOGO -->
-    <div class="logo-text">UMOJA</div>
+  <!-- LOGO PLACEHOLDER (RESTORED, EMPTY) -->
+  <div class="logo"></div>
 
-    <h1>UMOJA V2</h1>
-    <div class="sub">Official Landing • Verify • Invest • Invite</div>
+  <h1>UMOJA V2</h1>
+  <div class="sub">Official Landing • Verify • Invest • Invite</div>
 
-    <!-- AUTH CARD -->
-    <div class="card">
-
-      <div class="tabs">
-        <div class="tab active">Login</div>
-        <div class="tab">Register</div>
-      </div>
-
-      <input id="email" type="email" placeholder="Email" />
-      <input id="password" type="password" placeholder="Password" />
-
-      <button id="loginBtn">Login</button>
-
-      <div class="hint">Use the same email + password you registered with.</div>
-      <div id="errorBox" class="error"></div>
-
+  <!-- AUTH CARD -->
+  <div class="card">
+    <div class="tabs">
+      <div class="tab active">Login</div>
+      <div class="tab">Register</div>
     </div>
+
+    <input id="email" type="email" placeholder="Email" />
+    <input id="password" type="password" placeholder="Password" />
+
+    <button id="loginBtn">Login</button>
+    <div class="hint">Use the same email + password you registered with.</div>
   </div>
 
-  <!-- BASIC SAFE LOGIN HANDLER (NO FIREBASE LOGIC HERE) -->
-  <script>
-    document.getElementById("loginBtn").onclick = () => {
-      const email = document.getElementById("email").value.trim();
-      const pass  = document.getElementById("password").value.trim();
-      const err   = document.getElementById("errorBox");
+  <!-- DASH ACTIONS -->
+  <div class="actions">
+    <button>Verify</button>
+    <button id="btnDex">Invest</button>
+    <button>Invite</button>
+  </div>
 
-      if(!email || !pass){
-        err.style.display="block";
-        err.textContent="Please enter email and password.";
-        return;
-      }
+</div>
 
-      err.style.display="none";
-      alert("Login handler ready. Firebase already connected.");
-    };
-  </script>
+<script>
+/* DEXTOOLS */
+const DEXTOOLS_URL = "https://www.dextools.io/app/en/meme-board";
+const btnDex = document.getElementById("btnDex");
+if(btnDex){
+  btnDex.onclick = () => window.open(DEXTOOLS_URL, "_blank", "noopener,noreferrer");
+}
+
+/* LOGIN PLACEHOLDER */
+document.getElementById("loginBtn").onclick = () => {
+  alert("Login handler active (Firebase already wired).");
+};
+</script>
 
 </body>
 </html>
