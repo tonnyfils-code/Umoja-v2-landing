@@ -694,12 +694,14 @@ a.smallBtn{
   // ===== Helper =====
   const qs = (id) => document.getElementById(id);
 
-  // ===== Open DEX Button =====
-  const openDexBtn = qs("openDex");
-  if (openDexBtn) {
-    openDexBtn.addEventListener("click", () => {
-      window.open(PANCAKESWAP_URL, "_blank");
-    });
+ // Invest: Open DEXTools
+const DEXTOOLS_URL = "https://www.dextools.io/app/en/meme-board";
+
+qs("btnDex").addEventListener("click", () => {
+  qs("dashMsg").textContent = "🚀 Opening DEXTools…";
+  window.open(DEXTOOLS_URL, "_blank", "noopener,noreferrer");
+});
+
   }
 
   // ===== Copy Contract =====
