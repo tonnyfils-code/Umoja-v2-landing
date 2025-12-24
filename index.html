@@ -152,6 +152,24 @@
       letter-spacing:2px;
       font-weight:800;
     }
+    .smallBtn{
+  padding: 10px 14px;
+  border-radius: 14px;
+  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.08);
+  color: rgba(234,246,245,.9);
+  cursor: pointer;
+}
+.errorBox{
+  margin-top: 12px;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(255,80,80,.35);
+  background: rgba(255,80,80,.10);
+  color: rgba(255,200,200,.95);
+  font-size: 14px;
+}
+
   </style>
 </head>
 <body>
@@ -171,32 +189,70 @@
         <div id="tabLogin" class="tab">Login</div>
       </div>
 
-      <!-- PANELS -->
+     <!-- PANELS -->
 <div id="registerPanel">
   <div class="form">
     <div class="field">
-      <input id="emailOrPhone" type="text" placeholder="Email or Phone" autocomplete="username" />
+      <input id="regEmail" type="text" placeholder="Email or Phone" autocomplete="username" />
     </div>
 
     <div class="field row">
-      <input id="password" type="password" placeholder="Password" autocomplete="new-password" />
-      <button id="togglePw" type="button">Show</button>
+      <input id="regPassword" type="password" placeholder="Password" autocomplete="new-password" />
+      <button id="toggleRegPw" type="button" class="smallBtn">Show</button>
     </div>
 
-    <button id="actionBtn" class="btn">Create Account</button>
+    <button id="registerBtn" class="btn">Create Account</button>
 
     <div id="inviteBox" class="inviteBox" style="display:none;">
       <div class="muted">Referral detected from link:</div>
-      <div id="refText" class="refText"></div>
+      <div id="refOut" class="refCode"></div>
     </div>
 
-    <div class="smallMuted">
-      By continuing you agree to the <a href="#" id="openAgreement">Registration Agreement</a>.
+    <div class="agree">
+      By continuing you agree to the <span class="link">Registration Agreement</span>.
     </div>
 
-    <div id="msg" class="msg"></div>
+    <div id="errorBox" class="errorBox" style="display:none;"></div>
   </div>
 </div>
+
+<div id="loginPanel" style="display:none;">
+  <div class="form">
+    <div class="field">
+      <input id="loginEmail" type="text" placeholder="Email or Phone" autocomplete="username" />
+    </div>
+
+    <div class="field row">
+      <input id="loginPassword" type="password" placeholder="Password" autocomplete="current-password" />
+      <button id="toggleLoginPw" type="button" class="smallBtn">Show</button>
+    </div>
+
+    <button id="loginBtn" class="btn">Login</button>
+
+    <div class="agree">
+      By continuing you agree to the <span class="link">Registration Agreement</span>.
+    </div>
+
+    <div id="errorBox2" class="errorBox" style="display:none;"></div>
+  </div>
+</div>
+
+<!-- LOGGED-IN VIEW (put this right under the card, still inside <body>) -->
+<section id="loggedInPage" style="display:none; margin-top:18px;">
+  <div class="card">
+    <h2 style="margin:0 0 10px 0;">Welcome ✅</h2>
+
+    <div style="display:flex; gap:10px; flex-wrap:wrap;">
+      <button class="btn" id="goVerify">Verify</button>
+      <button class="btn" id="goInvest">Invest</button>
+      <button class="btn" id="goInvite">Invite</button>
+      <button class="btn" id="logoutBtn">Logout</button>
+    </div>
+
+    <div id="pageArea" style="margin-top:14px; opacity:.9;"></div>
+  </div>
+</section>
+
 
 <div id="loginPanel" style="display:none;">
   <div class="form">
