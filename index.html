@@ -646,6 +646,32 @@
         setMode("login");
       }
     });
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/10.12.5/firebase-firestore.js";
+
+const db = getFirestore(app);
+
+// Call this once on page load:
+async function logInviteClick() {
+  const url = new URL(window.location.href);
+  const ref = (url.searchParams.get("ref") || "").trim();
+
+  if (!ref) return;
+
+  const id = crypto.randomUUID();
+  const landing = url.pathname || "index.html";
+
+  await setDoc(doc(db, "invitationClicks", id), {
+    ref,
+    landing,
+    createdAt: Date.now(),
+    signedIn: false,
+    uid: "",
+    country: "" // optional (leave blank)
+  });
+}
+
+logInviteClick();
+
   </script>
 </body>
 </html>
